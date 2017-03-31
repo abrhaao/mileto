@@ -1,0 +1,88 @@
+﻿package com.mileto.domain;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.backinbean.adm.CadastrarEmpresaBean;
+import com.mileto.pattern.BusinessException;
+import com.mileto.pattern.DAOException;
+import com.mileto.pattern.Icon;
+import com.mileto.persistence.PrcAdminDAO;
+
+@Entity
+@Table(name="REK_ENDERECO")
+public class RekEndereco implements Serializable {
+
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name = "ID")
+	private String id;
+
+	@Column(name = "PRINCIPAL", nullable = false)
+	private String principal;
+
+	@Column(name = "CNPJ", nullable = false)
+	private String cnpj;
+
+	@Column(name = "CPF", nullable = false)
+	private String cpf;
+
+	@Transient
+	private String iconStatus;
+
+	private static Map<String, Icon> hashIconStatus;
+
+	/** 
+	 * Diagrama de Estados
+	 */
+	static {		
+		hashIconStatus = new HashMap<String,Icon>();
+		hashIconStatus.put("S", new Icon("Endereco Principal", Icon.VERMELHO));
+		hashIconStatus.put("N", new Icon("Endereço Secundário", Icon.LARANJA));
+	}
+
+	public String getIconStatus() {
+		setIconStatus(Icon.getGraphicIcon(this.hashIconStatus, new Integer(1).toString()));
+		return iconStatus;
+	}	
+
+	public void setIconStatus(String iconStatus) {
+		this.iconStatus = iconStatus;
+	}
+	
+	public static List<Icon> getListaIcones() {
+		return new ArrayList<Icon>(hashIconStatus.values());
+	}
+
+	public static Collection<RekCliente> getEnderecosDoCliente(CadastrarClienteBean bean) throws BusinessException {		
+		try {
+			PrcPessoaDAO dao = new PrcPessoaDAO();			
+			return dao.getCliente();
+		} catch (DAOException e) {
+			throw new BusinessException("Erro ao executar metodo getClientesda classe Collection<RekCliente> 
+		}
+	}
+
+
+	public String getCnpj() {
+		return cnpj;
+	}
+
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
+	}
+
+
+
+}

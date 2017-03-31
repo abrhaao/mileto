@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<ui:composition template="/jsf/common/commonLayout.xhtml">
+
+	<ui:define name="templateContent">
+
+		<f:event type="preRenderView" listener="#{autenticarBean.check}" />
+
+		<rich:panel styleClass="messages">
+			<h:messages />
+		</rich:panel>
+
+		<h2>Parâmetros do Sistema</h2>
+		<h3>
+			<h:outputText value="#{configurarSistemaBean.parametro.param}" />
+		</h3>
+
+		<h:panelGrid styleClass="gridTabless" width="#{img.widthGrid}">
+
+			<h:form id="muodossaControlPanel">
+
+				<rich:tabPanel id="tab" switchType="client">
+
+					<rich:tab title="Titulo" name="Informações Gerais">
+
+						<h:panelGrid columns="3" style="height: #{alturaCadastrum}"
+							rowClasses="cadastrumCells">
+
+							<h:column>
+								<h:panelGrid styleClass="cadastrum" columns="2"
+									columnClasses="golden_2 tabelaColunas, golden_1"
+									style="width: 300px">
+
+									<h:column>Codigo:</h:column>
+									<h:column>
+										<h:outputText value="#{configurarSistemaBean.parametro.param}"/>
+									</h:column>
+									<h:column>Empresa:</h:column>
+									<h:column>
+										<h:outputText value="#{configurarSistemaBean.parametro.empresa}"/>
+									</h:column>
+									<h:column>Valor:</h:column>
+									<h:column>
+										<h:inputText value="#{configurarSistemaBean.parametro.valor}" label="Valor do Parametro" />
+									</h:column>
+									<h:column>Descrição:</h:column>
+									<h:column>
+										<h:inputText required="true" value="#{configurarSistemaBean.parametro.descricao}" label="Descição" size="40" />
+									</h:column>
+									
+
+									<h:column>
+										<h:graphicImage width="100" url="#{skin.layoutBlank}" />
+									</h:column>
+									<h:column>
+										<h:graphicImage width="200" url="#{skin.layoutBlank}" />
+									</h:column>
+
+								</h:panelGrid>
+							</h:column>
+
+							<h:column>
+								<h:graphicImage width="100" url="#{skin.layoutBlank}" />
+							</h:column>
+							
+
+						</h:panelGrid>
+
+					</rich:tab>
+
+
+				</rich:tabPanel>
+
+
+
+				<rich:panel style="heigth: 148px">
+					<h:commandLink value="Atualizar"
+						action="#{configurarSistemaBean.atualizaParametro}"
+						styleClass="botao2" />
+                    <h:commandLink value="Replicar"
+						action="#{configurarSistemaBean.replicaParametro}"
+						styleClass="botao2" />											
+					<a href="#{request.contextPath}/jsf/modAdminSys/viewListaParametros.jsf" class="botao2">Voltar</a>
+				</rich:panel>
+
+			</h:form>
+
+		</h:panelGrid>
+
+	</ui:define>
+
+</ui:composition>
+
+</html>

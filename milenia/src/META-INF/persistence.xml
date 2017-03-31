@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="milenia">
+		<class>com.mileto.domain.AdmEmpresa</class>
+		<class>com.mileto.domain.AdmGrupo</class>
+		<class>com.mileto.domain.AdmPerfil</class>
+		<class>com.mileto.domain.AdmSistema</class>
+		<class>com.mileto.domain.AdmUsuario</class>
+		<class>com.mileto.domain.DocContent</class>
+		<class>com.mileto.domain.RekCliente</class>
+		<class>com.mileto.domain.RekContato</class>
+	
+	</persistence-unit>
+</persistence>

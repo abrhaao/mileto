@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<ui:composition template="/sample/commonLayout.xhtml">
+
+	<ui:define name="templateContent">
+
+		<f:event type="preRenderView" listener="#{autenticarBean.check}" />
+
+		<h:form id="muodossaListagem">
+
+			<h:panelGroup styleClass="col75" id="idPanelCadastrumListagem">
+
+
+				<h2>Shorthand Background Code</h2>
+				<p>
+					You can use the CSS <a href="/css/properties/css_background.cfm"><code>background</code></a>
+					property to set all the background properties at once. Therefore,
+					you can set <a href="/css/properties/css_background-attachment.cfm"><code>background-attachment</code></a>,
+					<a href="/css/properties/css_background-color.cfm"><code>background-color</code></a>,
+					<a href="/css/properties/css_background-image.cfm"><code>background-image</code></a>,
+					<a href="/css/properties/css_background-position.cfm"><code>background-position</code></a>,
+					<a href="/css/properties/css_background-repeat.cfm"><code>background-repeat</code></a>
+					all in one place using the <a
+						href="/css/properties/css_background.cfm"><code>background</code></a>
+					property.
+				</p>
+				<p>Therefore, using the previous code example, we could rewrite
+					it to this:</p>
+
+
+
+				<div class="container-fluid code-snippet">
+
+					<div class="row">
+
+						<div class="container-fluid toolbar">
+
+							<div class="row">
+
+
+								<div class="col-xs-4 copy">
+									<button type="button" class="button" id="copy-button-4"
+										data-clipboard-target="example4"
+										title="Copies the code to the clipboard.">
+										<i class="fa fa-clipboard"></i> Copy
+									</button>
+
+
+
+									<span id="alert4"></span>
+
+
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+
+
+
+				<h2>HTML Background Code (deprecated)</h2>
+				<p>The above examples demonstrate the best way of setting the
+					background of your web pages - using CSS.</p>
+				<p>You may occasionally encounter an old web page where the
+					background has been set using HTML (instead of CSS). Something like
+					this:</p>
+
+
+				<div class="container-fluid code-snippet">
+
+					<div class="row">
+
+						<div class="container-fluid toolbar">
+
+							<div class="row">
+
+
+								<div class="col-xs-12 copy">
+									<button type="button" class="button" id="copy-button-6"
+										data-clipboard-target="example6"
+										title="Copies the code to the clipboard.">
+										<i class="fa fa-clipboard"></i> Copy
+									</button>
+
+
+
+									<span id="alert6"></span>
+
+
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+
+
+					<div class="row">
+
+						<div class="col-sm-12">
+
+
+							<div class="code preview-No">
+								<pre id="example6">
+										<code id="code6" class="code language-markup">bgcolor</code>
+									</pre>
+							</div>
+
+						</div>
+
+
+
+
+					</div>
+					
+				</div>
+
+
+
+			</h:panelGroup>
+		
+
+		<div class="col25 sidebar" id="lado2">
+
+			<h4>Opções Relacionadas</h4>
+
+			<ul>
+				<li><a href="/html/tags/"
+					title="Alphabetical list of all HTML tags">Incluir Novo</a></li>
+				<li><h:commandLink value="Legenda PopUp">
+						<rich:componentControl target="popup" operation="show" />
+					</h:commandLink></li>
+				<li><a href="/html/tags/"
+					title="Alphabetical list of all HTML tags">Legenda</a></li>
+				<li><a href="/html/tags/"
+					title="Alphabetical list of all HTML tags">Exportar</a></li>
+			</ul>
+
+
+			<hr />
+
+			<h4>Pesquisa</h4>
+
+			<h:panelGrid columns="1" width="90%" cellspacing="1" cellpadding="3">
+				<h:column>
+					<h:outputText value="Busca por Nome" />
+				</h:column>
+				<h:column>
+					<h:inputText value="#{cadastrarUsuarioBean.buscaNome}" />
+				</h:column>
+				<h:column>
+					<h:outputText value="Busca por Email" />
+				</h:column>
+				<h:column>
+					<h:inputText value="#{cadastrarUsuarioBean.buscaEmail}" />
+				</h:column>
+				<h:column>
+					<a4j:commandLink
+						action="#{cadastrarUsuarioBean.buscaListagemUsuarios}"
+						value="Buscar" styleClass="botao2"
+						render="idPanelCadastrumListagem" />
+				</h:column>
+			</h:panelGrid>
+
+
+
+			<rich:calendar />
+		</div>
+
+		</h:form>
+
+		<h:panelGrid>
+
+			<h:form id="muodossaLegendas">
+				<a4j:outputPanel id="dimmer"
+					style="position: absolute; left:0px;   top:0px; width: 250px; height: 300px; background-color: red; display:none">
+					<!-- ui:include src="/jsf/common/viewLegendas.xhtml"/  -->
+				</a4j:outputPanel>
+			</h:form>
+
+
+			<h:form id="muodossaDimmer">
+				<rich:popupPanel id="popup" modal="true" resizeable="true"
+					onmaskclick="#{rich:component('popup')}.hide()">
+					<f:facet name="header">
+						<h:outputText value="Simple popup panel" />
+					</f:facet>
+					<f:facet name="controls">
+						<h:outputLink value="#"
+							onclick="#{rich:component('popup')}.hide(); return false;"
+							style="color: inherit">
+                X
+            </h:outputLink>
+					</f:facet>
+					<p>You can also check and trigger events if the use clicks
+						outside of the panel.</p>
+					<p>In this example clicking outside closes the panel.</p>
+
+					<rich:panel styleClass="gridTabless">
+						<rich:dataTable var="iconLegenda"
+							value="#{cadastrarUsuarioBean.iconesUsuarios}" cellspacing="1"
+							cellpadding="0" styleClass="cadastrumListagem"
+							rowClasses="golden1,golden2"
+							binding="#{navegarBean.dataTableListaIcones}">
+							<rich:column>
+								<h:graphicImage url="#{iconLegenda.url}" />
+								<f:facet name="footer">
+									<h:graphicImage width="20" url="#{skin.layoutTransparente}" />
+								</f:facet>
+							</rich:column>
+							<rich:column>
+								<h:outputText value="#{iconLegenda.label}" />
+								<f:facet name="footer">
+									<h:graphicImage width="20" url="#{skin.layoutTransparente}" />
+								</f:facet>
+							</rich:column>
+
+						</rich:dataTable>
+
+						<a4j:commandButton alt="Setar False"
+							action="#{navegarBean.setFlgDisplayDimmer(false)}" value="FECHAR"
+							render="dimmer dimmerLog"
+							oncomplete="$('#muodossa\\:dimmer').hide()" />
+					</rich:panel>
+
+				</rich:popupPanel>
+			</h:form>
+
+		</h:panelGrid>
+
+
+	</ui:define>
+
+</ui:composition>
+
+</html>

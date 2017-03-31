@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<ui:composition template="/sample/commonLayout.xhtml">
+
+	<ui:define name="templateContent">		
+		
+		<h:panelGrid styleClass="gridTabless"> 									
+			<h:outputText value="estou dentro da pagina HERDO3"></h:outputText>
+		</h:panelGrid>
+
+<f:event type="preRenderView" listener="#{autenticarBean.check}" />
+<h:panelGrid sytleClass="col-sm-9">
+						
+<h1>HTML 5 &lt;iframe&gt; Tag</h1>
+							
+
+<p>The HTML <code>&lt;iframe&gt;</code> tag is used to specify an inline frame, or, as the HTML5 specification refers to it, a <i>nested browsing context</i>. </p>
+<p>An inline frame allows you to embed another document within the 
+current HTML document. It also allows you to provide an inline frame 
+without using another document - by simply passing the content to the <code>&lt;iframe&gt;</code> via the <code>srcdoc</code> attribute.</p>
+
+<p></p>
+<h:outputLink value="herdo2.jsf" styleClass="botao1">Go to Herdo 2</h:outputLink> 
+<p></p>
+
+<h2>Usage</h2>
+<p>Inline frames are often used in online advertising, where the contents of the <code>&lt;iframe&gt;</code> is an ad from an external party.</p>
+<p>Inline frames are typically created using a second HTML document. 
+This second document contains the content within the inline frame. You 
+use the iframe <code>src</code> attribute to specify the source of the other document, as well as other attributes to determine the height, width etc.</p>
+<p>Inline frames can also be created without a second document. To do this, you need to use the <code>srcdoc</code> attribute to pass the content that should appear within the inline frame/<i>nested browsing context</i>.</p>
+<div class="info">
+<p>Note that in previous versions of HTML, you could create "fallback content" by placing content within the opening and closing <code>&lt;iframe&gt;</code> <code>&lt;/iframe&gt;</code> tags. In HTML 5 however, the <code>&lt;iframe&gt;</code> element never has fallback content.</p>
+</div>
+<h2>The 'seamless' Attribute</h2>
+<p>HTML 5 doesn't support attributes such as <code>frameborder</code>, <code>scrolling</code>, <code>marginwidth</code>, and <code>marginheight</code> (which were supported in HTML 4.01). However, the WHATWG HTML Living Standard has introduced the <code>seamless</code> attribute. The <code>seamless</code>
+ attribute allows the inline frame to appear as though it is being 
+rendered as part of the containing document. For example, borders and 
+scrollbars will not appear. </p>
+<p><strong>Note however, that the <code>seamless</code> attribute is not supported by the W3C HTML5 specification.</strong></p>
+
+<h2>Example</h2>
+<p>Here is an example of the HTML code used to create an inline frame 
+(or a "nested browsing context"). Note that this example uses the <code>seamless</code>
+ attribute, which is new in HTML 5. If you see scrollbars and a border 
+around the inline frame, it's because your browser doesn't support the <code>seamless</code> attribute.</p>
+
+</h:panelGrid>
+
+
+<h:panelGrid sytleClass="col-sm-3 sidebar">
+	<h2>Example Sidebar</h2>
+<p>Here is an example of the HTML code used to create an inline frame 
+(or a "nested browsing context"). Note that this example uses the <code>seamless</code>
+ attribute, which is new in HTML 5. If you see scrollbars and a border 
+around the inline frame, it's because your browser doesn't support the <code>seamless</code> attribute.</p>
+</h:panelGrid>
+
+
+</ui:define>
+
+</ui:composition>
+
+</html>
