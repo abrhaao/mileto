@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<ui:composition template="/jsf/common/commonLayout.xhtml">
+
+	<ui:define name="templateContent">
+
+		<f:event type="preRenderView" listener="#{autenticarBean.check}" />
+
+		<h:form id="muodossaListagem">
+
+			<h:panelGroup styleClass="col75" id="idPanelCadastrumListagem">
+
+				<h2>Cadastro de Clientes</h2>
+
+
+				<rich:dataTable var="cliente"
+					value="#{cadastrarClienteBean.listaClientes}" cellspacing="1"
+					cellpadding="0" styleClass="cadastrumListagem"
+					rowClasses="golden1,golden2" headerClass="gridCaixa"
+					binding="#{tabelarBean.dataTableListaClientes}">
+
+					<rich:column>
+						<h:graphicImage url="#{cliente.iconStatus}" />
+						<f:facet name="footer">
+							<h:graphicImage width="20" url="#{skin.layoutBlank}" />
+						</f:facet>
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{cliente.id}" />
+						<f:facet name="header">
+							Id.Usuário
+						</f:facet>
+						<f:facet name="footer">
+							<h:graphicImage width="10" url="#{skin.layoutBlank}" />
+						</f:facet>
+					</rich:column>
+					<rich:column>						
+						<h:commandLink
+							actionListener="#{cadastrarClienteBean.cadastraCliente}"
+							value="#{cliente.razaoSocial}" />
+						<f:facet name="header">
+							Razao Social
+						</f:facet>
+						<f:facet name="footer">
+							<h:graphicImage width="70" url="#{skin.layoutTransparente}" />
+						</f:facet>
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{cliente.nomeFantasia}" />
+						<f:facet name="header">
+							Nome Fantasia
+						</f:facet>
+						<f:facet name="footer">
+							<h:graphicImage width="70" url="#{skin.layoutBlank}" />
+						</f:facet>
+					</rich:column>					
+
+				</rich:dataTable>
+
+
+			</h:panelGroup>
+
+
+			<div class="col25 sidebar" id="lado2">
+
+				<h4>Opções Relacionadas</h4>
+
+				<ul>
+					<li><a href="/html/tags/" title="Incluir Novo Cadastro">Incluir Novo</a></li>
+					<li><h:commandLink value="Legenda">
+							<rich:componentControl target="popup" operation="show" />
+						</h:commandLink></li>
+					<li><a href="/html/tags/" title="Exportar Cadastro">Exportar</a></li>
+				</ul>
+
+
+				<hr />
+
+				<h4>Pesquisa</h4>
+
+				<h:panelGrid columns="1" width="90%" cellspacing="1" cellpadding="3">
+					<h:column>
+						<h:outputText value="Busca por Nome" />
+					</h:column>
+					<h:column>
+						<h:inputText value="#{cadastrarClienteBean.buscaNome}" />
+					</h:column>
+					<h:column>
+						<h:outputText value="Busca por Telefone" />
+					</h:column>
+					<h:column>
+						<h:inputText value="#{cadastrarClienteBean.buscaTelefone}" />
+					</h:column>
+					
+					<h:column>
+						<a4j:commandLink
+							action="#"
+							value="Buscar" styleClass="botao2"
+							render="idPanelCadastrumListagem" />
+					</h:column>
+				</h:panelGrid>
+
+
+
+				<rich:calendar />
+			</div>
+
+		</h:form>
+
+		<h:panelGrid>
+			<ui:include src="/jsf/common/viewLegendas.xhtml">
+				<ui:param name="legendas"
+					value="#{informarBean.listaIconesClientes}" />
+			</ui:include>
+		</h:panelGrid>
+
+
+	</ui:define>
+
+</ui:composition>
+
+</html>

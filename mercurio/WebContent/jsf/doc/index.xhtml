@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html 	xmlns:h="http://java.sun.com/jsf/html"
+    	xmlns:f="http://java.sun.com/jsf/core"
+    	xmlns:ui="http://java.sun.com/jsf/facelets"
+    	xmlns:a4j="http://richfaces.org/a4j"
+    	xmlns:rich="http://richfaces.org/rich">
+
+
+
+<h:head>
+	<title>MyFaces - Welcome to the Apache MyFaces Project</title>
+
+	<link media="all" 	href="files/maven-base.css" type="text/css" rel="stylesheet"/>
+	<link media="all" 	href="files/maven-theme.css" type="text/css" rel="stylesheet"/>
+	<link media="print" href="files/print.css" type="text/css" rel="stylesheet"/>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta content="MSHTML 6.00.6002.18255" name="GENERATOR"/>
+</h:head>
+
+<body>
+
+
+<ui:include src="/jsf/doc/topo.xhtml" />
+
+<h:panelGroup id="main_container">	
+	<h:panelGrid id="left_column">
+		
+			<h:form id="muodossaDocumentation">
+			<ui:include src="/jsf/doc/menufaces.xhtml" />
+			</h:form>
+		
+	</h:panelGrid>	
+	<h:panelGrid id="body_column">
+		<h:form id="muodossaMiolo">
+			<ui:include src="/jsf/doc/miolo.xhtml" />
+		</h:form>
+	</h:panelGrid>
+</h:panelGroup>
+
+
+
+<div class="clear"></div><!-- close main container -->
+<div id="footer">
+	<div class="copyright"><p>© 2010 The Apache Software Foundation </p></div><!-- close copyright -->
+</div><!-- close footer -->
+
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+    
+
+
+<h:panelGrid class="left_menu_top">
+<h:panelGrid class="left_menu_bottom">
+<H5>MyFaces Projects</H5>
+<h:panelGrid class="content">
+<div class="left_menu">
+  <h:commandLink styleClass="externalLink" value="Banco de Dados" action="#{informarBean.giveMeDoc(4)}"/>
+</div>
+<div class="left_menu">
+  <h:commandLink styleClass="externalLink" value="Item 2nco de Dados" action="#{informarBean.giveMeDoc(4)}"/>
+</div>
+<div class="left_menu">
+  <h:commandLink styleClass="externalLink" value="Item 3" action="#{informarBean.giveMeDoc(4)}"/>
+</div>
+</h:panelGrid><!-- close content --></h:panelGrid><!-- close left_menu_bottom --></h:panelGrid><!-- close left_menu_top -->
+
+
+<h:panelGrid class="left_menu_top">
+<h:panelGrid class="left_menu_bottom">
+<H5>Instalação</H5>
+<h:panelGrid class="content">
+<div class="left_menu">  
+  <a4j:commandLink styleClass="externalLink" value="Modelo" action="#{documentaBean.exibeDocumentacao}" render=":muodossaMiolo">
+  	<f:param id="contentId" name="contentId" value="5"/>
+  </a4j:commandLink>
+</div>
+<div class="left_menu">  
+  <a4j:commandLink styleClass="externalLink" value="Banco de Dados" action="#{documentaBean.exibeDocumentacao}" render=":muodossaMiolo">
+  	<f:param id="contentId" name="contentId" value="5"/>
+  </a4j:commandLink>
+</div>
+</h:panelGrid><!-- close content --></h:panelGrid><!-- close left_menu_bottom --></h:panelGrid><!-- close left_menu_top -->
+
+<h:panelGrid class="left_menu_top">
+<h:panelGrid class="left_menu_bottom">
+<H5>Configuração Básica</H5>
+<h:panelGrid class="content">
+<div class="left_menu">  
+  <a4j:commandLink styleClass="externalLink" value="Modelo" action="#{documentaBean.exibeDocumentacao}" render=":muodossaMiolo">
+  	<f:param id="contentId" name="contentId" value="5"/>
+  </a4j:commandLink>
+</div>
+<div class="left_menu">  
+  <a4j:commandLink styleClass="externalLink" value="Parametros do Sistema" action="#{documentaBean.exibeDocumentacao}" render=":muodossaMiolo">
+  	<f:param id="contentId" name="contentId" value="2001"/>
+  </a4j:commandLink>
+</div>
+</h:panelGrid><!-- close content --></h:panelGrid><!-- close left_menu_bottom --></h:panelGrid><!-- close left_menu_top -->
+
+<h:panelGrid class="left_menu_top">
+<h:panelGrid class="left_menu_bottom">
+<H5>Módulos</H5>
+<h:panelGrid class="content">
+<div class="left_menu">  
+  <a4j:commandLink styleClass="externalLink" value="Faturamento" action="#{documentaBean.exibeDocumentacao}" render=":muodossaMiolo">
+  	<f:param id="contentId" name="contentId" value="3101"/>
+  </a4j:commandLink>
+</div>
+<div class="left_menu">  
+  <a4j:commandLink styleClass="externalLink" value="Materias e Estoques" action="#{documentaBean.exibeDocumentacao}" render=":muodossaMiolo">
+  	<f:param id="contentId" name="contentId" value="5"/>
+  </a4j:commandLink>
+</div>
+<div class="left_menu">  
+  <a4j:commandLink styleClass="externalLink" value="Finanças" action="#{documentaBean.exibeDocumentacao}" render=":muodossaMiolo">
+  	<f:param id="contentId" name="contentId" value="5"/>
+  </a4j:commandLink>
+</div>
+</h:panelGrid><!-- close content --></h:panelGrid><!-- close left_menu_bottom --></h:panelGrid><!-- close left_menu_top -->
+
+<h:panelGrid class="left_menu_top">
+<h:panelGrid class="left_menu_bottom">
+<H5>Guia do Desenvolvedor</H5>
+<h:panelGrid class="content">
+<div class="left_menu">
+  <h:commandLink styleClass="externalLink" value="Banco de Dados" action="#{informarBean.giveMeDoc(4)}"/>
+</div>
+<div class="left_menu">
+  <h:commandLink styleClass="externalLink" value="Item 2nco de Dados" action="#{informarBean.giveMeDoc(4)}"/>
+</div>
+<div class="left_menu">
+  <h:commandLink styleClass="externalLink" value="Item 3" action="#{informarBean.giveMeDoc(4)}"/>
+</div>
+</h:panelGrid><!-- close content --></h:panelGrid><!-- close left_menu_bottom --></h:panelGrid><!-- close left_menu_top -->
+
+<h:panelGroup id="powered_by">
+	<A class="poweredBy" title="Built by Maven" href="http://maven.apache.org/"><IMG alt="Built by Maven" src="files/maven-feather.png"></IMG></A>
+</h:panelGroup>
+<!-- close powered_by -->
+
+<DIV class="clear"></DIV>
+
+
+</ui:composition>
