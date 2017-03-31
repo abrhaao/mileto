@@ -1,0 +1,268 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:h="http://java.sun.com/jsf/html"
+ xmlns:f="http://java.sun.com/jsf/core"
+ xmlns:ui="http://java.sun.com/jsf/facelets"
+ xmlns:a4j="http://richfaces.org/a4j"
+ xmlns:rich="http://richfaces.org/rich">
+ 
+ <f:view class=" overthrow-enabled" lang="en">
+ <h:head>
+ 
+ 	<f:loadBundle basename="com.application.template" var="skin"/>
+ 	
+ 	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+ 
+	<link rel="shortcut icon" href="http://www.quackit.com/pix/favicon96.png" />
+	<link rel="apple-touch-icon" href="http://www.quackit.com/pix/apple-touch-icon.png"/>
+ 	
+ 	<link href="../styles/#{skin.template}/bootstrap.css" rel="stylesheet"/>
+	<link href="../styles/#{skin.template}/css.css" rel="stylesheet" type="text/css"/>
+	<link href="../styles/#{skin.template}/font-awesome.css" rel="stylesheet"/>
+	<link href="../styles/#{skin.template}/quackit.css" rel="stylesheet"/>		
+ 	
+	<script>
+			$(document).on('click', '.mega-menu .dropdown-menu', function(e) {
+			  e.stopPropagation()
+			})	
+		</script>				
+		
+		<script src="../styles/#{skin.template}/css.js"></script>		
+ 
+ </h:head>
+
+
+ <h:body>
+ 
+ 		<a4j:include viewId="/sample/menu.xhtml" />
+	
+		
+		<nav class="navbar mega-menu navbar-inverse navbar-fixed-top">
+			<div class="container">
+			
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" title="Quackit Homepage" target="_top" href="http://www.quackit.com/">						
+						<h:graphicImage value="#{skin.logo_watermark}" height="33" width="87" alt="Logo da empresa"/>
+					</a>
+				</div><!--/.navbar-header -->
+				
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+	
+	<li class="dropdown"><a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">HTML Codes <span class="caret"></span></a>
+		<ul class="dropdown-menu">
+			<li>
+				<div class="mega-menu-content">
+					<div class="row">
+						<ul class="col-sm-6 list-unstyled">
+							<li class="dropdown-header"><i class="fa fa-code"></i> Codes</li>
+							<li><a href="http://www.quackit.com/html/codes/html_background_codes.cfm">Background Code</a></li>
+							<li><a href="http://www.quackit.com/html/codes/bold/">Bold Text Code</a></li>
+							<li><a href="http://www.quackit.com/html/codes/color/">Color Codes</a></li>
+							<li><a href="http://www.quackit.com/html/codes/tables/">Table Codes</a></li>
+							<li><a href="http://www.quackit.com/html/codes/text/">Text Codes</a></li>
+							<li><a href="http://www.quackit.com/html/codes/link/">Link Code</a></li>
+							<li><a href="http://www.quackit.com/html/codes/html_marquee_code.cfm">HTML Marquee Code</a></li>
+							<li><a href="http://www.quackit.com/css/codes/marquees/">CSS Marquee Code</a></li>
+							<li><a href="http://www.quackit.com/html/html_music_code.cfm">HTML Music Code</a></li>
+							<li><a href="http://www.quackit.com/html/codes/html_scroll_box.cfm">Scroll Box Code</a></li>
+							<li><a href="http://www.quackit.com/html/codes/comment_box_code.cfm">Comment Box Code</a></li>
+							<li><a href="http://www.quackit.com/html/codes/">More HTML Codes ⇒</a></li>
+						</ul>
+						<ul class="col-sm-6 list-unstyled">
+							<li class="dropdown-header"><i class="fa fa-edit"></i> Editors &amp; Generators</li>
+							<li><a href="http://www.quackit.com/html/online-html-editor/">Online HTML Editor</a></li>
+							<li><a href="http://www.quackit.com/html/online-html-editor/">Online HTML Editor (Full)</a></li>
+							<li><a href="http://www.quackit.com/html/html_editors/scratchpad/">HTML Scratchpad</a></li>
+							<li><a href="http://www.quackit.com/html/html_generators/html_code_generator.cfm">HTML Generator</a></li>
+							<li><a href="http://www.quackit.com/html/html_table_generator.cfm">HTML Table Generator</a></li>
+						</ul>
+						<ul class="col-sm-6 list-unstyled">
+							<li class="dropdown-header"><i class="fa fa-files-o"></i> Templates</li>
+							<li><a href="http://www.quackit.com/html/templates/">Free Templates</a></li>
+							<li><a href="http://www.quackit.com/html/templates/online/">Online Templates</a></li>
+							<li><a href="http://www.quackit.com/html/templates/mobile_website_templates.cfm">Mobile Templates</a></li>
+							<li><a href="http://www.quackit.com/website_templates/premium/">Premium Templates</a></li>
+						</ul>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</li>	
+	
+	<li class="dropdown"><a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Tutorials <span class="caret"></span></a>
+		<ul class="dropdown-menu">
+			<li>
+				<div class="mega-menu-content">
+					<div class="row">
+						<ul class="col-sm-4 list-unstyled">
+							<li class="dropdown-header"><i class="fa fa-desktop"></i> Client-Side</li>
+							<li><a href="http://www.quackit.com/html/tutorial/">HTML Tutorial</a></li>
+							<li><a href="http://www.quackit.com/css/tutorial/">CSS Tutorial</a></li>
+							<li><a href="http://www.quackit.com/bootstrap/tutorial/">Bootstrap Tutorial</a></li>
+							<li><a href="http://www.quackit.com/xml/tutorial/">XML Tutorial</a></li>
+							<li><a href="http://www.quackit.com/javascript/tutorial/">JavaScript Tutorial</a></li>
+						</ul>
+						<ul class="col-sm-4 list-unstyled">
+							<li class="dropdown-header"><i class="fa fa-server"></i> Server-Side</li>
+							<li><a href="http://www.quackit.com/coldfusion/tutorial/">ColdFusion Tutorial</a></li>
+							<li><a href="http://www.quackit.com/php/tutorial/">PHP Tutorial</a></li>
+							<li><a href="http://www.quackit.com/vbscript/tutorial/">VBScript Tutorial</a></li>
+							<li><a href="http://www.quackit.com/ajax/tutorial/">AJAX Tutorial</a></li>
+						</ul>
+						<ul class="col-sm-4 list-unstyled">
+							<li class="dropdown-header"><i class="fa fa-database"></i> Database</li>
+							<li><a href="http://www.quackit.com/database/tutorial/">Database Tutorial</a></li>
+							<li><a href="http://www.quackit.com/sql/tutorial/">SQL Tutorial</a></li>
+							<li><a href="http://www.quackit.com/sql_server/tutorial/">SQL Server Tutorial</a></li>
+							<li><a href="http://www.quackit.com/mysql/tutorial/">MySQL Tutorial</a></li>
+							<li><a href="http://www.quackit.com/microsoft_access/tutorial/">MS Access Tutorial</a></li>
+						</ul>
+						<ul class="col-sm-4 list-unstyled">
+							<li class="dropdown-header"><i class="fa fa-photo"></i> Web Graphics</li>	
+							<li><a href="http://www.quackit.com/web_graphics/tutorial/">Web Graphics Tutorial</a></li>
+							<li><a href="http://www.quackit.com/web_graphics/gimp/tutorial/">GIMP Tutorial</a></li>
+							<li><a href="http://www.quackit.com/web_graphics/">More Graphics ⇒</a></li>
+						</ul>
+						<ul class="col-sm-4 list-unstyled">
+							<li class="dropdown-header"><i class="fa fa-cloud"></i> Web Hosting</li>	
+							<li><a href="http://www.quackit.com/web_servers/tutorial/">Web Servers Tutorial</a></li>
+							<li><a href="http://www.quackit.com/web_hosting/tutorial/">Web Hosting Tutorial</a></li>
+							<li><a href="http://www.quackit.com/domain-names/what_is_a_domain_name.cfm">What is a Domain Name?</a></li>
+						</ul>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</li>
+
+
+	<li class="dropdown"><a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Reference <span class="caret"></span></a>
+		<ul class="dropdown-menu">
+			<li>
+				<div class="mega-menu-content">
+					<div class="row">
+						<ul class="col-sm-4 list-unstyled">
+							<li class="dropdown-header"><i class="fa fa-html5"></i> HTML</li>
+							<li><a href="http://www.quackit.com/html/tags/">HTML Tags</a></li>
+							<li><a href="http://www.quackit.com/html_5/tags/">HTML5 Tags</a></li>
+							<li><a href="http://www.quackit.com/html/html_4/tags/">HTML4 Tags</a></li>
+							<li><a href="http://www.quackit.com/html_5/tags/html_5_global_attributes.cfm">Global Attributes</a></li>
+							<li><a href="http://www.quackit.com/html_5/tags/html_5_event_handler_content_attributes.cfm">Event Handler Attributes</a></li>
+							<li><a href="http://www.quackit.com/html/">More HTML ⇒</a></li>
+						</ul>
+
+						<ul class="col-sm-4 list-unstyled">							
+							<li class="dropdown-header"><i class="fa fa-language"></i> Characters</li>
+							<li><a href="http://www.quackit.com/html/html_special_characters.cfm">Special Characters</a></li>
+							<li><a href="http://www.quackit.com/html/html_symbols.cfm">HTML Symbols</a></li>
+							<li><a href="http://www.quackit.com/html/html_greek_characters.cfm">Greek Characters</a></li>
+							<li><a href="http://www.quackit.com/html/iso_8859-1_character_set.cfm">ISO 8859-1 Characters</a></li>
+							<li><a href="http://www.quackit.com/html/html_language_codes.cfm">Language Codes</a></li>
+						</ul>
+
+						<ul class="col-sm-4 list-unstyled">
+							<li class="dropdown-header"><i class="fa fa-cloud"></i> Domains/Hosting</li>	
+							<li><a href="http://www.quackit.com/domain-names/domain_name_extension_definitions.cfm">Domain Extensions</a></li>
+							<li><a href="http://www.quackit.com/domain-names/new_gTLDs.cfm">New gTLDs</a></li>
+							<li><a href="http://www.quackit.com/domain-names/country_domain_extensions.cfm">Country Extensions</a></li>
+							
+							
+							
+							
+							<li><a href="http://www.quackit.com/domain-names/reserved_top-level_domains.cfm">Reserved TLDs</a></li>
+							
+							<li><a href="http://www.quackit.com/web_hosting/">Find a Web Host</a></li>
+							<li><a href="http://www.quackit.com/domain-names/">More Domain Info ⇒</a></li>
+						</ul>
+
+						<ul class="col-sm-4 list-unstyled">
+							<li class="dropdown-header"><i class="fa fa-css3"></i> CSS</li>
+							<li><a href="http://www.quackit.com/css/properties/">CSS Properties</a></li>
+							<li><a href="http://www.quackit.com/css/css3/properties/">CSS3 Properties</a></li>
+							<li><a href="http://www.quackit.com/css/css3/animations/animatable_properties/">CSS Animatable Properties</a></li>
+							<li><a href="http://www.quackit.com/css/css_color_codes.cfm">CSS Color Chart</a></li>
+							<li><a href="http://www.quackit.com/css/">More CSS ⇒</a></li>
+						</ul>
+						
+						<ul class="col-sm-4 list-unstyled">
+							<li class="dropdown-header"><i class="fa fa-cog"></i> Javascript</li>
+							<li><a href="http://www.quackit.com/javascript/javascript_reserved_words.cfm">Reserved Words</a></li>
+							<li><a href="http://www.quackit.com/javascript/javascript_event_handlers.cfm">Event Handlers</a></li>
+							<li><a href="http://www.quackit.com/javascript/javascript_date_and_time_functions.cfm">Date &amp; Time Functions</a></li>
+							<li><a href="http://www.quackit.com/javascript/">More JavaScript ⇒</a></li>
+						</ul>
+
+						<ul class="col-sm-4 list-unstyled">
+							<li class="dropdown-header"><i class="fa fa-database"></i> Databases</li>
+							<li><a href="http://www.quackit.com/mysql/examples/">MySQL Examples</a></li>
+
+							<li><a href="http://www.quackit.com/database/">More Database ⇒</a></li>
+						</ul>
+
+					</div>
+				</div>
+			</li>
+		</ul>
+	</li>		
+	
+</ul>
+
+
+					
+<div class="navbar-form navbar-right">
+						
+
+</div>
+				
+</div>
+<!--/.navbar-collapse -->
+				
+</div><!--/.container -->
+</nav>
+		
+		
+		
+<div class="container">		
+</div>
+
+
+
+
+
+
+
+
+<div style="position: absolute; left: 0px; top: -9999px; width: 1px; height: 1px; z-index: 999999999;" class="global-zeroclipboard-container" id="global-zeroclipboard-html-bridge">
+
+
+
+</div> 
+		
+			
+
+		<hr/>
+
+		
+		<footer>
+			<p><a href="https://www.facebook.com/quackit.tutorials"><i class="fa fa-facebook-official"></i> Quackit on Facebook</a> </p>
+			<p class="about"><a href="http://www.quackit.com/"><i class="fa fa-home"></i> Home</a> | <a href="http://www.quackit.com/about.cfm" rel="nofollow">About</a> | <a href="http://www.quackit.com/contact.cfm" rel="nofollow">Contact</a> | <a href="http://www.quackit.com/terms_of_use.cfm" rel="nofollow">Termos de Use</a> | <a href="http://www.quackit.com/privacy_policy.cfm" rel="nofollow">Privacy Policy</a></p>
+			<p><h:outputText value="#{skin.footerCopyright}"/></p>
+		</footer>
+		
+		
+		<script src="../styles/#{skin.template}/jquery-1.js"></script>		
+		<script src="../styles/#{skin.template}/bootstrap.js"></script>		
+		<script src="../styles/#{skin.template}/ie10-viewport-bug-workaround.js"></script>
+	
+	
+</h:body>
+ </f:view>
+ 
+ 
+</ui:composition>

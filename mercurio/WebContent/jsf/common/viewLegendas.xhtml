@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html 	xmlns:h="http://java.sun.com/jsf/html"
+    	xmlns:f="http://java.sun.com/jsf/core"
+    	xmlns:ui="http://java.sun.com/jsf/facelets"
+    	xmlns:a4j="http://richfaces.org/a4j"
+    	xmlns:rich="http://richfaces.org/rich">
+    	
+
+
+<h:form id="muodossaDimmer">			
+	<rich:popupPanel id="popup" modal="true" resizeable="true" onmaskclick="#{rich:component('popup')}.hide()">
+        <f:facet name="header">
+            <h:outputText value="Simple popup panel" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('popup')}.hide(); return false;" style="color: inherit">
+                X
+            </h:outputLink>
+        </f:facet>
+        <p>You can also check and trigger events if the use clicks outside of the panel.</p>
+        <p>In this example clicking outside closes the panel.</p>
+        
+        	<rich:panel styleClass="gridTabless">								
+					<rich:dataTable var="iconLegenda" value="#{legendas}" cellspacing="1" cellpadding="0" 			  
+							  		styleClass="cadastrumListagem"
+							  		rowClasses="golden1,golden2"
+								  	binding="#{navegarBean.dataTableListaIcones}"
+								 >  								 																			
+					<rich:column>
+						<h:graphicImage url="#{iconLegenda.url}"/>
+						<f:facet name="footer"><h:graphicImage width="20" url="#{skin.layoutTransparente}" /></f:facet>
+					</rich:column>
+					<rich:column>						
+						<h:outputText value="#{iconLegenda.label}"/>
+						<f:facet name="footer"><h:graphicImage width="20" url="#{skin.layoutTransparente}" /></f:facet>
+					</rich:column>
+													
+					</rich:dataTable>					
+					
+				    <h:outputLink value="#" onclick="#{rich:component('popup')}.hide(); return false;" styleClass="botao2">Fechar</h:outputLink>
+					
+				</rich:panel>	
+				
+    </rich:popupPanel>
+    </h:form>
+
+</html>	

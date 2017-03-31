@@ -1,0 +1,30 @@
+#banner {
+	DISPLAY: none! important
+}
+#footer {
+	DISPLAY: none! important
+}
+#leftcol {
+	DISPLAY: none! important
+}
+#breadcrumbs {
+	DISPLAY: none! important
+}
+.docs #toc {
+	DISPLAY: none! important
+}
+.docs .courtesylinks {
+	DISPLAY: none! important
+}
+#leftColumn {
+	DISPLAY: none! important
+}
+#navColumn {
+	DISPLAY: none! important
+}
+#bodyColumn {
+	MARGIN: 0px; BORDER-TOP-STYLE: none! important; BORDER-RIGHT-STYLE: none! important; BORDER-LEFT-STYLE: none! important; BORDER-BOTTOM-STYLE: none! important
+}
+BODY.docs DIV.docs {
+	MARGIN: 0px; BORDER-TOP-STYLE: none! important; BORDER-RIGHT-STYLE: none! important; BORDER-LEFT-STYLE: none! important; BORDER-BOTTOM-STYLE: none! important
+}

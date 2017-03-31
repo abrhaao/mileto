@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<ui:composition template="/jsf/common/commonLayout.xhtml">
+
+	<ui:define name="templateContent">
+
+		<f:event type="preRenderView" listener="#{autenticarBean.check}" />
+
+		<rich:panel styleClass="messages">
+			<h:messages />
+		</rich:panel>
+
+		<h2>Cadastro de Usuário</h2>
+		<h3>
+			<h:outputText value="#{cadastrarUsuarioBean.usuario.nome}" />
+		</h3>
+
+		<h:panelGrid styleClass="gridTabless" width="#{img.widthGrid}">
+
+			<h:form id="muodossaControlPanel">
+
+				<rich:tabPanel id="tab" switchType="client">
+
+					<rich:tab title="Titulo" name="Informações Gerais">
+
+						<h:panelGrid columns="3" style="height: #{alturaCadastrum}"
+							rowClasses="cadastrumCells">
+
+							<h:column>
+								<h:panelGrid styleClass="cadastrum" columns="2"
+									columnClasses="golden_2 tabelaColunas, golden_1"
+									style="width: 300px">
+
+									<h:column>Codigo:</h:column>
+									<h:column>
+										<h:outputText value="#{cadastrarUsuarioBean.usuario.id}"
+											rendered="#{cadastrarUsuarioBean.usuario.id > 0}" />
+									</h:column>
+									<h:column>Login:</h:column>
+									<h:column>
+										<h:inputText required="true"
+											value="#{cadastrarUsuarioBean.usuario.login}" label="Login" />
+									</h:column>
+									<h:column>Nome:</h:column>
+									<h:column>
+										<h:inputText required="true"
+											value="#{cadastrarUsuarioBean.usuario.nome}" label="Nome"
+											size="40" />
+									</h:column>
+									<h:column>E-mail:</h:column>
+									<h:column>
+										<h:inputText required="true"
+											value="#{cadastrarUsuarioBean.usuario.email}" label="E-mail"
+											size="40" />
+									</h:column>
+
+									<h:column>Grupo:</h:column>
+									<h:column>
+										<a4j:outputPanel id="idComboGrupos">
+											<h:selectOneMenu
+												value="#{cadastrarUsuarioBean.usuario.grupo}"
+												styleClass="textoForm" label="Grupo"
+												converter="grupoConverter">
+												<f:selectItems value="#{cadastrarUsuarioBean.listaGrupos}"
+													var="grupo" itemLabel="#{grupo.descricao}"
+													itemValue="#{grupo}" />
+											</h:selectOneMenu>
+										</a4j:outputPanel>
+									</h:column>
+
+									<h:column>Senha:</h:column>
+									<h:column>
+										<h:inputSecret value="#{cadastrarUsuarioBean.usuario.senha}"
+											label="Senha" />
+									</h:column>
+
+									<h:column>
+										<h:graphicImage width="100" url="#{skin.layoutBlank}" />
+									</h:column>
+									<h:column>
+										<h:graphicImage width="200" url="#{skin.layoutBlank}" />
+									</h:column>
+
+								</h:panelGrid>
+							</h:column>
+
+							<h:column>
+								<h:graphicImage width="100" url="#{skin.layoutBlank}" />
+							</h:column>
+
+							<h:column>
+								<h:panelGrid styleClass="cadastrum" columns="2"
+									columnClasses="golden_2 tabelaColunas, golden_1"
+									style="width: 300px">
+
+									<h:column>Status:</h:column>
+									<h:column>
+										<h:outputText value="#{cadastrarUsuarioBean.usuario.ativo}" />
+									</h:column>
+									<h:column>Data Ativação:</h:column>
+									<h:column></h:column>
+									<h:column>Data Criação:</h:column>
+									<h:column></h:column>
+									<h:column>Data Último Login:</h:column>
+									<h:column></h:column>
+
+									<h:column>
+										<h:graphicImage width="100" url="#{skin.layoutBlank}" />
+									</h:column>
+									<h:column>
+										<h:graphicImage width="200" url="#{skin.layoutBlank}" />
+									</h:column>
+
+								</h:panelGrid>
+							</h:column>
+
+						</h:panelGrid>
+
+					</rich:tab>
+
+					<rich:tab name="Dados Corporativos">
+
+						<h:panelGrid styleClass="cadastrum" columns="2"
+							columnClasses="golden_2 tabelaColunas, golden_1"
+							style="height: #{alturaCadastrum}">
+
+							<h:column>Cargo:</h:column>
+							<h:column>
+								<h:inputText required="false"
+									value="#{cadastrarUsuarioBean.usuario.cargo}" label="Cargo" />
+							</h:column>
+
+							<h:column>Departamento:</h:column>
+							<h:column>
+								<h:inputText required="false"
+									value="#{cadastrarUsuarioBean.usuario.departamento}"
+									label="Departamento" />
+							</h:column>
+
+							<h:column>
+								<h:graphicImage width="100" url="#{skin.layoutBlank}" />
+							</h:column>
+							<h:column>
+								<h:graphicImage width="500" url="#{skin.layoutBlank}" />
+							</h:column>
+
+						</h:panelGrid>
+					</rich:tab>
+
+				</rich:tabPanel>
+
+
+
+				<rich:panel style="heigth: 148px">
+					<h:commandLink value="Atualizar"
+						action="#{cadastrarUsuarioBean.atualizaUsuario}"
+						styleClass="botao2" />
+					<h:commandLink value="Ativar"
+						action="#{cadastrarUsuarioBean.ativaUsuario (0) }"
+						styleClass="botao2" rendered="#{cadastrarUsuarioBean.altera}" />
+					<a href="#{request.contextPath}/jsf/modAdminSys/viewListaUsuarios.jsf" class="botao2">Voltar</a>
+				</rich:panel>
+
+			</h:form>
+
+		</h:panelGrid>
+
+	</ui:define>
+
+</ui:composition>
+
+</html>
