@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<ui:composition template="/jsf/common/commonLayout.xhtml">
+
+	<ui:define name="templateContent">
+
+		<h:form id="muodossaListagem">
+
+			<h:panelGroup styleClass="col75" id="idPanelCadastrumListagem">
+
+				<h2>Simulador de Ficha de Conteúdo de Importação - FCI</h2>
+
+
+				<rich:tabPanel id="tabFci" switchType="client">
+
+					<rich:tab title="Titulo" name="Cadastro de Produtos">
+
+						<rich:dataTable var="produto"
+							value="#{simularFciBean.listaProdutos}" cellspacing="1"
+							cellpadding="0" styleClass="cadastrumListagem"
+							rowClasses="golden1,golden2" headerClass="gridCaixa"
+							binding="#{tabelarBean.dataTableListaProdutos}">
+
+							<rich:column>
+								<h:graphicImage url="#{produto.iconStatus}" />
+								<f:facet name="footer">
+									<h:commandLink action="#{simularFciBean.addProduto}">
+										<h:graphicImage width="20" url="#{skin.layoutBlank}" />
+									</h:commandLink>
+								</f:facet>
+							</rich:column>
+							<rich:column>
+								<h:inputText value="#{produto.id}" />
+								<f:facet name="header">
+							Id.Produto
+						</f:facet>
+								<f:facet name="footer">
+									<h:graphicImage width="10" url="#{skin.layoutBlank}" />
+								</f:facet>
+							</rich:column>
+							<rich:column>
+								<h:inputText value="#{produto.descricao}" />
+								<f:facet name="header">Descrição</f:facet>
+								<f:facet name="footer">
+									<h:graphicImage width="70" url="#{skin.layoutTransparente}" />
+								</f:facet>
+							</rich:column>
+							<rich:column>
+								<h:outputText value="#{produto.tipo}" maxlength="2" />
+								<f:facet name="header">Tipo</f:facet>
+								<f:facet name="footer">
+									<h:graphicImage width="70" url="#{skin.layoutBlank}" />
+								</f:facet>
+							</rich:column>
+							<rich:column>
+								<h:outputText value="#{produto.origem}" maxlength="1" />
+								<f:facet name="header">Origem</f:facet>
+								<f:facet name="footer">
+									<h:graphicImage width="70" url="#{skin.layoutBlank}" />
+								</f:facet>
+							</rich:column>
+
+						</rich:dataTable>
+
+					</rich:tab>
+
+					<rich:tab title="Titulo" name="Compras">
+
+						<rich:dataTable var="compra"
+							value="#{simularFciBean.listaEntradas}" cellspacing="1"
+							cellpadding="0" styleClass="cadastrumListagem"
+							rowClasses="golden1,golden2" headerClass="gridCaixa"
+							binding="#{tabelarBean.dataTableListaFciCompras}">
+
+							<rich:column>
+
+								<f:facet name="footer">
+									<h:commandLink action="#{simularFciBean.addCompra}">
+										<h:graphicImage width="20" url="#{skin.layoutBlank}" />
+									</h:commandLink>
+								</f:facet>
+								
+							</rich:column>
+							<rich:column>
+								<h:inputText value="#{compra.produto.id}" />
+								<h:commandButton value="Call">
+        						<rich:componentControl target="popupCompraProduto" operation="show" />
+    							</h:commandButton>
+								<f:facet name="header">Produto</f:facet>
+							</rich:column>
+							<rich:column>
+								<h:outputText value="#{compra.produto.descricao}" />
+								<f:facet name="header">Descrição do Produto</f:facet>
+							</rich:column>
+							<rich:column>
+								<h:inputText value="#{compra.quantidade}" />
+								<f:facet name="header">Quantidade</f:facet>
+							</rich:column>
+							<rich:column>
+								<h:inputText value="#{compra.valor}" />
+								<f:facet name="header">Valor</f:facet>
+							</rich:column>							
+						</rich:dataTable>
+
+					</rich:tab>
+
+					<rich:tab title="Titulo" name="Vendas">
+
+						<rich:dataTable var="venda" value="#{simularFciBean.listaSaidas}"
+							cellspacing="1" cellpadding="0" styleClass="cadastrumListagem"
+							rowClasses="golden1,golden2" headerClass="gridCaixa"
+							binding="#{tabelarBean.dataTableListaFciVendas}">
+
+							<rich:column>
+
+								<f:facet name="footer">
+									<h:commandLink action="#{simularFciBean.addVenda}">
+										<h:graphicImage width="20" url="#{skin.layoutBlank}" />
+									</h:commandLink>
+								</f:facet>
+							</rich:column>
+							<rich:column>
+								<h:inputText value="#{venda.quantidade}" />
+								<f:facet name="header">Quantidade</f:facet>
+							</rich:column>
+						</rich:dataTable>
+
+					</rich:tab>
+
+					<rich:tab title="Titulo" name="Processo de Fabricação">
+					
+					<rich:dataTable var="producao" value="#{simularFciBean.listaProducoes}"
+							cellspacing="1" cellpadding="0" styleClass="cadastrumListagem"
+							rowClasses="golden1,golden2" headerClass="gridCaixa"
+							binding="#{tabelarBean.dataTableListaFciProducoes}">
+
+							<rich:column>
+
+								<f:facet name="footer">
+									<h:commandLink action="#{simularFciBean.addProducao}">
+										<h:graphicImage width="20" url="#{skin.layoutBlank}" />
+									</h:commandLink>
+								</f:facet>
+							</rich:column>
+							<rich:column>
+								<h:inputText value="#{producao.quantidade}" />
+								<f:facet name="header">Quantidade</f:facet>
+							</rich:column>
+						</rich:dataTable>
+					
+					</rich:tab>
+
+				</rich:tabPanel>
+
+
+			</h:panelGroup>
+
+
+			<div class="col25 sidebar" id="lado2">
+
+				<h4>Opções Relacionadas</h4>
+
+				<ul>
+					<li><a href="/html/tags/" title="Incluir Novo Cadastro">Incluir
+							Novo</a></li>
+					<li><h:commandLink value="Legenda">
+							<rich:componentControl target="popup" operation="show" />
+						</h:commandLink></li>
+					<li><a href="/html/tags/" title="Exportar Cadastro">Exportar</a></li>
+				</ul>
+
+
+				<hr />
+
+				<h4>Pesquisa</h4>
+
+				<h:panelGrid columns="1" width="90%" cellspacing="1" cellpadding="3">
+					<h:column>
+						<h:outputText value="Busca por Nome" />
+					</h:column>
+					<h:column>
+
+					</h:column>
+					<h:column>
+						<h:outputText value="Busca por Telefone" />
+					</h:column>
+					<h:column>
+					</h:column>
+
+					<h:column>
+						<a4j:commandLink action="#" value="Buscar" styleClass="botao2"
+							render="idPanelCadastrumListagem" />
+					</h:column>
+				</h:panelGrid>
+
+
+
+				<rich:calendar />
+			</div>
+
+		</h:form>
+
+		<h:panelGrid>
+			<ui:include src="/jsf/common/viewLegendas.xhtml">
+				<ui:param name="legendas"
+					value="#{informarBean.listaIconesClientes}" />
+			</ui:include>
+		</h:panelGrid>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<!--  POPUP PRODUTOS NA TELA DE COMPRA -->
+		<a4j:jsFunction name="selecionaPopUpCompraProduto" action="#{simularFciBean.selecionaPopUpCompraProduto}" execute="@this" oncomplete="#{rich:component('popupCompraProduto')}.hide();" />
+            
+		<rich:popupPanel id="popupCompraProduto" modal="true" resizeable="true" onmaskclick="#{rich:component('popupCompraProduto')}.hide()">
+        <f:facet name="header">
+            <h:outputText value="Simple popup panel" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('popupCompraProduto')}.hide(); return false;" style="color: inherit">
+                X
+            </h:outputLink>
+        </f:facet>
+        <rich:dataTable var="produto"
+							value="#{simularFciBean.getListaProdutosDispCompra()}" cellspacing="1"
+							cellpadding="0" styleClass="cadastrumListagem"
+							rowClasses="golden1,golden2" headerClass="gridCaixa"
+							iterationStatusVar="itPopUpCompraProduto" binding="#{tabelarBean.dataTablePopUp}">
+							<rich:column>
+								<a4j:commandLink execute="@this" render="@none"
+                    							oncomplete="selecionaPopUpCompraProduto()">
+                    				<h:outputText value="#{produto.id}" />
+                    		<a4j:param value="#{itPopUpCompraProduto.index}" assignTo="#{simularFciBean.currentIxCompraProduto}" />
+                </a4j:commandLink>
+								<f:facet name="header">Produto</f:facet>
+							</rich:column>
+							<rich:column>
+								<h:outputText value="#{produto.descricao}" />
+								<f:facet name="header">Descrição do Produto</f:facet>
+							</rich:column>
+		</rich:dataTable>
+    	</rich:popupPanel>
+
+
+	</ui:define>
+
+</ui:composition>
+
+</html>
