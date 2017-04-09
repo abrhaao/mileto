@@ -48,6 +48,8 @@ public class SimularFciBean extends BackingBean {
 	private String msgError;
 	
 	private int currentIxCompraProduto;
+	private int currentIxPopUpCompraProduto;
+	private FciCompraVenda currentCompra;
 
 	/** Lista de icones para legenda, chamada de diversas paginas da aplicacao **/
 	private List<Icon> listaIcones = new ArrayList<Icon>();
@@ -217,14 +219,20 @@ public class SimularFciBean extends BackingBean {
 	
 	
 	public Object[] getListaProdutosDispCompra(){
-		return listaProdutos.stream().filter(produto -> produto.getId() != null).toArray();
+		return listaProdutos.stream().filter(produto -> produto.getId() != null &&  !produto.getId().isEmpty()).toArray();
 	}
 	
-	public void selecionaPopUpCompraProduto() { 
-		System.out.println("Chamou method seleciona dentro do Bean");
-		
+	public void selecionaPopUpCompra() { 
+		this.currentCompra = listaEntradas.get(currentIxCompraProduto);
+	
 	}
-
+	
+	public void selecionaPopUpCompraConfirmacao() { 
+		System.out.println("Chamou method selecionaPopUpCompraProduto seleciona dentro do Bean");
+		RekProduto produtoSelecionado = (RekProduto)getListaProdutosDispCompra()[currentIxPopUpCompraProduto];
+		this.currentCompra.setProduto(produtoSelecionado);
+	}
+	
 	public int getCurrentIxCompraProduto() {
 		return currentIxCompraProduto;
 	}
@@ -232,6 +240,16 @@ public class SimularFciBean extends BackingBean {
 	public void setCurrentIxCompraProduto(int currentIxCompraProduto) {
 		this.currentIxCompraProduto = currentIxCompraProduto;
 	}
+
+	public int getCurrentIxPopUpCompraProduto() {
+		return currentIxPopUpCompraProduto;
+	}
+
+	public void setCurrentIxPopUpCompraProduto(int currentIxPopUpCompraProduto) {
+		this.currentIxPopUpCompraProduto = currentIxPopUpCompraProduto;
+	}
+	
+	
 	
 	
 	

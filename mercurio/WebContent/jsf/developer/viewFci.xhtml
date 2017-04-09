@@ -52,14 +52,14 @@
 								</f:facet>
 							</rich:column>
 							<rich:column>
-								<h:outputText value="#{produto.tipo}" maxlength="2" />
+								<h:inputText value="#{produto.tipo}" maxlength="2" size="5" />
 								<f:facet name="header">Tipo</f:facet>
 								<f:facet name="footer">
 									<h:graphicImage width="70" url="#{skin.layoutBlank}" />
 								</f:facet>
 							</rich:column>
 							<rich:column>
-								<h:outputText value="#{produto.origem}" maxlength="1" />
+								<h:inputText value="#{produto.origem}" maxlength="1" size="3" />
 								<f:facet name="header">Origem</f:facet>
 								<f:facet name="footer">
 									<h:graphicImage width="70" url="#{skin.layoutBlank}" />
@@ -72,26 +72,28 @@
 
 					<rich:tab title="Titulo" name="Compras">
 
-						<rich:dataTable var="compra"
+						<rich:dataTable var="compra" id="dataSetFciCompras"
 							value="#{simularFciBean.listaEntradas}" cellspacing="1"
 							cellpadding="0" styleClass="cadastrumListagem"
 							rowClasses="golden1,golden2" headerClass="gridCaixa"
-							binding="#{tabelarBean.dataTableListaFciCompras}">
+							binding="#{tabelarBean.dataTableListaFciCompras}"
+							iterationStatusVar="itCompraProduto">
 
 							<rich:column>
 
 								<f:facet name="footer">
-									<h:commandLink action="#{simularFciBean.addCompra}">
+									<h:commandLink action="#{simularFciBean.addCompra}" tabindex="200">
 										<h:graphicImage width="20" url="#{skin.layoutBlank}" />
 									</h:commandLink>
 								</f:facet>
-								
+
 							</rich:column>
 							<rich:column>
-								<h:inputText value="#{compra.produto.id}" />
-								<h:commandButton value="Call">
-        						<rich:componentControl target="popupCompraProduto" operation="show" />
-    							</h:commandButton>
+								<h:outputText value="#{compra.produto.id}"/>
+								<a4j:commandButton value="Call" action="#{simularFciBean.selecionaPopUpCompra}" oncomplete="#{rich:component('popupCompraProduto')}.show();" tabIndex="#{itCompraProduto.index + 100}">
+									<a4j:param value="#{itCompraProduto.index}"
+										assignTo="#{simularFciBean.currentIxCompraProduto}" />
+								</a4j:commandButton>
 								<f:facet name="header">Produto</f:facet>
 							</rich:column>
 							<rich:column>
@@ -99,13 +101,13 @@
 								<f:facet name="header">Descrição do Produto</f:facet>
 							</rich:column>
 							<rich:column>
-								<h:inputText value="#{compra.quantidade}" />
+								<h:inputText value="#{compra.quantidade}" tabindex="#{itCompraProduto.index + 100}"/>
 								<f:facet name="header">Quantidade</f:facet>
 							</rich:column>
 							<rich:column>
-								<h:inputText value="#{compra.valor}" />
+								<h:inputText value="#{compra.valor}" tabindex="#{itCompraProduto.index + 100}"/>
 								<f:facet name="header">Valor</f:facet>
-							</rich:column>							
+							</rich:column>
 						</rich:dataTable>
 
 					</rich:tab>
@@ -134,9 +136,10 @@
 					</rich:tab>
 
 					<rich:tab title="Titulo" name="Processo de Fabricação">
-					
-					<rich:dataTable var="producao" value="#{simularFciBean.listaProducoes}"
-							cellspacing="1" cellpadding="0" styleClass="cadastrumListagem"
+
+						<rich:dataTable var="producao"
+							value="#{simularFciBean.listaProducoes}" cellspacing="1"
+							cellpadding="0" styleClass="cadastrumListagem"
 							rowClasses="golden1,golden2" headerClass="gridCaixa"
 							binding="#{tabelarBean.dataTableListaFciProducoes}">
 
@@ -153,7 +156,7 @@
 								<f:facet name="header">Quantidade</f:facet>
 							</rich:column>
 						</rich:dataTable>
-					
+
 					</rich:tab>
 
 				</rich:tabPanel>
@@ -167,41 +170,17 @@
 				<h4>Opções Relacionadas</h4>
 
 				<ul>
-					<li><a href="/html/tags/" title="Incluir Novo Cadastro">Incluir
-							Novo</a></li>
-					<li><h:commandLink value="Legenda">
+					<li><a href="/html/tags/" title="Incluir Novo Cadastro" tabindex="9001">Salvar</a></li>
+					<li><h:commandLink value="Legenda" tabindex="9002">
 							<rich:componentControl target="popup" operation="show" />
 						</h:commandLink></li>
-					<li><a href="/html/tags/" title="Exportar Cadastro">Exportar</a></li>
+					<li><a href="/html/tags/" title="Exportar Cadastro" tabindex="9003">Exportar</a></li>
 				</ul>
 
 
 				<hr />
 
-				<h4>Pesquisa</h4>
-
-				<h:panelGrid columns="1" width="90%" cellspacing="1" cellpadding="3">
-					<h:column>
-						<h:outputText value="Busca por Nome" />
-					</h:column>
-					<h:column>
-
-					</h:column>
-					<h:column>
-						<h:outputText value="Busca por Telefone" />
-					</h:column>
-					<h:column>
-					</h:column>
-
-					<h:column>
-						<a4j:commandLink action="#" value="Buscar" styleClass="botao2"
-							render="idPanelCadastrumListagem" />
-					</h:column>
-				</h:panelGrid>
-
-
-
-				<rich:calendar />
+				
 			</div>
 
 		</h:form>
@@ -212,54 +191,69 @@
 					value="#{informarBean.listaIconesClientes}" />
 			</ui:include>
 		</h:panelGrid>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+
+
+
+
+
+
 		<!--  POPUP PRODUTOS NA TELA DE COMPRA -->
-		<a4j:jsFunction name="selecionaPopUpCompraProduto" action="#{simularFciBean.selecionaPopUpCompraProduto}" execute="@this" oncomplete="#{rich:component('popupCompraProduto')}.hide();" />
-            
-		<rich:popupPanel id="popupCompraProduto" modal="true" resizeable="true" onmaskclick="#{rich:component('popupCompraProduto')}.hide()">
-        <f:facet name="header">
-            <h:outputText value="Simple popup panel" />
-        </f:facet>
-        <f:facet name="controls">
-            <h:outputLink value="#" onclick="#{rich:component('popupCompraProduto')}.hide(); return false;" style="color: inherit">
+		<a4j:jsFunction name="selecionaPopUpCompraProduto"
+			action="#{simularFciBean.selecionaPopUpCompraProduto(index)}"
+			execute="@this" render="dataSetFciCompras"
+			oncomplete="#{rich:component('popupCompraProduto')}.hide();" >
+		</a4j:jsFunction>  
+
+		<rich:popupPanel id="popupCompraProduto" modal="true"
+			resizeable="true"
+			onmaskclick="#{rich:component('popupCompraProduto')}.hide()">
+			<f:facet name="header">
+				<h:outputText value="Simple popup panel" />
+			</f:facet>
+			<f:facet name="controls">
+				<h:outputLink value="#"
+					onclick="#{rich:component('popupCompraProduto')}.hide(); return false;"
+					style="color: inherit">
                 X
             </h:outputLink>
-        </f:facet>
-        <rich:dataTable var="produto"
-							value="#{simularFciBean.getListaProdutosDispCompra()}" cellspacing="1"
-							cellpadding="0" styleClass="cadastrumListagem"
-							rowClasses="golden1,golden2" headerClass="gridCaixa"
-							iterationStatusVar="itPopUpCompraProduto" binding="#{tabelarBean.dataTablePopUp}">
-							<rich:column>
-								<a4j:commandLink execute="@this" render="@none"
-                    							oncomplete="selecionaPopUpCompraProduto()">
-                    				<h:outputText value="#{produto.id}" />
-                    		<a4j:param value="#{itPopUpCompraProduto.index}" assignTo="#{simularFciBean.currentIxCompraProduto}" />
-                </a4j:commandLink>
-								<f:facet name="header">Produto</f:facet>
-							</rich:column>
-							<rich:column>
-								<h:outputText value="#{produto.descricao}" />
-								<f:facet name="header">Descrição do Produto</f:facet>
-							</rich:column>
-		</rich:dataTable>
-    	</rich:popupPanel>
+			</f:facet>
+			<rich:dataTable var="produtoPopUp"
+				value="#{simularFciBean.getListaProdutosDispCompra()}"
+				cellspacing="1" cellpadding="0" styleClass="cadastrumListagem"
+				rowClasses="golden1,golden2" headerClass="gridCaixa"
+				iterationStatusVar="itPopUpCompraProduto"
+				binding="#{tabelarBean.dataTablePopUp}">
+				<rich:column>
+					<a4j:commandLink execute="@this" render="dataSetFciCompras" 
+						action="#{simularFciBean.selecionaPopUpCompraConfirmacao}" oncomplete="#{rich:component('popupCompraProduto')}.hide();">
+						<h:outputText value="#{produtoPopUp.id}" />
+						
+						<a4j:param value="#{itPopUpCompraProduto.index}"
+							assignTo="#{simularFciBean.currentIxPopUpCompraProduto}" />
+					</a4j:commandLink>
+					<h:outputText value="#{itPopUpCompraProduto.index}" />
+					<f:facet name="header">Produto</f:facet>
+				</rich:column>
+				<rich:column>
+					<h:outputText value="#{produtoPopUp.descricao}" />
+					<f:facet name="header">Descrição do Produto</f:facet>
+				</rich:column>
+			</rich:dataTable>
+		</rich:popupPanel>
 
 
 	</ui:define>
 
 </ui:composition>
 
+
+<!--  rich:componentControl target="popupCompraProduto"
+										operation="show" onbeforeoperation="" /  oncomplete="#{rich:component('popupCompraProduto')}.hide();"-->
 </html>
