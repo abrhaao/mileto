@@ -15,7 +15,7 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonStructure;
 
-import com.mileto.domain.BoardMessage;
+import com.mileto.domain.business.BoardMessage;
 
 public class DataProviderSingleton {
 

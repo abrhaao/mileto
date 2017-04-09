@@ -1,4 +1,4 @@
-package com.mileto.domain;
+package com.mileto.domain.business;
 
 import java.util.Date;
 

@@ -17,7 +17,7 @@ import javax.faces.context.FacesContext;
 
 import org.richfaces.component.UIDataTable;
 
-import com.mileto.domain.BoardMessage;
+import com.mileto.domain.business.BoardMessage;
 import com.mileto.pattern.Icon;
 import com.mileto.persistence.DataProviderSingleton;
 import com.mileto.services.Email;
