@@ -6,7 +6,6 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.json.Json;
@@ -16,16 +15,19 @@ import javax.json.JsonObjectBuilder;
 import javax.json.JsonStructure;
 
 import com.mileto.domain.business.BoardMessage;
+import com.mileto.domain.entity.MovCarregamento;
 
 public class DataProviderSingleton {
 
 	private static DataProviderSingleton uniqueInstance = new DataProviderSingleton();
 
 	private Queue<BoardMessage> filaMensagens;
+	private Queue<MovCarregamento> filaCarregamento;
 	private Map<String, JsonStructure> dadosJson;
 
 	private DataProviderSingleton() {
 		filaMensagens = new ConcurrentLinkedQueue<BoardMessage>();
+		filaCarregamento = new ConcurrentLinkedQueue<MovCarregamento>();
 		dadosJson = new HashMap<String, JsonStructure>();
 	}
 
@@ -55,6 +57,17 @@ public class DataProviderSingleton {
 		}
 	}
 
+	/**
+	 * Coloca a criança no pool de carregamentos. Associa a data atual para a mensagem.
+	 * @param message
+	 */
+	public void putCarregamento(MovCarregamento mov) {
+		if ( ! ( filaCarregamento == null ) ) {	
+		//message.setMomento(new GregorianCalendar().getTime());
+			filaCarregamento.add(mov);
+		}
+	}
+	
 	public void withdrawOlder() {
 		if ( ! ( filaMensagens == null ) ) {
 			filaMensagens.forEach(message->{
@@ -106,6 +119,14 @@ public class DataProviderSingleton {
 	 */
 	public Queue<BoardMessage> getFilaMensagens() {
 		return filaMensagens;
+	}
+
+	public Queue<MovCarregamento> getFilaCarregamento() {
+		return filaCarregamento;
+	}
+
+	public void setFilaCarregamento(Queue<MovCarregamento> filaCarregamento) {
+		this.filaCarregamento = filaCarregamento;
 	}
 
 

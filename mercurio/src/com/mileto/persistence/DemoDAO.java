@@ -15,9 +15,8 @@ import javax.json.JsonValue;
 
 import org.richfaces.json.JSONObject;
 
-import com.mileto.pattern.BaseDB;
-
-public class DemoDAO extends BaseDB {
+public class DemoDAO //extends BaseDB 
+{
 
 
 	/**

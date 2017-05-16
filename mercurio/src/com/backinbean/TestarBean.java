@@ -39,7 +39,8 @@ public class TestarBean extends BackingBean {
 	private UIDataTable dataTableListaIcones;
 	private UIDataTable dataTableListaDiversa;
 
-	private String msg, assunto, enterprise, appKey;	
+	private String msg, assunto, enterprise, appKey;
+	private String pedido, placa, motorista, transportadora, produto;
 
 	private String dispatch;	
 	private Boolean thatsOk = false;
@@ -296,6 +297,46 @@ public class TestarBean extends BackingBean {
 
 	public void setDataTableListaDiversa(UIDataTable dataTableListaDiversa) {
 		this.dataTableListaDiversa = dataTableListaDiversa;
+	}
+
+	public String getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(String pedido) {
+		this.pedido = pedido;
+	}
+
+	public String getPlaca() {
+		return placa;
+	}
+
+	public void setPlaca(String placa) {
+		this.placa = placa;
+	}
+
+	public String getMotorista() {
+		return motorista;
+	}
+
+	public void setMotorista(String motorista) {
+		this.motorista = motorista;
+	}
+
+	public String getTransportadora() {
+		return transportadora;
+	}
+
+	public void setTransportadora(String transportadora) {
+		this.transportadora = transportadora;
+	}
+
+	public String getProduto() {
+		return produto;
+	}
+
+	public void setProduto(String produto) {
+		this.produto = produto;
 	}
 
 

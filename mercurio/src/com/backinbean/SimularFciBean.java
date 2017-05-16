@@ -94,7 +94,6 @@ public class SimularFciBean extends BackingBean {
 		DataProviderSingleton provider = DataProviderSingleton.getInstance();
 		//provider.putMessage(new BoardMessage(this.msg, this.assunto, this.enterprise, this.appKey));
 
-
 		fila = provider.getFilaMensagens();
 
 		this.redireciona("/jsf/developer/viewFila.xhtml");
