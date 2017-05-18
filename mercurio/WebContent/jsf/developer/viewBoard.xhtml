@@ -48,8 +48,10 @@
 							<h:graphicImage width="10" url="#{skin.layoutBlank}" />
 						</f:facet>
 					</rich:column>
-					<rich:column>
-						<h:outputText value="#{boardPanel.pedido}" />
+					<rich:column>						
+						<h:commandLink
+							actionListener="#{atualizarBoardBean.escolhe}"
+							value="#{boardPanel.pedido}"  />
 						<f:facet name="header">Pedido</f:facet>
 						<f:facet name="footer">
 							<h:graphicImage width="10" url="#{skin.layoutBlank}" />
@@ -97,43 +99,50 @@
 
 			<h4>Ações da Tela de Testes</h4>
 
-			<h:panelGrid columns="1" width="90%" cellspacing="1" cellpadding="3">
+			<h:panelGrid columns="1" width="90%" cellspacing="1" cellpadding="3" id="panelAcoes">
 				<h:column>
 					<h:outputText value="Pedido" />
 				</h:column>
 				<h:column>
-					<h:inputText value="#{testarBean.pedido}" />
+					<h:inputText value="#{atualizarBoardBean.currentCarregamento.pedido}" />
 				</h:column>
 				<h:column>
 					<h:outputText value="Placa" />
 				</h:column>
 				<h:column>
-					<h:inputText value="#{testarBean.placa}" />
+					<h:inputText value="#{atualizarBoardBean.currentCarregamento.placa}" />
 				</h:column>
 				<h:column>
 					<h:outputText value="Motorista" />
 				</h:column>
 				<h:column>
-					<h:inputText value="#{testarBean.motorista}" />
+					<h:inputText value="#{atualizarBoardBean.currentCarregamento.motorista}" />
 				</h:column>
 				<h:column>
 					<h:outputText value="Produto" />
 				</h:column>
 				<h:column>
-					<h:inputText value="#{testarBean.produto}" />
+					<h:inputText value="#{atualizarBoardBean.currentCarregamento.produto}" />
 				</h:column>		
 				<h:column>
-					<h:outputText value="Transportadora" />
+					<h:outputText value="Status" />
 				</h:column>
 				<h:column>
-					<h:inputText value="#{testarBean.transportadora}" />
-				</h:column>							
+					<h:inputText value="#{atualizarBoardBean.currentCarregamento.status}" />
+				</h:column>					
+				
+											
 				<h:column>
 					<a4j:commandLink
 						action="#{atualizarBoardBean.inclui}"
 						value="Inserir na Fila" styleClass="botao2"
 						render="idPanelCadastrumListagem" />
+					<a4j:commandLink
+						action="#{atualizarBoardBean.altera}" rendered="#{atualizarBoardBean.altera}"
+						value="Salvar Alteração" styleClass="botao2"
+						render="idPanelCadastrumListagem" />						
 				</h:column>
+				
 			</h:panelGrid>
 
 

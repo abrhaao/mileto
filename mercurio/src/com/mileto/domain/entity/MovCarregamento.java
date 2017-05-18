@@ -1,19 +1,14 @@
 package com.mileto.domain.entity;
 
-import java.util.Date;
-
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
-
-import com.mileto.domain.business.BoardMessage;
-import com.mileto.persistence.DataProviderSingleton;
+import java.time.Instant;
 
 public class MovCarregamento implements Comparable {
 	
 	//private Date momento;
 	private String placa;
+	private String veiculo;
+	private String veiculoCidade;
+	private String doca;
 	private String motorista;
 	private String pedido;	
 	private String status;
@@ -21,15 +16,29 @@ public class MovCarregamento implements Comparable {
 	private String produto;
 	private RekTransportadora transportadora;
 	
+	/** Como esta entidade é monitorada em painés online, faz-se necessário os seguintes campos **/
+	private Instant dataUltimaModificacao;
 	
-	public MovCarregamento(String pedido, String placa, String motorista, String status, String instrucao, String produto) {
+
+	public MovCarregamento(String pedido, String placa, String veiculo, String veiculoCidade, 
+						   String motorista, String status, String instrucao, String produto, 
+						   String transportadora, String icone) {
 		super();
 		this.pedido = pedido;
 		this.placa = placa;
+		this.veiculo = veiculo;
+		this.veiculoCidade = veiculoCidade;
 		this.motorista = motorista;
 		this.status = status;
 		this.instrucao = instrucao;
 		this.produto = produto;
+		
+		RekTransportadora t = new RekTransportadora();
+		t.setCodigo(null);
+		t.setRazaoSocial(transportadora);
+		t.setLogotipo(icone);
+		
+		this.transportadora = t;
 	
 	}
 
@@ -120,6 +129,47 @@ public class MovCarregamento implements Comparable {
 	public void setTransportadora(RekTransportadora transportadora) {
 		this.transportadora = transportadora;
 	}
+
+
+	public Instant getDataUltimaModificacao() {
+		return dataUltimaModificacao;
+	}
+
+
+	public void setDataUltimaModificacao(Instant dataUltimaModificacao) {
+		this.dataUltimaModificacao = dataUltimaModificacao;
+	}
+
+
+	public String getVeiculo() {
+		return veiculo;
+	}
+
+
+	public void setVeiculo(String veiculo) {
+		this.veiculo = veiculo;
+	}
+
+
+	public String getVeiculoCidade() {
+		return veiculoCidade;
+	}
+
+
+	public void setVeiculoCidade(String veiculoCidade) {
+		this.veiculoCidade = veiculoCidade;
+	}
+
+
+	public String getDoca() {
+		return doca;
+	}
+
+
+	public void setDoca(String doca) {
+		this.doca = doca;
+	}
+	
 	
 	
 	

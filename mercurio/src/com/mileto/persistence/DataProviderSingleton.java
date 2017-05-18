@@ -9,10 +9,14 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonStructure;
+
+import org.richfaces.json.JSONException;
+import org.richfaces.json.JSONObject;
 
 import com.mileto.domain.business.BoardMessage;
 import com.mileto.domain.entity.MovCarregamento;
@@ -36,7 +40,6 @@ public class DataProviderSingleton {
 	}
 
 	public void save(String key, JsonStructure value) {
-		//dados.put(key, value);
 		dadosJson.put(key, value);
 	}
 
@@ -57,17 +60,39 @@ public class DataProviderSingleton {
 		}
 	}
 
+	public void persiste() {
+
+		JsonArrayBuilder jsonArray  = Json.createArrayBuilder();	
+
+		for ( MovCarregamento carregamento: filaCarregamento) {					
+			JsonObjectBuilder j = Json.createObjectBuilder()
+					.add("placa", carregamento.getPlaca())
+					.add("veiculo", carregamento.getVeiculo())
+					.add("veiculoCidade", carregamento.getVeiculoCidade())
+					.add("transportadora", carregamento.getTransportadora().getRazaoSocial())	
+					.add("cliente", "CLIENTE")
+					.add("clienteCidade", "MARACANDU")
+					.add("doca", carregamento.getDoca())
+					.add("motorista", carregamento.getMotorista())
+					.add("pedido", carregamento.getPedido())
+					.add("produto", carregamento.getProduto());
+			jsonArray.add(j);
+		}
+
+		/** Salva a lista no contexto da aplicação **/
+		this.save("listaDemoProgramacaoVendas", jsonArray.build());
+	}
+
 	/**
 	 * Coloca a criança no pool de carregamentos. Associa a data atual para a mensagem.
 	 * @param message
 	 */
 	public void putCarregamento(MovCarregamento mov) {
-		if ( ! ( filaCarregamento == null ) ) {	
-		//message.setMomento(new GregorianCalendar().getTime());
+		if ( ! ( filaCarregamento == null ) ) {			
 			filaCarregamento.add(mov);
 		}
 	}
-	
+
 	public void withdrawOlder() {
 		if ( ! ( filaMensagens == null ) ) {
 			filaMensagens.forEach(message->{
@@ -87,24 +112,24 @@ public class DataProviderSingleton {
 		JsonObjectBuilder j = Json.createObjectBuilder();
 
 		for (BoardMessage b: filaMensagens) {
-				if ( (b.getEnterprise().equals(enterprise)) && (b.getAppKey().equals(appKey)) ) {		
+			if ( (b.getEnterprise().equals(enterprise)) && (b.getAppKey().equals(appKey)) ) {		
 
-					Calendar cal = Calendar.getInstance();
-					cal.setTime( new Date() );
-					cal.add(Calendar.MINUTE, -1);			
+				Calendar cal = Calendar.getInstance();
+				cal.setTime( new Date() );
+				cal.add(Calendar.MINUTE, -1);			
 
-					/**
-					 * Caso a mensagem esteja há muito tempo na lista, não considera
-					 */
-					if ( b.getMomento().getTime() > cal.getTime().getTime() ) {
-						j = Json.createObjectBuilder()
-								.add("assunto", b.getAssunto())
-								.add("mensagem", b.getMensagem());
-						return j.build();
-					} else {
-						filaMensagens.remove(b);
-					}
+				/**
+				 * Caso a mensagem esteja há muito tempo na lista, não considera
+				 */
+				if ( b.getMomento().getTime() > cal.getTime().getTime() ) {
+					j = Json.createObjectBuilder()
+							.add("assunto", b.getAssunto())
+							.add("mensagem", b.getMensagem());
+					return j.build();
+				} else {
+					filaMensagens.remove(b);
 				}
+			}
 
 		}
 
@@ -117,11 +142,36 @@ public class DataProviderSingleton {
 	 * Utilizado inicialmente para testes.
 	 * @return
 	 */
-	public Queue<BoardMessage> getFilaMensagens() {
+	public Queue<BoardMessage> getFilaMensagens() {		
 		return filaMensagens;
 	}
 
 	public Queue<MovCarregamento> getFilaCarregamento() {
+		if ( filaCarregamento.size() == 0) {
+
+			try { 
+				JsonArray array = (JsonArray)get("listaDemoProgramacaoVendas");			
+				for (Object j: array.toArray()) {
+					System.out.println(j);
+					JSONObject jobject = new JSONObject(j.toString());
+
+					MovCarregamento cgto = new MovCarregamento( jobject.get("pedido").toString(), 
+							jobject.get("placa").toString(),
+							jobject.get("veiculo").toString(),
+							jobject.get("veiculoCidade").toString(), 
+							jobject.get("motorista").toString(),
+							jobject.get("status").toString(),
+							jobject.get("instrucao").toString(),
+							jobject.get("produto").toString(), 
+							jobject.get("transportadora").toString(),
+							jobject.get("icone").toString()
+							);
+					putCarregamento(cgto);
+				}
+			} catch (JSONException joe) {
+				joe.printStackTrace();
+			}
+		}
 		return filaCarregamento;
 	}
 

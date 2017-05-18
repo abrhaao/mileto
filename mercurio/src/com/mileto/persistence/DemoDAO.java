@@ -50,8 +50,6 @@ public class DemoDAO //extends BaseDB
 
 		} else { 
 
-			//atualizaWMSCarregamento("000084-01");
-
 			return (JsonArray)provider.get("listaDemoProgramacaoVendas");
 		}
 

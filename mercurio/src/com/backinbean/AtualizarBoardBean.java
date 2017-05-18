@@ -1,6 +1,7 @@
 package com.backinbean;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Queue;
 
@@ -11,12 +12,14 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.json.JsonArray;
 
 import org.richfaces.json.JSONException;
 import org.richfaces.json.JSONObject;
 
 import com.mileto.domain.entity.MovCarregamento;
+import com.mileto.pattern.BusinessException;
 import com.mileto.pattern.Icon;
 import com.mileto.persistence.DataProviderSingleton;
 import com.mileto.persistence.DemoDAO;
@@ -37,7 +40,7 @@ public class AtualizarBoardBean extends BackingBean {
 	//private List<FciCompraVenda> listaSaidas;
 	//private List<FciProducao> listaProducoes;
 
-	private Queue fila;
+	private Queue<MovCarregamento> fila;
 
 	private String msgError;
 
@@ -49,77 +52,114 @@ public class AtualizarBoardBean extends BackingBean {
 	private List<Icon> listaIcones = new ArrayList<Icon>();
 
 	public AtualizarBoardBean() {		
-
-
-		currentCarregamento = new MovCarregamento(null, null, null, null, null, null);
+		currentCarregamento = new MovCarregamento(null, null, null, null, null, null, null, null, null, "blank.png");
 	}
 
 	@PostConstruct
 	public void init() {
 
-
 		DataProviderSingleton provider = DataProviderSingleton.getInstance();
 
+		/**
 		try {
-			JsonArray array = DemoDAO.getWMSListaStatusCarregamento();
+			JsonArray array = DemoDAO.getWMSProgramacaoVendas("20170516");
 			for (Object j: array.toArray()) {
 				System.out.println(j);
 				JSONObject jobject = new JSONObject(j.toString());
 
 				MovCarregamento cgto = new MovCarregamento( jobject.get("pedido").toString(), 
-						jobject.get("placa").toString(), 
+						jobject.get("placa").toString(),
+						jobject.get("veiculo").toString(),
+						jobject.get("veiculoCidade").toString(), 
 						jobject.get("motorista").toString(),
 						jobject.get("status").toString(),
 						jobject.get("instrucao").toString(),
-						jobject.get("produto").toString()
+						jobject.get("produto").toString(), 
+						jobject.get("transportadora").toString(),
+						jobject.get("icone").toString()
 						);
-				provider.putCarregamento(cgto);
+				//provider.putCarregamento(cgto);
 
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-
-
-
-
+			}**/
+		 
+			altera = false;
 
 		fila = provider.getFilaCarregamento();
-
-
-
 	}
 
-
-
-	public void exibeFila() throws Exception {
-
-		DataProviderSingleton provider = DataProviderSingleton.getInstance();
-		//provider.putMessage(new BoardMessage(this.msg, this.assunto, this.enterprise, this.appKey));
-
-
-		fila = provider.getFilaCarregamento();
-		this.redireciona("/jsf/developer/viewBoard.xhtml");
-
-	}
 
 
 	public void inclui () {
 		DataProviderSingleton provider = DataProviderSingleton.getInstance();
 		MovCarregamento cgto = new MovCarregamento( this.currentCarregamento.getPedido(),
 				this.currentCarregamento.getPlaca(),
+				this.currentCarregamento.getVeiculo(),
+				this.currentCarregamento.getVeiculoCidade(),
 				this.currentCarregamento.getMotorista(),
 				this.currentCarregamento.getStatus(),
 				this.currentCarregamento.getInstrucao(),
-				this.currentCarregamento.getProduto()
+				this.currentCarregamento.getProduto(),
+				this.currentCarregamento.getTransportadora().getRazaoSocial(), 
+				this.currentCarregamento.getTransportadora().getLogotipo()
 				);
 		provider.putCarregamento(cgto);
-
-		currentCarregamento = new MovCarregamento(null, null, null, null, null, null);
+		provider.persiste();
 		
+		currentCarregamento = new MovCarregamento(null, null, null, null, null, null, null, null, null, "blank.png");
+		altera = false;
+
 		fila = provider.getFilaCarregamento();
 		this.redireciona("/jsf/developer/viewBoard.xhtml");
 	}
+
+
+	/**
+	 * Confirma alteração
+	 */
+	public void altera() {
+		DataProviderSingleton provider = DataProviderSingleton.getInstance();
+		/** Precisa???? 
+		fila = provider.getFilaCarregamento();
+		for ( MovCarregamento carregamento: fila) {					
+			System.out.println(carregamento.getMotorista());
+			if (carregamento.getPedido().equals(currentCarregamento.getPedido())) {
+				carregamento = currentCarregamento;
+			} 
+
+		}
+		**/
+		
+		provider.persiste();
+
+		this.redireciona("/jsf/developer/viewBoard.xhtml");
+
+		altera = false;
+	}
+
+
+	/**
+	 * Realiza o cadastro de um usuário do sistema
+	 * @param event
+	 * @throws BusinessException
+	 */
+	public void escolhe (ActionEvent event) throws BusinessException {
+
+		TestarBean tabBean = (TestarBean)super.getBean("testarBean");	
+
+		try {
+			this.currentCarregamento = (MovCarregamento)tabBean.getDataTableListaDiversa().getRowData();
+			altera = true;
+		} catch (IllegalArgumentException  e) {
+			//this.usuario = new AdmUsuario();
+			//this.usuario.setDataCriacao(new Date());
+			//this.usuario.setAtivo(new Short((short)0));
+			altera = false;
+		}		
+
+		this.redireciona("/jsf/developer/viewBoard.xhtml");
+	}
+
+
 
 
 	public final String redireciona(String path) {
@@ -129,17 +169,6 @@ public class AtualizarBoardBean extends BackingBean {
 		context.renderResponse();
 		return null;
 	}
-	/**]
-	public final void forward(String path) {
-		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-		try{
-			ec.dispatch( path );
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	 **/
 
 
 	public void validate(FacesContext context, UIComponent component, Object value) {
