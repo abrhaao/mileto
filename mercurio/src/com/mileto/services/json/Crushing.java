@@ -74,8 +74,6 @@ public class Crushing {
 				@QueryParam("doca") String pDoca,
 				@QueryParam("status") String pStatus, 
 				@QueryParam("instrucao") String pInstrucao)  {
-		
-		
 									
 		String result = new BusinessDelegate().atualizaWMSCarregamentoJSON(pEnterpriseKey, pFilial, pPedido, pDoca, pStatus, pInstrucao);
 		return Response.status(200).entity(result).build();
@@ -107,7 +105,6 @@ public class Crushing {
 	}
 	
 	
- 
 	
 	
 	/***********************************************************************************/

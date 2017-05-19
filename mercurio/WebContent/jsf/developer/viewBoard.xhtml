@@ -129,7 +129,25 @@
 				</h:column>
 				<h:column>
 					<h:inputText value="#{atualizarBoardBean.currentCarregamento.status}" />
-				</h:column>					
+				</h:column>
+				<h:column>
+					<h:outputText value="Instruçoes" />
+				</h:column>
+				<h:column>
+					<h:inputText value="#{atualizarBoardBean.currentCarregamento.instrucao}" />
+				</h:column>						
+				<h:column>
+					<h:outputText value="Doca" />
+				</h:column>
+				<h:column>
+					<h:inputText value="#{atualizarBoardBean.currentCarregamento.doca}" />
+				</h:column>
+				<h:column>
+					<h:outputText value="Transportadora" />
+				</h:column>
+				<h:column>
+					<h:inputText value="#{atualizarBoardBean.currentCarregamento.transportadora.razaoSocial}" />
+				</h:column>																
 				
 											
 				<h:column>
@@ -144,10 +162,7 @@
 				</h:column>
 				
 			</h:panelGrid>
-
-
-
-			<rich:calendar />
+			
 		</div>
 
 		</h:form>

@@ -22,7 +22,7 @@ public class MovCarregamento implements Comparable {
 
 	public MovCarregamento(String pedido, String placa, String veiculo, String veiculoCidade, 
 						   String motorista, String status, String instrucao, String produto, 
-						   String transportadora, String icone) {
+						   String transportadora, String icone, String doca) {
 		super();
 		this.pedido = pedido;
 		this.placa = placa;
@@ -32,6 +32,7 @@ public class MovCarregamento implements Comparable {
 		this.status = status;
 		this.instrucao = instrucao;
 		this.produto = produto;
+		this.doca = doca;
 		
 		RekTransportadora t = new RekTransportadora();
 		t.setCodigo(null);

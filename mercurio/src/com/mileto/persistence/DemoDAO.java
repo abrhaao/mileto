@@ -60,7 +60,6 @@ public class DemoDAO //extends BaseDB
 
 		DataProviderSingleton provider = DataProviderSingleton.getInstance();
 
-
 		JsonArrayBuilder jsonArray  = Json.createArrayBuilder();	
 		JsonObjectBuilder j = Json.createObjectBuilder();
 
@@ -154,6 +153,30 @@ public class DemoDAO //extends BaseDB
 			return jsonArray;
 
 		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		} 
+
+	}
+	
+	
+
+	/**
+	 * Busca a primeira mensagem da fila de mensagens
+	 * @see BOARD
+	 * @return
+	 */
+	public static JsonObject getMessage (String enterprise, String assunto) {
+
+		JsonObject joMessage;
+		
+		try {
+			
+			DataProviderSingleton provider = DataProviderSingleton.getInstance();
+			joMessage	=	provider.getFirstMessage(enterprise, assunto);
+			return joMessage;
+
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		} 

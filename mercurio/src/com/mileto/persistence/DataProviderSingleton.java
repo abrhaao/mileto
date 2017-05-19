@@ -21,6 +21,10 @@ import org.richfaces.json.JSONObject;
 import com.mileto.domain.business.BoardMessage;
 import com.mileto.domain.entity.MovCarregamento;
 
+/**
+ * Esta classe provê os dados JSON e filas da aplicação
+ * @author abrhaao
+ */
 public class DataProviderSingleton {
 
 	private static DataProviderSingleton uniqueInstance = new DataProviderSingleton();
@@ -48,7 +52,6 @@ public class DataProviderSingleton {
 		return jsonData;
 	}
 
-
 	/**
 	 * Coloca a criança no pool de mensagens. Associa a data atual para a mensagem.
 	 * @param message
@@ -66,16 +69,19 @@ public class DataProviderSingleton {
 
 		for ( MovCarregamento carregamento: filaCarregamento) {					
 			JsonObjectBuilder j = Json.createObjectBuilder()
-					.add("placa", carregamento.getPlaca())
-					.add("veiculo", carregamento.getVeiculo())
-					.add("veiculoCidade", carregamento.getVeiculoCidade())
-					.add("transportadora", carregamento.getTransportadora().getRazaoSocial())	
-					.add("cliente", "CLIENTE")
-					.add("clienteCidade", "MARACANDU")
-					.add("doca", carregamento.getDoca())
-					.add("motorista", carregamento.getMotorista())
-					.add("pedido", carregamento.getPedido())
-					.add("produto", carregamento.getProduto());
+					.add("placa", 			carregamento.getPlaca())
+					.add("veiculo", 		carregamento.getVeiculo() == null ? "" : carregamento.getVeiculo())
+					.add("veiculoCidade", 	carregamento.getVeiculoCidade() == null ? "" : carregamento.getVeiculoCidade())
+					.add("transportadora", 	carregamento.getTransportadora().getRazaoSocial())
+					.add("icone", 			carregamento.getTransportadora().getLogotipo())
+					.add("cliente", 		"CLIENTE")
+					.add("clienteCidade", 	"MARACANDU")
+					.add("doca", 			carregamento.getDoca())
+					.add("motorista", 		carregamento.getMotorista())
+					.add("pedido", 			carregamento.getPedido())
+					.add("produto", 		carregamento.getProduto())
+					.add("status", 			carregamento.getStatus())
+					.add("instrucao", 		carregamento.getInstrucao());
 			jsonArray.add(j);
 		}
 
@@ -106,13 +112,12 @@ public class DataProviderSingleton {
 	 * Pega a primeira mensagem da fila
 	 * @return
 	 */
-	public JsonObject getFirstMessage ( String enterprise, String appKey ) {
+	public JsonObject getFirstMessage ( String enterprise, String assunto ) {
 
-		JsonArrayBuilder jsonArray  = Json.createArrayBuilder();	
 		JsonObjectBuilder j = Json.createObjectBuilder();
 
 		for (BoardMessage b: filaMensagens) {
-			if ( (b.getEnterprise().equals(enterprise)) && (b.getAppKey().equals(appKey)) ) {		
+			if ( (b.getEnterprise().equals(enterprise)) && (b.getAssunto().equals(assunto)) ) {		
 
 				Calendar cal = Calendar.getInstance();
 				cal.setTime( new Date() );
@@ -162,9 +167,10 @@ public class DataProviderSingleton {
 							jobject.get("motorista").toString(),
 							jobject.get("status").toString(),
 							jobject.get("instrucao").toString(),
-							jobject.get("produto").toString(), 
+							jobject.get("produto").toString(),
 							jobject.get("transportadora").toString(),
-							jobject.get("icone").toString()
+							jobject.get("icone").toString(), 
+							jobject.get("doca").toString()
 							);
 					putCarregamento(cgto);
 				}

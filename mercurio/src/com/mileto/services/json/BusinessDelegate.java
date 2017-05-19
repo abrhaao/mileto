@@ -251,5 +251,16 @@ public class BusinessDelegate {
 			return "";
 		}
 	}
+	
+	
+	/**
+	 * Recupera primeira mensagem da fila de mensagem a ser mostrada na fila 
+	 * @param pEnterpriseKey
+	 * @return
+	 */
+	public String comunicaJSON( String pEnterpriseKey, String pAssunto ) { 
+		JsonObjectBuilder jsonObject = Json.createObjectBuilder();
+		return DemoDAO.getMessage( pEnterpriseKey, pAssunto).toString();
+	}
 
 }

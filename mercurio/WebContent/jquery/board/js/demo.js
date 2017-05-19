@@ -23,6 +23,34 @@
                 $stopwatch.html(formatTime(currentTime));
                 currentTime += incrementTime / 10;
                 
+				$.ajax({
+                            type: 'GET',
+                            url: "http://10.80.80.4:8080/mercurio/api/recuperaProgramacaoVendas?enterprise=DEMO",
+                            dataType: "json",
+                            async: true,
+                            beforeSend: function(){
+								$('#ajax-loader').css("visibility", "visible");						  
+                            },
+                            success: function (resultResponseVendas) {
+                                console.log("JSON VENDAS = Deu certo");	
+                                
+                            },
+                            error: function (request,error) {
+                                console.log("JSON CARREGAMENTO = Deu errado");
+                            }
+                        });
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
                 $( "span" ).filter(".quadroPedidoVenda").each(function( ix ) {
                         var carregamentoPedido	=	$(this).html();
                         /**

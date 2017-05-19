@@ -52,7 +52,7 @@ public class AtualizarBoardBean extends BackingBean {
 	private List<Icon> listaIcones = new ArrayList<Icon>();
 
 	public AtualizarBoardBean() {		
-		currentCarregamento = new MovCarregamento(null, null, null, null, null, null, null, null, null, "blank.png");
+		currentCarregamento = new MovCarregamento(null, null, null, null, null, null, null, null, null, "blank.png", "");
 	}
 
 	@PostConstruct
@@ -100,12 +100,13 @@ public class AtualizarBoardBean extends BackingBean {
 				this.currentCarregamento.getInstrucao(),
 				this.currentCarregamento.getProduto(),
 				this.currentCarregamento.getTransportadora().getRazaoSocial(), 
-				this.currentCarregamento.getTransportadora().getLogotipo()
+				this.currentCarregamento.getTransportadora().getLogotipo(), 
+				this.currentCarregamento.getDoca()
 				);
 		provider.putCarregamento(cgto);
 		provider.persiste();
 		
-		currentCarregamento = new MovCarregamento(null, null, null, null, null, null, null, null, null, "blank.png");
+		currentCarregamento = new MovCarregamento(null, null, null, null, null, null, null, null, null, "blank.png", "");
 		altera = false;
 
 		fila = provider.getFilaCarregamento();

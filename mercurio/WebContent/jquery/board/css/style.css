@@ -1,8 +1,4 @@
 @import "http://fonts.googleapis.com/css?family=Montserrat:300,400,700";
-.rwd-table {
-  margin: 1em 0;
-  min-width: 300px;
-}
 .rwd-table tr {
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
@@ -27,6 +23,8 @@
   width: 6.5em;
   display: inline-block;
 }
+
+
 @media (min-width: 480px) {
   .rwd-table td:before {
     display: none;
@@ -63,18 +61,21 @@ h1 {
   color: #34495E;
 }
 
-.rwd-table a {
-    color: #FFFFFF;
-    text-decoration: none;
-}
-
 .rwd-table {
   background: #34495E;
   color: #fff;
   border-radius: .4em;
   overflow: hidden;
+  margin: 1em 0;
+  min-width: 300px;  
   /**border-collapse:collapse;**/
 }
+
+.rwd-table a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
 .rwd-table tr {
   /**border-color: #46637f;**/
   border-bottom: 1px solid #46637f;
@@ -97,6 +98,10 @@ h1 {
     color: rgb(101, 248, 8);	
 }
 
+.rwd-highlight-reg {
+  background: #49495E;
+  color: #fff;  
+}
 
 
 

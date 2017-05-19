@@ -15,19 +15,14 @@ public class MessageManager {
 
 
 	@GET
-	@Path("/informa")
+	@Path("/comunica")
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response recuperaFrotaRESTService(
-			@QueryParam("enterprise") String pEnterpriseKey) {
-
-		String result = new String();
-
-		DataProviderSingleton provider = DataProviderSingleton.getInstance();
-		
-		
-		JsonObject jsonMsg = provider.getFirstMessage(pEnterpriseKey, "K1");
-		result = jsonMsg.toString();
+	public Response comunicaRESTService(
+				@QueryParam("enterprise") String pEnterprise, 
+				@QueryParam("assunto") String pAssunto) {
+				
+		String result = new BusinessDelegate().comunicaJSON( pEnterprise, pAssunto );
 		return Response.status(200).entity(result).build();
-	}
+	}	
 
 }
