@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<ui:composition template="../common/commonLayout.xhtml">
+
+	<ui:define name="templateContent">
+
+		
+
+		<h:form id="muodossaListagem">
+
+			<h:panelGroup styleClass="col75" id="idPanelCadastrumListagem">
+
+
+				<h2>Board</h2>
+				<p>
+					Este é o painel que será mostrado.
+				</p>
+				
+				<rich:dataTable var="boardPanel"
+					value="#{atualizarBoardBean.fila}" cellspacing="1"
+					cellpadding="0" styleClass="cadastrumListagem"
+					rowClasses="golden1,golden2" headerClass="gridCaixa"
+					binding="#{testarBean.dataTableListaDiversa}">
+
+					<rich:column>
+						<h:graphicImage url="#{cliente.iconStatus}" />
+						<f:facet name="footer">
+							<h:graphicImage width="20" url="#{skin.layoutBlank}" />
+						</f:facet>
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{boardPanel.placa}" />
+						<f:facet name="header">Placa</f:facet>
+						<f:facet name="footer">
+							<h:graphicImage width="10" url="#{skin.layoutBlank}" />
+						</f:facet>
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{boardPanel.motorista}" />
+						<f:facet name="header">Motorista</f:facet>
+						<f:facet name="footer">
+							<h:graphicImage width="10" url="#{skin.layoutBlank}" />
+						</f:facet>
+					</rich:column>
+					<rich:column>						
+						<h:commandLink
+							actionListener="#{atualizarBoardBean.escolhe}"
+							value="#{boardPanel.pedido}"  />
+						<f:facet name="header">Pedido</f:facet>
+						<f:facet name="footer">
+							<h:graphicImage width="10" url="#{skin.layoutBlank}" />
+						</f:facet>
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{boardPanel.status}" />
+						<f:facet name="header">Status</f:facet>
+						<f:facet name="footer">
+							<h:graphicImage width="10" url="#{skin.layoutBlank}" />
+						</f:facet>
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{boardPanel.instrucao}" />
+						<f:facet name="header">Instrução</f:facet>
+						<f:facet name="footer">
+							<h:graphicImage width="10" url="#{skin.layoutBlank}" />
+						</f:facet>
+					</rich:column>							
+					
+					
+				</rich:dataTable>										
+
+			</h:panelGroup>
+		
+
+		<div class="col25 sidebar" id="lado2">
+
+			<h4>Opções Relacionadas</h4>
+
+			<ul>
+				<li><a href="/html/tags/"
+					title="Alphabetical list of all HTML tags">Incluir Novo</a></li>
+				<li><h:commandLink value="Legenda PopUp">
+						<rich:componentControl target="popup" operation="show" />
+					</h:commandLink></li>
+				<li><a href="/html/tags/"
+					title="Alphabetical list of all HTML tags">Legenda</a></li>
+				<li><a href="/html/tags/"
+					title="Alphabetical list of all HTML tags">Exportar</a></li>
+			</ul>
+
+
+			<hr />
+
+			<h4>Ações da Tela de Testes</h4>
+
+			<h:panelGrid columns="1" width="90%" cellspacing="1" cellpadding="3" id="panelAcoes">
+				<h:column>
+					<h:outputText value="Pedido" />
+				</h:column>
+				<h:column>
+					<h:inputText value="#{atualizarBoardBean.currentCarregamento.pedido}" />
+				</h:column>
+				<h:column>
+					<h:outputText value="Placa" />
+				</h:column>
+				<h:column>
+					<h:inputText value="#{atualizarBoardBean.currentCarregamento.placa}" />
+				</h:column>
+				<h:column>
+					<h:outputText value="Motorista" />
+				</h:column>
+				<h:column>
+					<h:inputText value="#{atualizarBoardBean.currentCarregamento.motorista}" />
+				</h:column>
+				<h:column>
+					<h:outputText value="Produto" />
+				</h:column>
+				<h:column>
+					<h:inputText value="#{atualizarBoardBean.currentCarregamento.produto}" />
+				</h:column>		
+				<h:column>
+					<h:outputText value="Status" />
+				</h:column>
+				<h:column>
+					<h:inputText value="#{atualizarBoardBean.currentCarregamento.status}" />
+				</h:column>
+				<h:column>
+					<h:outputText value="Instruçoes" />
+				</h:column>
+				<h:column>
+					<h:inputText value="#{atualizarBoardBean.currentCarregamento.instrucao}" />
+				</h:column>						
+				<h:column>
+					<h:outputText value="Doca" />
+				</h:column>
+				<h:column>
+					<h:inputText value="#{atualizarBoardBean.currentCarregamento.doca}" />
+				</h:column>
+				<h:column>
+					<h:outputText value="Transportadora" />
+				</h:column>
+				<h:column>
+					<h:inputText value="#{atualizarBoardBean.currentCarregamento.transportadora.razaoSocial}" />
+				</h:column>																
+				
+											
+				<h:column>
+					<a4j:commandLink
+						action="#{atualizarBoardBean.inclui}"
+						value="Inserir na Fila" styleClass="botao2"
+						render="idPanelCadastrumListagem" />
+					<a4j:commandLink
+						action="#{atualizarBoardBean.altera}" rendered="#{atualizarBoardBean.altera}"
+						value="Salvar Alteração" styleClass="botao2"
+						render="idPanelCadastrumListagem" />						
+				</h:column>
+				
+			</h:panelGrid>
+			
+		</div>
+
+		</h:form>
+
+		<h:panelGrid>
+
+			<h:form id="muodossaLegendas">
+				<a4j:outputPanel id="dimmer"
+					style="position: absolute; left:0px;   top:0px; width: 250px; height: 300px; background-color: red; display:none">
+					<!-- ui:include src="/jsf/common/viewLegendas.xhtml"/  -->
+				</a4j:outputPanel>
+			</h:form>
+
+
+			<h:form id="muodossaDimmer">
+				<rich:popupPanel id="popup" modal="true" resizeable="true"
+					onmaskclick="#{rich:component('popup')}.hide()">
+					<f:facet name="header">
+						<h:outputText value="Simple popup panel" />
+					</f:facet>
+					<f:facet name="controls">
+						<h:outputLink value="#"
+							onclick="#{rich:component('popup')}.hide(); return false;"
+							style="color: inherit">
+                X
+            </h:outputLink>
+					</f:facet>
+					<p>You can also check and trigger events if the use clicks
+						outside of the panel.</p>
+					<p>In this example clicking outside closes the panel.</p>
+
+					<rich:panel styleClass="gridTabless">
+						<rich:dataTable var="iconLegenda"
+							value="#{cadastrarUsuarioBean.iconesUsuarios}" cellspacing="1"
+							cellpadding="0" styleClass="cadastrumListagem"
+							rowClasses="golden1,golden2"
+							binding="#{navegarBean.dataTableListaIcones}">
+							<rich:column>
+								<h:graphicImage url="#{iconLegenda.url}" />
+								<f:facet name="footer">
+									<h:graphicImage width="20" url="#{skin.layoutTransparente}" />
+								</f:facet>
+							</rich:column>
+							<rich:column>
+								<h:outputText value="#{iconLegenda.label}" />
+								<f:facet name="footer">
+									<h:graphicImage width="20" url="#{skin.layoutTransparente}" />
+								</f:facet>
+							</rich:column>
+
+						</rich:dataTable>
+
+						<a4j:commandButton alt="Setar False"
+							action="#{navegarBean.setFlgDisplayDimmer(false)}" value="FECHAR"
+							render="dimmer dimmerLog"
+							oncomplete="$('#muodossa\\:dimmer').hide()" />
+					</rich:panel>
+
+				</rich:popupPanel>
+			</h:form>
+
+		</h:panelGrid>
+
+
+	</ui:define>
+
+</ui:composition>
+
+</html>

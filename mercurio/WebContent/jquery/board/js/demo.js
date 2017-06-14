@@ -17,58 +17,61 @@
     */
     var Example1 = new (function() {
         var $stopwatch, // Stopwatch element on the page
-            incrementTime = 3000, // Timer speed in milliseconds
+            incrementTime = 2000, // Timer speed in milliseconds
             currentTime = 0, // Current time in hundredths of a second
             updateTimer = function() {
                 $stopwatch.html(formatTime(currentTime));
                 currentTime += incrementTime / 10;
                 
-                //$( "span" ).filter(".quadroPedidoVenda").each(function( ix ) {
-                        var carregamentoPedido	=	$(this).html();
-			var dataSetContent	=	"";			
-			
-                        
-                        $.ajax({
+				$.ajax({
                             type: 'GET',
-                            url: "http://localhost:8080/mercurio/api/recuperaProgramacaoVendas?enterprise=DEMO",
+                            url: "http://10.80.80.4:8080/mercurio/api/recuperaProgramacaoVendas?enterprise=DEMO",
                             dataType: "json",
                             async: true,
                             beforeSend: function(){
-                            $('#ajax-loader').css("visibility", "visible");						  
+								$('#ajax-loader').css("visibility", "visible");						  
                             },
                             success: function (resultResponseVendas) {
-                                console.log("JSON CARREGAMENTO = Deu certo");	
+                                console.log("JSON VENDAS = Deu certo");	
                                 
-				$.each(resultResponseVendas, function(i, resultResponseCarregamento ) {
-                                    
-                                //$.getJSON( archivo , function(resultResponseCarregamento) {
-			
-				dataSetContent += " <tr> "
-				dataSetContent +=  '  <td><span><img style="width: 120px; height: 55px;" src="transpo-prime.png"></span><br>'
-				dataSetContent +=  '  <span id="PV-000015-01-TRANSPORTE" style="font-size: 20px;">' + resultResponseCarregamento.transportadora + '</SPAN>'
-				dataSetContent +=  '</td>'
-				dataSetContent +=  '<td><a href="#" title="PLACA XYZ ARACAJU-SE" class="tooltip">'
-				dataSetContent +=  '<span id="PV-000015-01-PLACA">'+ resultResponseCarregamento.placa + '</span><br><span id="PV-000015-01-VEICULO" class="rwd-dados">.</span>'
-				dataSetContent +=  '</a>'
-			        dataSetContent +=  '</td>'
-				dataSetContent +=  '<td><span id="PV-000015-01-PILOTO">' + resultResponseCarregamento.motorista + '</SPAN></td>'
-				dataSetContent +=  '<td><span class="quadroPedidoVenda">000015-01</span><br><span id="PV-000015-01-PRODUTO" class="rwd-dados">' + resultResponseCarregamento.produto + '</span></td>    '
-				dataSetContent +=  '<td><span id="PV-000015-01-LOCALIZA">'+ resultResponseCarregamento.doca + '</SPAN></td>'
-				dataSetContent +=  '<td><span id="PV-000015-01-STATUS">' + resultResponseCarregamento.status + '</span></td>'
-				dataSetContent +=  '<td>' + resultResponseCarregamento.instrucao + '</td>'
-				dataSetContent +=  '</tr>'
-				$("#dataSetProgramacaoVenda").html(dataSetContent);				
-				 })
-	
                             },
                             error: function (request,error) {
                                 console.log("JSON CARREGAMENTO = Deu errado");
                             }
                         });
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+                $( "span" ).filter(".quadroPedidoVenda").each(function( ix ) {
+                        var carregamentoPedido	=	$(this).html();
+                        /**
+                        $.ajax({
+                            type: 'GET',
+                            url: "http://10.80.80.4:8080/mercurio/api/recuperaStatusCarregamento?enterprise=9001&filial=01&pedido=" + carregamentoPedido,
+                            dataType: "json",
+                            async: true,
+                            beforeSend: function(){
+                            $('#ajax-loader').css("visibility", "visible");						  
+                            },
+                            success: function (resultResponseCarregamento) {
+                                console.log("JSON CARREGAMENTO = Deu certo");	
+                                $( "span" ).filter("#PV-" + resultResponseCarregamento.pedido + "-STATUS" ).html( resultResponseCarregamento.status );														
+                            },
+                            error: function (request,error) {
+                                console.log("JSON CARREGAMENTO = Deu errado");
+                            }
+                        });
+                        **/
                         
-			//$("#dataSetProgramacaoVenda").clear;
-                        
-						/**	Opção chumbada
                         archivos = [ 'cagto14.json', 'cagto15.json', 'cagto16.json' ]
                         
                         $.each(archivos, function(i, archivo ) {
@@ -85,9 +88,8 @@
                                 });
                         
                         })
-						**/
                         
-                //});
+                });
 
                     
             },
