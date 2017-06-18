@@ -70,7 +70,7 @@ public class DataProviderSingleton {
 	 */
 	public JsonObject getFirstMessage ( String enterprise, String appKey ) {
 
-		JsonArrayBuilder jsonArray  = Json.createArrayBuilder();	
+		//JsonArrayBuilder jsonArray  = Json.createArrayBuilder();	
 		JsonObjectBuilder j = Json.createObjectBuilder();
 
 		for (BoardMessage b: filaMensagens) {

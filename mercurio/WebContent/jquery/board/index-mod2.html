@@ -2,15 +2,14 @@
 <html >
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Responsive Table</title>
 
   
 	<script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery.timer.js"></script>
-    <script type="text/javascript" src="js/demo.js"></script>
+    <script type="text/javascript" src="js/mileto-wms.js"></script>
   
-  
-
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 
@@ -22,7 +21,7 @@
 
 <body style="background: #2A333f">
   <h1>RWD List to Table</h1>
-<table class="rwd-table">
+<table class="rwd-table" id="dataSetProgramacaoVenda">
   <tr style="background: rgb(48, 64, 80) none repeat scroll 0% 0%;">
     <th>Transportadora</th>
 	<th>Veículo</th>
@@ -32,7 +31,8 @@
 	<th>Status</th>
 	<th>Instrução</th>
   </tr>
-  <tr>
+  
+  <!--tr>
     <td><span><img style="width: 120px; height: 55px;" src="transpo-prime.png"></span><br>
 		<span id="PV-000015-01-TRANSPORTE" style="font-size: 20px;">@</SPAN>
 	</td>
@@ -68,21 +68,30 @@
 	<td><span id="PV-000014-01-LOCALIZA">@</SPAN></td>
 	<td><span id="PV-000014-01-STATUS"></span></td>
 	<td>Dirigir-se à Expedição</td>
-  </tr>
+  </tr-->
 </table>
 
 <p></p>
   
-  
-  
-    <hr/><h3 style='margin-top:20px;'>Example 1 - Stopwatch (counts ups)</h3>
+<div id="footer">
+    <hr/>
     <span id="stopwatch">00:00:00</span>
+    <span id="counter">0</span>
+    <span class="mileto-unit">RESOLUÇÃO</span>
+    <span>Largura: </span><span id="myResolution"></span>
     <p>
         <input type='button' value='Play/Pause' onclick='Example1.Timer.toggle();' />
-        <input type='button' value='Stop/Reset' onclick='Example1.resetStopwatch();' />
-    </p>
-    <br/>
-    <br/>
+        <input type='button' value='Stop/Reset' onclick='Example1.resetStopwatch();' />        
+    </p>    
+</div>  
+<div id="board-ajax-informativo">... CARREGANDO</div>	
+<audio id="buzzer" src="scss/stopper.ogg" type="audio/ogg"></audio>    
 
+	
 </body>
+
+<script>
+ var myWidth    =   ( $( document ).width() );
+ $("#myResolution").html(myWidth);
+</script>
 </html>

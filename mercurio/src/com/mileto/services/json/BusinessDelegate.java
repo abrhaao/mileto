@@ -1,13 +1,24 @@
 package com.mileto.services.json;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.richfaces.json.JSONObject;
 
+import com.mileto.pattern.Conexao;
 import com.mileto.persistence.DemoDAO;
+import com.mileto.persistence.PrcEleicaoDAO;
 import com.mileto.persistence.PrcSigaWmsDAO;
 
 
@@ -134,13 +145,17 @@ public class BusinessDelegate {
 		return jsonArray.build().toString();
 	}
 
-	/**
-	 * Busca a programação de vendas do dia, para o monitor
-	 * @param pEnterpriseKey
-	 * @return
-	 */
-	public String recuperaProgramacaoVendasJSON( String pEnterpriseKey ) { 
 
+
+
+
+
+		/**
+		 * Busca a programação de vendas do dia, para o monitor
+		 * @param pEnterpriseKey
+		 * @return
+		 */
+		public String recuperaProgramacaoVendasJSON( String pEnterpriseKey ) { 
 
 		JsonArrayBuilder jsonArray  = Json.createArrayBuilder();		 
 
@@ -157,12 +172,21 @@ public class BusinessDelegate {
 
 			return DemoDAO.getWMSProgramacaoVendas("20170305").toString();
 
+		} else if (pEnterpriseKey.equals("PAN"))  {
+
+			try { 			  
+				jsonArray = PrcSigaWmsDAO.getProgramacaoVendas("20170617");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return jsonArray.build().toString();
+
 		} else {
 
 			return "";
 		}
 	}
-	
+
 	/**
 	 * Atualiza os dados de um carregamento
 	 * @param pEnterpriseKey
@@ -180,12 +204,12 @@ public class BusinessDelegate {
 
 		//if (pEnterpriseKey.equals("9001")) {
 
-			//try { 			  
-			//	jsonArray = PrcSigaWmsDAO.getProgramacaoVendas("20170305");
-			//} catch (Exception e) {
-			//	e.printStackTrace();
-			//}
-			//return jsonArray.build().toString();
+		//try { 			  
+		//	jsonArray = PrcSigaWmsDAO.getProgramacaoVendas("20170305");
+		//} catch (Exception e) {
+		//	e.printStackTrace();
+		//}
+		//return jsonArray.build().toString();
 
 		//} else 
 		if (pEnterpriseKey.equals("DEMO"))  {
@@ -197,10 +221,10 @@ public class BusinessDelegate {
 			return "";
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 
 	public String recuperaStatusCarregamentoJSON( String pEnterpriseKey , String pFilial, String pPedido ) { 
 
@@ -217,11 +241,11 @@ public class BusinessDelegate {
 
 		//}		  
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 
 	/**
 	 * Recupera todas a lista de possíveis status para carregamentos
@@ -250,6 +274,67 @@ public class BusinessDelegate {
 
 			return "";
 		}
+	}
+
+
+
+	/////////////////////////////////////////////////////////////////////////////////
+	////////////////// ELEIÇÕES /////////////////////////////////////////////////////
+
+	public String atualizaEleicaoVotoJSON( Integer enquete, String opcaoVoto, String identificacao, String terminal ) { 
+
+		List<Object> arrayParameters = new ArrayList<Object>();
+		arrayParameters.add(enquete);			//ENQUETE
+		arrayParameters.add(opcaoVoto);			//OPCAO VOTO
+		arrayParameters.add(identificacao);		//IDENTIFICAÇÃO
+		arrayParameters.add(terminal);			//TERMINAL
+		
+		try {
+			Conexao cx = new Conexao( "MILENIA" );			// Lembre-se que esta classe BusinessDelegate é quem deve ser responsável por TODAS AS FONTES DE DADOS!!! 
+			PrcEleicaoDAO.vota(arrayParameters, cx);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "";
+
+	}
+	
+	
+	public String recuperaCandidatosElegiveisJSON( String pEleicao ) { 
+
+		//JsonObjectBuilder value  = Json.createObjectBuilder();		
+		//try { 			  
+		//	value = PrcSigaWmsDAO.getStatusCarregamento(pFilial, pPedido);
+		//} catch (Exception e) {
+		//	e.printStackTrace();
+		//}
+		
+		
+		JsonArrayBuilder jsonArray  = Json.createArrayBuilder();		
+		
+		jsonArray = Json.createArrayBuilder()
+				.add(Json.createObjectBuilder()
+						.add("idOpcao", "ABE")
+						.add("descricao", "CAVALO MECÂNICO")
+						.add("proposta", ""))						
+				.add(Json.createObjectBuilder()
+						.add("idOpcao", "ABC")
+						.add("descricao", "VANDROYA")
+						.add("proposta", ""))
+				.add(Json.createObjectBuilder()
+						.add("idOpcao", "LDS")
+						.add("descricao", "DENIED")
+						.add("proposta", ""))
+				.add(Json.createObjectBuilder()
+						.add("idOpcao", "BEG")
+						.add("descricao", "TIME AFTER DEATH")
+						.add("proposta", ""))
+				;
+		return jsonArray.build().toString();
+		//return value.build().toString();
+
+			  
 	}
 
 }

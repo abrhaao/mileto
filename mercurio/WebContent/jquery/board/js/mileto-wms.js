@@ -15,22 +15,27 @@
     * the current time is stored in hundredths of a second so the
     * increment time must be divided by ten.
     */
+    var qMaxByScreen    =   5;    
+    //localStorage.setItem("isThereAlertOnScreen", "false");
+    var isThereAlertOnScreen = false;
+    
+    alert ( isThereAlertOnScreen);
+    
     var Example1 = new (function() {
         var $stopwatch, // Stopwatch element on the page
-            incrementTime = 3000, // Timer speed in milliseconds
+            incrementTime = 8000, // Timer speed in milliseconds
             currentTime = 0, // Current time in hundredths of a second
             updateTimer = function() {
                 $stopwatch.html(formatTime(currentTime));
                 currentTime += incrementTime / 10;
-                
-                //$( "span" ).filter(".quadroPedidoVenda").each(function( ix ) {
-            var carregamentoPedido	=	$(this).html();
+           
+            //var carregamentoPedido	=	$(this).html();
 			var dataSetContent	=	"";			
 			
                         
             $.ajax({
 				type: 'GET',
-                url: "http://10.80.80.4:8080/mercurio/api/recuperaProgramacaoVendas?enterprise=DEMO",
+                url: "http://192.168.1.113:8080/mercurio/api/recuperaProgramacaoVendas?enterprise=DEMO",
                 dataType: "json",
                 async: true,
                 beforeSend: function(){
@@ -38,8 +43,7 @@
                             
 						dataSetContent += ' <tr style="background: rgb(48, 64, 80) none repeat scroll 0% 0%;">   '
 						dataSetContent += ' <th>Transportadora</th>'
-						dataSetContent += ' <th>Veículo</th>'
-						dataSetContent += ' <th>Motorista</th>'
+						dataSetContent += ' <th>Veículo / Motorista</th>'
 						dataSetContent += ' <th>Pedido</th>    '
 						dataSetContent += ' <th>Localização</th>'
 						dataSetContent += ' <th>Status</th>'
@@ -47,32 +51,47 @@
 						dataSetContent += ' </tr>'				
 				},
                 success: function (resultResponseVendas) {
-                        //console.log("JSON CARREGAMENTO = Deu certo");	
-                                
+                        
+                        console.log("Total de Registros = " + resultResponseVendas.length ) ;                           
+                        //console.log("Qtas Telas Necessario = " + Math.trunc ( (resultResponseVendas.length  / qMaxByScreen) + 0.9999 ) );
+                        
+                        
+                        var qTelas  =   Math.floor ( (resultResponseVendas.length  / qMaxByScreen) + 0.9999 )  ;                        
+                        //MATH.Trunc não está implementado na TELEVISÃO
+                        //var qTelas = 2;
+                        //alert ( qTelas )
+                        //console.log ("Registros [] = " + count % qTelas );
+                        //console.log ("Min = " + ( ( count % qTelas) * qMaxByScreen ) );
+                        //console.log ("Max = " + ( (count % qTelas + 1) * qMaxByScreen ) );
+                        
 						$.each(resultResponseVendas, function(i, resultResponseCarregamento ) {
 					
-							//console.log(resultResponseCarregamento.highlight);
+							//console.log(resultResponseCarregamento.highlight)              
+                            if ( i >= ( ( count % qTelas) * qMaxByScreen ) && i < ( (count % qTelas + 1) * qMaxByScreen ) ) {                            
                 
-							if (resultResponseCarregamento.highlight === undefined || resultResponseCarregamento.highlight === null) {
-								dataSetContent +=  ' <tr> '										
-							} else { 
-								dataSetContent +=  ' <tr class="rwd-highlight-' + resultResponseCarregamento.highlight + '"> '
-							}
-				
-							dataSetContent +=  '  <td><span><img style="width: 120px; height: 55px;" src="' + resultResponseCarregamento.icone + '"></span><br>'
-							dataSetContent +=  '  <span id="PV-000015-01-TRANSPORTE" style="font-size: 20px;">' + resultResponseCarregamento.transportadora + '</SPAN>'
-							dataSetContent +=  '</td>'
-							dataSetContent +=  '<td><a href="#" title="PLACA XYZ ARACAJU-SE" class="tooltip">'
-							dataSetContent +=  '<span id="PV-000015-01-PLACA">'+ resultResponseCarregamento.placa + '</span><br><span id="PV-000015-01-VEICULO" class="rwd-dados">.</span>'
-							dataSetContent +=  '</a>'
-							dataSetContent +=  '</td>'
-							dataSetContent +=  '<td><span id="PV-000015-01-PILOTO">' + resultResponseCarregamento.motorista + '</SPAN></td>'
-							dataSetContent +=  '<td><span class="quadroPedidoVenda">' + resultResponseCarregamento.pedido + '</span><br><span id="PV-000015-01-PRODUTO" class="rwd-dados">' + resultResponseCarregamento.produto + '</span></td>    '
-							dataSetContent +=  '<td><span id="PV-000015-01-LOCALIZA">'+ resultResponseCarregamento.doca + '</SPAN></td>'
-							dataSetContent +=  '<td><span id="PV-000015-01-STATUS">' + resultResponseCarregamento.status + '</span></td>'
-							dataSetContent +=  '<td>' + resultResponseCarregamento.instrucao + '</td>'
-							dataSetContent +=  '</tr>'
-							$("#dataSetProgramacaoVenda").html(dataSetContent);				
+                                if (resultResponseCarregamento.highlight === undefined || resultResponseCarregamento.highlight === null) {
+                                    dataSetContent +=  ' <tr> '	;									
+                                } else { 
+                                    dataSetContent +=  ' <tr class="rwd-highlight-' + resultResponseCarregamento.highlight + '"> ';
+                                }
+                    
+                                dataSetContent +=  '  <td><span><img style="width: 120px; height: 55px;" src="' + resultResponseCarregamento.icone + '"></span><br>';
+                                dataSetContent +=  '  <span class="rwd-span-transportadora">' + resultResponseCarregamento.transportadora + '</SPAN>';
+                                dataSetContent +=  '</td>';
+                                dataSetContent +=  '<td><a href="#" title="PLACA XYZ ARACAJU-SE" class="tooltip">';
+                                dataSetContent +=  '<span id="PV-000015-01-PLACA">'+ resultResponseCarregamento.placa + '</span><br>';
+                                dataSetContent +=   '<span class="rwd-span-motorista">' + resultResponseCarregamento.motorista + '</SPAN>';
+                                dataSetContent +=  '</a>';
+                                dataSetContent +=  '</td>';
+                                dataSetContent +=  '<td><span class="quadroPedidoVenda">' + resultResponseCarregamento.pedido + '</span><br><span id="PV-000015-01-PRODUTO" class="rwd-dados">' + resultResponseCarregamento.produto + '</span></td>    ';
+                                dataSetContent +=  '<td><span id="PV-000015-01-LOCALIZA">'+ resultResponseCarregamento.doca + '</SPAN></td>';
+                                dataSetContent +=  '<td><span class="rwd-span-orientacoes">' + resultResponseCarregamento.status + '</span><br><span class="rwd-dados">'+ resultResponseCarregamento.hora + '</span></td>';
+                                dataSetContent +=  '<td><span class="rwd-span-orientacoes">' + resultResponseCarregamento.instrucao + '</span>' + '</td>';
+                                dataSetContent +=  '</tr>';
+                                $("#dataSetProgramacaoVenda").html(dataSetContent);				
+                            
+                                
+                            }
 						})
 	
                    },
@@ -80,33 +99,10 @@
                             console.log("JSON CARREGAMENTO = Deu errado");
                     }
 			});
-                        
-			//$("#dataSetProgramacaoVenda").clear;
-                        
-						/**	Opção chumbada
-                        archivos = [ 'cagto14.json', 'cagto15.json', 'cagto16.json' ]
-                        
-                        $.each(archivos, function(i, archivo ) {
-                                    
-                                $.getJSON( archivo , function(resultResponseCarregamento) {
-                                    console.log("JSON CARREGAMENTO = Deu certo");	
-                                    $( "span" ).filter("#PV-" + resultResponseCarregamento.pedido + "-STATUS" ).html( resultResponseCarregamento.status );		
-                                    $( "span" ).filter("#PV-" + resultResponseCarregamento.pedido + "-PLACA" ).html( resultResponseCarregamento.placa );
-                                    $( "span" ).filter("#PV-" + resultResponseCarregamento.pedido + "-VEICULO" ).html( resultResponseCarregamento.veiculo );	
-                                    $( "span" ).filter("#PV-" + resultResponseCarregamento.pedido + "-PILOTO" ).html( resultResponseCarregamento.motorista );		
-                                    $( "span" ).filter("#PV-" + resultResponseCarregamento.pedido + "-TRANSPORTE" ).html( resultResponseCarregamento.transportadora );	
-                                    $( "span" ).filter("#PV-" + resultResponseCarregamento.pedido + "-LOCALIZA" ).html( resultResponseCarregamento.doca );	
-                                    $( "span" ).filter("#PV-" + resultResponseCarregamento.pedido + "-PRODUTO" ).html( resultResponseCarregamento.produto );		
-                                });
-                        
-                        })
-						**/
-                        
-                //});
-				
+                    
 			$.ajax({
 				type: 'GET',
-                url: "http://10.80.80.4:8080/mercurio/api/messagemanager/comunica?enterprise=DEMO&assunto=TESTE",
+                url: "http://192.168.1.113:8080/mercurio/api/messagemanager/informa?enterprise=DEMO&assunto=TESTE",
                 dataType: "json",
                 async: true,
                 beforeSend: function(){
@@ -114,13 +110,33 @@
 				},
                 success: function (resultResponseComunicado) {
                         
-						$('#ajax-msg-comunicado').css("visibility", "visible");						  
+					if (resultResponseComunicado.mensagem === undefined || resultResponseComunicado.mensagem === null)	{
+                        $('#board-ajax-informativo').css("visibility", "hidden");	
+                        isThereAlertOnScreen = false;
+                        //localStorage.setItem("isThereAlertOnScreen", "false");    
+                    } else {                                            
+                        //var isThereAlertOnScreen = localStorage.getItem("isThereAlertOnScreen");
+                        if (isThereAlertOnScreen == false) {
+                            var myBuzzerNotification    =   document.getElementById('buzzer');
+                            myBuzzerNotification.load();  
+                            myBuzzerNotification.play();  
                             
-						messageContent = resultResponseComunicado.mensagem									
-						$("#message").html(messageContent);					
+                            
+                            //localStorage.setItem("isThereAlertOnScreen", "true");
+                            isThereAlertOnScreen = true;                            
+                        }
+                        
+                        messageContent = resultResponseComunicado.mensagem		                        					                          							
+						$("#board-ajax-informativo").html(messageContent);		
+                        $('#board-ajax-informativo').css("visibility", "visible");	
+                        
+                    }
+                        
+						
                 },
                 error: function (request,error) {
-                            console.log("JSON CARREGAMENTO = Deu errado");
+                    $('#board-ajax-informativo').css("visibility", "hidden");
+                    console.log("JSON CARREGAMENTO = Deu errado");
                 }
 			});
 				
@@ -195,11 +211,13 @@
     * play again, the timer continues where it ended instead of
     * starting over again.
     */
+    
+    /**
     var Example3 = new (function() {
         var $galleryImages, // An array of image elements
             $timeRemaining, // Usually hidden element to display time when paused
             imageId = 0, // Which image is being shown
-            incrementTime = 2500,
+            incrementTime = 4000,           //Acho que tem que ser o mesmo tempo do primeiro
             updateTimer = function() {
                 $galleryImages.eq(imageId).stop(true,true).fadeOut(500);
                 imageId++;
@@ -226,7 +244,7 @@
         };
         $(init);
     });
-
+    **/
 
     /**
     * Example 4 is as simple as it gets.  Just a timer object and
@@ -237,7 +255,7 @@
             count++;
             $('#counter').html(count);
         });
-    timer.set({ time : 1000, autostart : true });
+    timer.set({ time : 8000, autostart : true });               //Acho que tem que ser o mesmo tempo do primeiro
 
 
     // Common functions
