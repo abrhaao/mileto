@@ -38,7 +38,10 @@
 	<mapping class="com.mileto.domain.AdmEmpresa" />	  
 	<mapping class="com.mileto.domain.DocContent"/>
 	<mapping class="com.mileto.domain.RekCliente"/>
-	<mapping class="com.mileto.domain.RekContato"/>              
+	<mapping class="com.mileto.domain.RekContato"/>          
+	
+	<mapping class="com.mileto.domain.RekEnquete"/>
+	<mapping class="com.mileto.domain.RekEnqueteOpcao"/>     
 
     </session-factory>
 
