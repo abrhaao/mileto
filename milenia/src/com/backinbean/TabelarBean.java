@@ -21,11 +21,13 @@ import com.mileto.domain.AdmParametro;
 public class TabelarBean extends BackingBean {
 
 	
-	
 	private UIDataTable dataTableListaUsuarios;
 	private UIDataTable dataTableListaEmpresas;
 	private UIDataTable dataTableListaParametros;
 	private UIDataTable dataTableListaClientes;
+	
+	private UIDataTable dataTableListaEnquetes;
+	private UIDataTable dataTableListaOpcoesEnquete;
 
 	
 	public UIDataTable getDataTableListaUsuarios() {
@@ -59,6 +61,24 @@ public class TabelarBean extends BackingBean {
 	public UIDataTable getDataTableListaParametros() {
 		return dataTableListaParametros;
 	}
+
+	public UIDataTable getDataTableListaEnquetes() {
+		return dataTableListaEnquetes;
+	}
+
+	public void setDataTableListaEnquetes(UIDataTable dataTableListaEnquetes) {
+		this.dataTableListaEnquetes = dataTableListaEnquetes;
+	}
+
+	public UIDataTable getDataTableListaOpcoesEnquete() {
+		return dataTableListaOpcoesEnquete;
+	}
+
+	public void setDataTableListaOpcoesEnquete(UIDataTable dataTableListaOpcoesEnquete) {
+		this.dataTableListaOpcoesEnquete = dataTableListaOpcoesEnquete;
+	}
+	
+	
 
 	
 	

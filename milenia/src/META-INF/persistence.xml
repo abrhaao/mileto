@@ -9,6 +9,8 @@
 		<class>com.mileto.domain.DocContent</class>
 		<class>com.mileto.domain.RekCliente</class>
 		<class>com.mileto.domain.RekContato</class>
+		<class>com.mileto.domain.RekEnquete</class>
+		<class>com.mileto.domain.RekEnqueteOpcao</class>
 	
 	</persistence-unit>
 </persistence>

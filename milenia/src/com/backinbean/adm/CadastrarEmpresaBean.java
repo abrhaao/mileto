@@ -75,7 +75,7 @@ public class CadastrarEmpresaBean extends BackingBean {
 		Collection l = AdmParametro.getParametros();
 
 		NavegarBean bean = (NavegarBean)super.getBean("navegarBean");		
-		bean.setNomePrograma("Cadastra Usuario");				
+		//bean.setNomePrograma("Cadastra Usuario");				
 		bean.redireciona(nextPage);		
 	}
 	
