@@ -48,10 +48,17 @@ public class Conexao {
 			//this.sPassword 	= dataSource.get("IBASE_DB_SENHA");			
 			//this.sJDBC 		= dataSource.get("IBASE_DB_DRIVER");
 			
-			this.sURL 		= "jdbc:oracle:thin:@10.80.80.8:1521:xe";
-			this.sLogin 	= "system";
-			this.sPassword 	= "manager";			
-			this.sJDBC 		= "oracle.jdbc.OracleDriver";
+			if ( sAmbiente.equals("PAN")) {
+				this.sURL 		= "jdbc:oracle:thin:@10.8.0.25:1521:totvs";
+				this.sLogin 	= "siga";
+				this.sPassword 	= "msiga";			
+				this.sJDBC 		= "oracle.jdbc.OracleDriver";
+			} else {
+				this.sURL 		= "jdbc:mysql://10.80.80.8:3306/milenia";
+				this.sLogin 	= "mileto";
+				this.sPassword 	= "millenaire";			
+				this.sJDBC 		= "com.mysql.jdbc.Driver";
+			}
 			
 			this.cConec		= getConnection();
 			
