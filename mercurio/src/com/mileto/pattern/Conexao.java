@@ -1,5 +1,6 @@
 package com.mileto.pattern;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.CallableStatement;
@@ -49,10 +50,15 @@ public class Conexao {
 			//this.sJDBC 		= dataSource.get("IBASE_DB_DRIVER");
 			
 			if ( sAmbiente.equals("PAN")) {
-				this.sURL 		= "jdbc:oracle:thin:@10.8.0.25:1521:totvs";
+				this.sURL 		= "jdbc:oracle:thin:@10.8.0.27:1521:microsig";
 				this.sLogin 	= "siga";
 				this.sPassword 	= "msiga";			
 				this.sJDBC 		= "oracle.jdbc.OracleDriver";
+			} else if ( sAmbiente.equals("BYYOU")) {
+				this.sURL 		= "jdbc:oracle:thin:@10.80.80.8:1521:xe";
+				this.sLogin 	= "byyou";
+				this.sPassword 	= "totvs";			
+				this.sJDBC 		= "oracle.jdbc.OracleDriver";	
 			} else {
 				this.sURL 		= "jdbc:mysql://10.80.80.8:3306/milenia";
 				this.sLogin 	= "mileto";
@@ -220,6 +226,11 @@ public class Conexao {
 			cCallableStmt.setNull(cIntIndStat++, Types.NUMERIC);
 			cIntErro = 0;
 		}
+	}
+	
+	public void setBinaryStream(FileInputStream pDado) throws SQLException {
+		cCallableStmt.setBinaryStream(cIntIndStat++, pDado);
+		cIntErro = 0;
 	}
 	
 	public void prepareCall(String pStrStatement) throws SQLException {

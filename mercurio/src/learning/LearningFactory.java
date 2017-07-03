@@ -1,4 +1,4 @@
-package com.mileto.services.json;
+package learning;
 
 import java.io.BufferedReader;
 import java.io.IOException;

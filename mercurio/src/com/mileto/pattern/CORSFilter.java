@@ -1,4 +1,4 @@
-package com.mileto.services.json;
+package com.mileto.pattern;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;

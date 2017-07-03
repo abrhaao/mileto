@@ -1,5 +1,6 @@
 package com.mileto.persistence;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -41,7 +42,9 @@ public class BaseDB {
 			}		
 			if (pParameters.get(index) instanceof Short) {
 				db.setIntProc(((Short)pParameters.get(index))); 
-			}		
+			} else if (pParameters.get(index) instanceof FileInputStream) {
+					db.setBinaryStream(((FileInputStream)pParameters.get(index))); 
+			}
 		}
 	}
 

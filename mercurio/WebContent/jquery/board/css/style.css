@@ -1,4 +1,14 @@
 @import "http://fonts.googleapis.com/css?family=Montserrat:300,400,700";
+
+body {
+  padding: 0 2em;
+  font-family: Montserrat, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  color: #444;
+  background: #2A333f;
+}
+
 .rwd-table tr {
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
@@ -7,9 +17,7 @@
   display: none;
 }
 .rwd-table td {
-  display: block;
-  font-size: 22px;
-  font-weight: bold;
+  display: block;       font-size: 22px;            font-weight: bold;
 }
 .rwd-table td:first-child {
   padding-top: .5em;
@@ -25,7 +33,7 @@
 }
 
 
-@media (min-width: 480px) {
+@media (min-width: 350px) {
   .rwd-table td:before {
     display: none;
   }
@@ -33,7 +41,7 @@
 .rwd-table th, .rwd-table td {
   text-align: left;
 }
-@media (min-width: 480px) {
+@media (min-width: 350px) {
   .rwd-table th, .rwd-table td {
     display: table-cell;
     padding: .25em .5em;
@@ -46,19 +54,11 @@
   }
 }
 
-body {
-  padding: 0 2em;
-  font-family: Montserrat, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  color: #444;
-  background: #eee;
-}
+
 
 h1 {
-  font-weight: normal;
-  letter-spacing: -1px;
-  color: #34495E;
+  font-weight: normal;      letter-spacing: -1px;       color: white;
+  /**color: #34495E;    **/
 }
 
 .rwd-table {
@@ -84,11 +84,11 @@ h1 {
   margin: .5em 1em;
   border-bottom: 1px solid #46637f;
 }
-@media (min-width: 480px) {
-  .rwd-table th, .rwd-table td {
-    padding: 0.35em !important;
-  }
+/**
+@media (min-width: 350px) {
+  .rwd-table th, .rwd-table td {    padding: 0.35em !important; }
 }
+**//
 .rwd-table th, .rwd-table td:before {
   color: #dd5;
 }
@@ -99,6 +99,16 @@ h1 {
     overflow: hidden;   
     white-space: nowrap;
     text-overflow: ellipsis;
+    display: inline-block;
+}
+
+.rwd-dados-produto {
+	font-size: 15px;
+    color: rgb(101, 248, 8);	
+    overflow: hidden;   
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
 }
 
 .rwd-highlight-reg {
@@ -170,39 +180,42 @@ h1 {
         display: inline-block;  overflow: hidden;   white-space: nowrap;
     }
 
-@media screen and (max-width: 480px) {
+
+  
+
+@media screen and (max-width: 600px) {
+    body {  padding-left: 2px;    padding-right: 2px;   } 
+    .rwd-table th { font-size: 12px;  min-width: min-width: 350px; max-width: 355px; }
+    .rwd-table td { font-size: 14px;  font-weight: bold;    }
+}
+@media screen and (max-width: 350px) {
     .mileto-unit {
         font-size: 15px;
         background: yellow;
     }
 }
-@media (min-width: 480px) and (max-width: 600px) {
+@media (min-width: 350px) and (max-width: 600px) {                  /** Para mobiles 530 ou 533 de altura   **/
     .mileto-unit {
-        font-size: 15px;
-        background: orange;
+        font-size: 12px;    background: darkorange;
     }
+    .rwd-span-transportadora {        
+        width: 95px;           font-size: 11px;    text-overflow: ellipsis;
+    }     
+    .rwd-span-motorista {        
+        min-width: 130px;       max-width: 130px;   font-size: 12px;    text-overflow: ellipsis;
+    }          
+    .rwd-span-orientacoes {        
+        min-width: 80px;       max-width: 80px;   font-size: 12px;    text-overflow: ellipsis;
+    }       
+    .rwd-span-pedido {
+        display: inline-block;  overflow: hidden;   white-space: nowrap;
+        width: 100px;           font-size: 12px;    text-overflow: ellipsis;
+    }        
 }
 @media (min-width: 600px) and (max-width: 1000px) {
-    .mileto-unit {
-        font-size: 15px;
-        background: purple;
-    }
-}
-@media (min-width: 1000px) and (max-width: 1360px) {
-    .mileto-unit {
-        font-size: 15px;
-        background: red;
-    }
+    .mileto-unit {  font-size: 15px;    background: purple; }
+    .rwd-table th, .rwd-table td {    padding: 0.05em !important; }
     .rwd-span-transportadora {
-        min-width: 220px;       font-size: 16px;
-    }       
-}
-@media (min-width: 1360px) and (max-width: 1900px) {
-    .mileto-unit {
-        font-size: 15px;        background: green;
-    }
-    .rwd-span-transportadora {
-        display: inline-block;  overflow: hidden;   white-space: nowrap;
         width: 235px;           font-size: 18px;    text-overflow: ellipsis;
     }     
     .rwd-span-motorista {        
@@ -211,23 +224,49 @@ h1 {
     .rwd-span-orientacoes {        
         min-width: 170px;       max-width: 180px;   font-size: 20px;    text-overflow: ellipsis;
     }       
+    .rwd-dados-produto {    width:  230px;     }
+}
+@media (min-width: 1000px) and (max-width: 1360px) {
+    .mileto-unit {  font-size: 15px;    background: red;    }
+    .rwd-table th, .rwd-table td {    padding: 0.15em !important; }
+    .rwd-span-transportadora {
+        min-width: 220px;       font-size: 16px;
+    }
+    .rwd-dados-produto {    width:  280px;     }
+}
+@media (min-width: 1360px) and (max-width: 1900px) {
+    .mileto-unit {  font-size: 15px;        background: green;      }
+    .rwd-table th, .rwd-table td {    padding: 0.15em !important; }
+    .rwd-span-transportadora {      width: 235px;           font-size: 18px;    text-overflow: ellipsis;    }     
+    .rwd-span-motorista     {       width: 290px;           font-size: 18px;    text-overflow: ellipsis;   }          
+    .rwd-span-orientacoes   {       min-width: 170px;       max-width: 180px;   font-size: 20px;    text-overflow: ellipsis;    }
+    .rwd-dados-produto {    width:  280px;     }
 }
 @media (min-width: 1900px)  {
-    .mileto-unit {
-        background: blue;
-    }
-    .rwd-span-transportadora {
-        width: 302px;           font-size: 20px;    text-overflow: ellipsis;
-    }   
-    .rwd-span-motorista {        
-        min-width: 300px;       max-width: 320px;   font-size: 20px;    text-overflow: ellipsis;
-    }         
-    .rwd-span-orientacoes {        
-        min-width: 190px;       max-width: 190px;   font-size: 22px;    text-overflow: ellipsis;
-    }           
+    .mileto-unit {          background: blue;   }
+    .rwd-table th, .rwd-table td {    padding: 0.35em !important; }
+    .rwd-span-transportadora {  width: 302px;           font-size: 20px;    text-overflow: ellipsis;    }   
+    .rwd-span-motorista {       min-width: 300px;       max-width: 320px;   font-size: 20px;    text-overflow: ellipsis;}         
+    .rwd-span-orientacoes {        min-width: 190px;       max-width: 190px;   font-size: 22px;    text-overflow: ellipsis;     }           
+}
+
+.botao {
+    display: block;
+    padding: 6px 10px;
+    color: #666;
+    text-shadow: 1px 1px 1px #fff;
+    font-size: 10pt;
+    font-weight: bold;    
+}
+
+.shining { 
+	background-image: url("/mercurio/img/layout/shining-red.gif");
 }
 
 #footer {
    position:fixed;  bottom:2px; width: 100%;
+   background: #eee;
 }
+
+
 

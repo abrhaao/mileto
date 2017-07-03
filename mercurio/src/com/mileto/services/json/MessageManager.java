@@ -20,14 +20,13 @@ public class MessageManager {
 
 	@GET
 	@Path("/informa")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
 	public Response informaRESTService(
 			@QueryParam("enterprise") String pEnterpriseKey) {
 
 		String result = new String();
 
 		DataProviderSingleton provider = DataProviderSingleton.getInstance();
-		
 		
 		JsonObject jsonMsg = provider.getFirstMessage(pEnterpriseKey, "K1");
 		result = jsonMsg.toString();
@@ -36,16 +35,39 @@ public class MessageManager {
 	
 	
 	@POST
-	@Path("/put")
+	@Path("/putMessage")
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response create(@FormParam("enterprise") String enterprise,
-	                   @FormParam("aviso") String aviso) {
+	public Response putMessage( @FormParam("titulo") String titulo,	@FormParam("subTitulo") String subTitulo,
+							@FormParam("tituloHonorario") String tituloHonorario, @FormParam("destinatario") String destinatario,
+							@FormParam("enterprise") String enterprise, @FormParam("aviso") String aviso) {
 		System.out.println("Estou dentro no method POST!!!!!!! " + enterprise );
 		
+		StringBuilder msg = new StringBuilder();
+	    msg.append( "<strong>" + titulo + "</strong><br>" + subTitulo + "<hr><br>");
+	    msg.append(tituloHonorario + " <strong>" + destinatario + "</strong><br>");
+	    msg.append(aviso);
+
 		DataProviderSingleton provider = DataProviderSingleton.getInstance();
-		provider.putMessage(new BoardMessage(aviso, "Assunto", enterprise, "K1"));
+		provider.putMessage(new BoardMessage(msg.toString(), "Assunto", enterprise, "K1"));
 		
 		String result = "OK";
+		return Response.status(200).entity(result).build();
+	}
+	
+	
+	@POST
+	@Path("/putEvento")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response putEvento ( @FormParam("enterprise") String enterprise, @FormParam("key") String key ) {
+		System.out.println("Estou dentro no method POST!!!!!!! "  );
+		
+		StringBuilder msg = new StringBuilder();
+	    msg.append( "<strong></strong>");
+
+		DataProviderSingleton provider = DataProviderSingleton.getInstance();
+		provider.putEvento( key, new BoardMessage(msg.toString(), "HIGHLIGHT", enterprise, "HIGHLIGHT"));
+		
+		String result = "OK. EVENTO REGISTRADO";
 		return Response.status(200).entity(result).build();
 	}
 

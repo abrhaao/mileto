@@ -15,11 +15,11 @@
     * the current time is stored in hundredths of a second so the
     * increment time must be divided by ten.
     */
-    var qMaxByScreen    =   5;    
+    var xServer         =   "http://10.8.0.232:8081/mercurio"   
+    var qMaxByScreen    =   6;    
     //localStorage.setItem("isThereAlertOnScreen", "false");
     var isThereAlertOnScreen = false;
     
-    alert ( isThereAlertOnScreen);
     
     var Example1 = new (function() {
         var $stopwatch, // Stopwatch element on the page
@@ -31,17 +31,16 @@
            
             //var carregamentoPedido	=	$(this).html();
 			var dataSetContent	=	"";			
-			
-                        
+			                        
             $.ajax({
 				type: 'GET',
-                url: "http://192.168.1.113:8080/mercurio/api/recuperaProgramacaoVendas?enterprise=DEMO",
+                url: xServer + "/api/carregamento/recuperaProgramacaoVendas?enterprise=PAN",
                 dataType: "json",
                 async: true,
                 beforeSend: function(){
                         $('#ajax-loader').css("visibility", "visible");						  
                             
-						dataSetContent += ' <tr style="background: rgb(48, 64, 80) none repeat scroll 0% 0%;">   '
+						dataSetContent += ' <tr style="background: rgb(48, 64, 80) none repeat scroll 0% 0%; color: yellow;">   '
 						dataSetContent += ' <th>Transportadora</th>'
 						dataSetContent += ' <th>Veículo / Motorista</th>'
 						dataSetContent += ' <th>Pedido</th>    '
@@ -57,40 +56,61 @@
                         
                         
                         var qTelas  =   Math.floor ( (resultResponseVendas.length  / qMaxByScreen) + 0.9999 )  ;                        
+                        var qPagina =   ( count % qTelas ) + 1 ;
                         //MATH.Trunc não está implementado na TELEVISÃO
                         //var qTelas = 2;
                         //alert ( qTelas )
                         //console.log ("Registros [] = " + count % qTelas );
                         //console.log ("Min = " + ( ( count % qTelas) * qMaxByScreen ) );
                         //console.log ("Max = " + ( (count % qTelas + 1) * qMaxByScreen ) );
+                        $("#infoBarTelas").html(qTelas);
+                        $("#infoBarPagina").html(qPagina);
+                        $("#infoBarRegistros").html(resultResponseVendas.length);
                         
 						$.each(resultResponseVendas, function(i, resultResponseCarregamento ) {
 					
 							//console.log(resultResponseCarregamento.highlight)              
+																	
                             if ( i >= ( ( count % qTelas) * qMaxByScreen ) && i < ( (count % qTelas + 1) * qMaxByScreen ) ) {                            
                 
-                                if (resultResponseCarregamento.highlight === undefined || resultResponseCarregamento.highlight === null) {
+                            	var cssClasseStatus = "";
+                            	
+                            	
+    							
+    							if ( resultResponseCarregamento.highlightStatus === undefined ) {
+    								//alert ("Não Temos um inidividuo com highlightStatus" );
+    							} else {
+    								cssClasseStatus	= resultResponseCarregamento.highlightStatus ;    								
+    							}
+                            	
+                            	if (resultResponseCarregamento.highlight === undefined || resultResponseCarregamento.highlight === null) {
                                     dataSetContent +=  ' <tr> '	;									
                                 } else { 
                                     dataSetContent +=  ' <tr class="rwd-highlight-' + resultResponseCarregamento.highlight + '"> ';
                                 }
                     
-                                dataSetContent +=  '  <td><span><img style="width: 120px; height: 55px;" src="' + resultResponseCarregamento.icone + '"></span><br>';
+                                dataSetContent +=  '<td><span><img style="width: 120px; height: 55px;" src="' + resultResponseCarregamento.icone + '"></span><br>';
                                 dataSetContent +=  '  <span class="rwd-span-transportadora">' + resultResponseCarregamento.transportadora + '</SPAN>';
                                 dataSetContent +=  '</td>';
-                                dataSetContent +=  '<td><a href="#" title="PLACA XYZ ARACAJU-SE" class="tooltip">';
+                                dataSetContent +=  '<td><a href="#" title="' + resultResponseCarregamento.cliente + '" class="tooltip">';
                                 dataSetContent +=  '<span id="PV-000015-01-PLACA">'+ resultResponseCarregamento.placa + '</span><br>';
                                 dataSetContent +=   '<span class="rwd-span-motorista">' + resultResponseCarregamento.motorista + '</SPAN>';
                                 dataSetContent +=  '</a>';
                                 dataSetContent +=  '</td>';
-                                dataSetContent +=  '<td><span class="quadroPedidoVenda">' + resultResponseCarregamento.pedido + '</span><br><span id="PV-000015-01-PRODUTO" class="rwd-dados">' + resultResponseCarregamento.produto + '</span></td>    ';
-                                dataSetContent +=  '<td><span id="PV-000015-01-LOCALIZA">'+ resultResponseCarregamento.doca + '</SPAN></td>';
-                                dataSetContent +=  '<td><span class="rwd-span-orientacoes">' + resultResponseCarregamento.status + '</span><br><span class="rwd-dados">'+ resultResponseCarregamento.hora + '</span></td>';
-                                dataSetContent +=  '<td><span class="rwd-span-orientacoes">' + resultResponseCarregamento.instrucao + '</span>' + '</td>';
+                                dataSetContent +=  '<td><span>' + resultResponseCarregamento.pedido + '</span><br><span class="rwd-dados-produto">' + resultResponseCarregamento.produto + '</span></td>    ';
+                                dataSetContent +=  '<td><span>'+ resultResponseCarregamento.doca + '</SPAN></td>';
+                                dataSetContent +=  '<td><span class="rwd-span-orientacoes ' + cssClasseStatus+ '">' + resultResponseCarregamento.status + '</span><br><span class="rwd-dados">'+ resultResponseCarregamento.hora + '</span></td>';
+                                //dataSetContent +=  '<td><span class="rwd-span-orientacoes">' + resultResponseCarregamento.instrucao + '</span>' + '</td>';
+                                dataSetContent +=  '<td>' ;
+                                //if ( ! ( resultResponseCarregamento.produtoTes.equals(" ") ) ) {
+                                    dataSetContent +=   '<span class="rwd-span-orientacoes" style="font-size-adjust: 0.4;"> TES ' + resultResponseCarregamento.produtoTes + '</span><br>';
+                                //} 
+                                if ( ! ( resultResponseCarregamento.produtoOnu.trim() === ("") ) ) {
+                                    dataSetContent +=   '<span class="rwd-span-orientacoes" style="font-size-adjust: 0.4;"> ONU ' + resultResponseCarregamento.produtoOnu + '</span>';
+                                }                                 
+                                dataSetContent += '</td>';
                                 dataSetContent +=  '</tr>';
-                                $("#dataSetProgramacaoVenda").html(dataSetContent);				
-                            
-                                
+                                $("#dataSetProgramacaoVenda").html(dataSetContent);		                                                        
                             }
 						})
 	
@@ -102,7 +122,7 @@
                     
 			$.ajax({
 				type: 'GET',
-                url: "http://192.168.1.113:8080/mercurio/api/messagemanager/informa?enterprise=DEMO&assunto=TESTE",
+                url: xServer + "/api/carregamento/messagemanager/informa?enterprise=PAN&assunto=TESTE",
                 dataType: "json",
                 async: true,
                 beforeSend: function(){

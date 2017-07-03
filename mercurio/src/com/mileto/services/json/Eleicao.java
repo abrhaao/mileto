@@ -11,6 +11,8 @@ import javax.ws.rs.core.Response;
 
 import org.richfaces.json.JSONObject;
 
+import com.mileto.delegate.EleicaoDelegate;
+
 @Path("/eleicao")
 public class Eleicao {
 
@@ -32,7 +34,7 @@ public class Eleicao {
 		String opcaoVoto =	"ZYJ";
 		String identificacao = "POST METHOD";
 		String terminal  = "NAVIGATOR";
-		(new BusinessDelegate()).atualizaEleicaoVotoJSON ( Integer.parseInt(enquete), opcaoVoto,identificacao,terminal );
+		(new EleicaoDelegate()).atualizaEleicaoVotoJSON ( Integer.parseInt(enquete), opcaoVoto,identificacao,terminal );
 		
 		return Response.status(200).entity(result).build();
 	}
@@ -41,10 +43,18 @@ public class Eleicao {
 	@GET
 	@Path("/recuperaCandidatosElegiveis")
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response recuperaCandidatosElegiveisRESTService(
-				@QueryParam("eleicao") String pEleicao) {
+	public Response recuperaCandidatosElegiveisRESTService(	@QueryParam("eleicao") String pEleicao, @QueryParam("opcao") String pOpcao ) {
 		
-		String result = new BusinessDelegate().recuperaCandidatosElegiveisJSON( pEleicao );
+		String result = new EleicaoDelegate().recuperaCandidatosElegiveisJSON( pEleicao , pOpcao );
+		return Response.status(200).entity(result).build();
+	}
+	
+	@GET
+	@Path("/recuperaEleicoesVigentes/{enterprise}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response recuperaEleicoesVigentesRESTService(@QueryParam("enterprise") String pEnterprise ) {
+		
+		String result = new EleicaoDelegate().recuperaCandidatosElegiveisJSON( pEleicao , pOpcao );
 		return Response.status(200).entity(result).build();
 	}
 
