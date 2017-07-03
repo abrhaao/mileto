@@ -1,0 +1,65 @@
+    <!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery.timer.js"></script>
+
+    </head>
+    <body class="ui-mobile-viewport ui-field" id="pageDemoQuiz" style="height: 100%">
+
+    <div class="mi-mob-listview-miolo">
+            
+    </div>
+
+    <div>
+
+    </div>
+
+    <div id="content" data-role="content" class="ui-content" role="main">
+
+        
+    </div>
+
+    <div class="wrapper">
+        Sua mensagem aqui
+        <div class="push"></div>
+    </div>
+
+    <form action="http://10.80.80.4:8080/mercurio/api/messagemanager/putMessage" method="POST" name="myForm">
+        <p><label for="titulo">Título:</label>
+        <input type="text" name="titulo" id="formtitulo"></p>
+        <p><label for="subTitulo">Sub-Título da Mensagem:</label>
+        <input type="text" name="subTitulo" id="subTitulo"></p>
+        <input type="text" name="tituloHonorario" id="tituloHonorario"></p>
+        <input type="text" name="destinatario" id="destinatario"></p>
+        <input type="text" name="aviso" id="aviso">
+        <input type="hidden" name="enterprise" id="enterprise" value="PAN">
+        </p>
+        <input value="Submit" type="submit">
+    </form>
+    
+    <hr>
+    
+    <div class="wrapper">
+        Seu evento aqui
+        <div class="push"></div>
+    </div>
+
+    <form action="http://10.80.80.4:8080/mercurio/api/messagemanager/putEvento" method="POST" name="myFormEvento">
+        <p><label for="key">Key:</label>
+        <input type="text" name="key" id="formevento"></p>        
+        <input type="hidden" name="enterprise" id="enterprise" value="KATRIUM">
+        </p>
+        <input value="Submit" type="submit">
+    </form>
+    
+    <script>
+    
+    
+        
+    </script>
+
+    </body>
+    </html>

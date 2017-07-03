@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Table</title>
+
+  
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+  
+</head>
+
+<body>
+  <h1>Programação de Carregamentos</h1>
+  
+<table class="rwd-table" style="width: 355px">
+  <tr style="background: rgb(48, 64, 80) none repeat scroll 0% 0%;">
+    <th>Pedido de Venda</th>
+  </tr>
+  <tr>
+    <td><span id="cellPedido"></span>
+        <br>Cliente: <span id="cellCliente"></span>
+        <br><span id="cellClienteCidade"></span>
+        <br>status
+    </td>
+  </tr>
+</table>
+
+<p></p>
+
+<table class="rwd-table" style="width: 355px">
+  <tr style="background: rgb(48, 64, 80) none repeat scroll 0% 0%;">
+    <th>Produto</th>
+  </tr>
+  <tr>
+    <td>Produto: <span id="cellProdutoCodigo"></span> - <span id="cellProduto"></span>
+        <br>Número da ONU:
+        <br>Quantidade:
+    </td>
+  </tr>
+</table>
+
+<p></p>
+
+<table class="rwd-table" style="width: 355px">
+  <tr style="background: rgb(48, 64, 80) none repeat scroll 0% 0%;">
+    <th>Transporte</th>
+  </tr>
+  <tr>
+    <td>Transportadora:
+        <br>Veículo:
+        <br>Motorista: <span id="cellMotorista"/>
+    </td>
+  </tr>
+</table>
+
+<p></p>
+<div style="display: block; height: 50px"></div>
+
+<div id="footer">
+    <hr/>
+    <span class="mileto-unit">RESOLUÇÃO</span>
+    <span>Largura: </span><span id="myResolution"></span>
+     <span>Página: </span><span id="infoBarPagina"></span>/<span id="infoBarTelas"></span>
+     <span>Registros: </span><span id="infoBarRegistros"></span>
+</div>  
+<!--div id="board-ajax-informativo">... CARREGANDO</div-->	
+<!--audio id="buzzer" src="scss/stopper.ogg" type="audio/ogg"></audio-->    
+
+	
+</body>
+
+<script>
+var pedido = localStorage.getItem("myCarregamento");
+
+   $.ajax({
+				type: 'GET',
+                url: "http://10.8.0.232:8081/mercurio/api/recuperaCarregamento/PAN/02/" + pedido,
+                dataType: "json",
+                async: true,
+                beforeSend: function(){
+                        $('#ajax-loader').css("visibility", "visible");						  
+                        
+				},
+                success: function (responseCagto) {
+                    $("#cellProdutoCodigo").html(responseCagto.produtoCodigo);		                                                        
+                    $("#cellProduto").html(responseCagto.produto);		 
+                    $("#cellCliente").html(responseCagto.cliente);
+                    $("#cellClienteCidade").html(responseCagto.clienteCidade);		 
+                    $("#cellMotorista").html(responseCagto.motorista);
+                }
+			});
+</script>
+</html>

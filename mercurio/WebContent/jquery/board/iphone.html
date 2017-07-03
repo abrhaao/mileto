@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Table</title>
+
+  
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/mileto-wms.js"></script>
+  
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+  
+</head>
+
+<body>
+  <h1>Programação de Carregamentos</h1>
+<table class="rwd-table" id="dataSetProgramacaoVenda">
+  <tr style="background: rgb(48, 64, 80) none repeat scroll 0% 0%;">
+    <th>Transportadora</th>
+	<th>Veículo</th>
+    <th>Motorista</th>
+    <th>Pedido</th>    
+	<th>Localização</th>
+	<th>Status</th>
+	<th>Instrução</th>
+  </tr>
+  
+  <!--tr>
+  </tr-->
+  
+</table>
+
+<p></p>
+<p></p>
+<p></p>
+
+<div id="footer">
+    <hr/>
+    <span class="mileto-unit">RESOLUÇÃO</span>
+    <span>Largura: </span><span id="myResolution"></span>
+     <span>Página: </span><span id="infoBarPagina"></span>/<span id="infoBarTelas"></span>
+     <span>Registros: </span><span id="infoBarRegistros"></span>
+</div>  
+<!--div id="board-ajax-informativo">... CARREGANDO</div-->	
+<!--audio id="buzzer" src="scss/stopper.ogg" type="audio/ogg"></audio-->    
+
+	
+</body>
+
+<script>
+ var myWidth    =   ( $( document ).width() );
+ $("#myResolution").html(myWidth);
+ 
+ 
+     var qMaxByScreen    =   60;    
+    //localStorage.setItem("isThereAlertOnScreen", "false");
+    var isThereAlertOnScreen = false;
+    
+           
+            //var carregamentoPedido	=	$(this).html();
+			var dataSetContent	=	"";			
+			
+            $.ajax({
+				type: 'GET',
+                url: "http://10.8.0.232:8081/mercurio/api/recuperaProgramacaoVendas?enterprise=PAN",
+                dataType: "json",
+                async: true,
+                beforeSend: function(){
+                        $('#ajax-loader').css("visibility", "visible");						  
+                            
+						dataSetContent += ' <tr style="background: rgb(48, 64, 80) none repeat scroll 0% 0%;">   '
+						dataSetContent += ' <th>Pedido</th>'
+						dataSetContent += ' <th>Veículo / <br> Motorista</th>'
+						//dataSetContent += ' <th>Pedido</th>    '
+						//dataSetContent += ' <th>Localização</th>'
+						dataSetContent += ' <th>Status</th>'
+						//dataSetContent += ' <th>Instrução</th>'
+						dataSetContent += ' </tr>'				
+				},
+                success: function (resultResponseVendas) {
+                        
+                        console.log("Total de Registros = " + resultResponseVendas.length ) ;                           
+                        //console.log("Qtas Telas Necessario = " + Math.trunc ( (resultResponseVendas.length  / qMaxByScreen) + 0.9999 ) );
+                        
+                        
+                        var qTelas  =   Math.floor ( (resultResponseVendas.length  / qMaxByScreen) + 0.9999 )  ;                        
+                        var qPagina =   count % qTelas
+                        //MATH.Trunc não está implementado na TELEVISÃO
+                        //var qTelas = 2;
+                        //alert ( qTelas )
+                        //console.log ("Registros [] = " + count % qTelas );
+                        //console.log ("Min = " + ( ( count % qTelas) * qMaxByScreen ) );
+                        //console.log ("Max = " + ( (count % qTelas + 1) * qMaxByScreen ) );
+                        $("#infoBarTelas").html(qTelas);
+                        $("#infoBarPagina").html(qPagina);
+                        $("#infoBarRegistros").html(resultResponseVendas.length);
+                        
+						$.each(resultResponseVendas, function(i, resultResponseCarregamento ) {
+					
+							//console.log(resultResponseCarregamento.highlight)              
+                            if ( i >= ( ( count % qTelas) * qMaxByScreen ) && i < ( (count % qTelas + 1) * qMaxByScreen ) ) {                            
+                
+                                if (resultResponseCarregamento.highlight === undefined || resultResponseCarregamento.highlight === null) {
+                                    dataSetContent +=  ' <tr> '	;									
+                                } else { 
+                                    dataSetContent +=  ' <tr class="rwd-highlight-' + resultResponseCarregamento.highlight + '"> ';
+                                }
+                    
+                                dataSetContent +=  '  <td><span><img style="width: 90px; height: 45px;" src="' + resultResponseCarregamento.icone + '"></span><br><span class="rwd-span-pedido">PV ' + resultResponseCarregamento.pedido + '</span><br>';
+                                dataSetContent +=  '  <span class="rwd-span-transportadora">' + resultResponseCarregamento.transportadora + '</SPAN>';
+                                dataSetContent +=  '</td>';
+                                dataSetContent +=  '<td><!--a href="#" title="PLACA XYZ ARACAJU-SE" class="tooltip"-->';
+                                dataSetContent +=  '<span class="rwd-span-motorista">'+ resultResponseCarregamento.placa + '</span><br>';
+                                dataSetContent +=   '<span class="rwd-span-motorista">' + resultResponseCarregamento.motorista + '</span><br>';
+                                dataSetContent +=   '<span class="rwd-span-motorista">'+ resultResponseCarregamento.produto + '</span>';
+                                //dataSetContent +=  '</a>';
+                                dataSetContent +=  '</td>';
+                                //dataSetContent +=  '<td><span class="rwd-span-orientacoes">'+ resultResponseCarregamento.produto + '</span></td>    ';
+                                //dataSetContent +=  '<td><span id="PV-000015-01-LOCALIZA">'+ resultResponseCarregamento.doca + '</SPAN></td>';
+                                dataSetContent +=  '<td><span class="rwd-span-orientacoes">' + resultResponseCarregamento.status + '</span><br><span class="rwd-span-orientacoes">'+ resultResponseCarregamento.hora + '</span><br>'
+                                dataSetContent +=  '<a class="botao" href="javascript: pickPedido(' + '\'' + resultResponseCarregamento.pedido + '\'' + ')">View</a></td>';
+                                //dataSetContent +=  '<td><span class="rwd-span-orientacoes">' + resultResponseCarregamento.instrucao + '</span>' + '</td>';
+                                dataSetContent +=  '</tr>';
+                                $("#dataSetProgramacaoVenda").html(dataSetContent);		                                                        
+                            }
+						})
+	
+                   },
+                    error: function (request,error) {
+                            console.log("JSON CARREGAMENTO = Deu errado");
+                    }
+			});
+    			
+				
+function pickPedido(item) {
+    localStorage.setItem("myCarregamento", item);
+    $(location).attr('href', 'iphone-cagto.html');
+}		
+        
+
+ 
+</script>
+</html>
