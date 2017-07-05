@@ -1,188 +1,208 @@
-    /**
-    * jQuery Timer doesn't natively act like a stopwatch, it only
-    * aids in building one.  You need to keep track of the current
-    * time in a variable and increment it manually.  Then on each
-    * incrementation, update the page.
-    *
-    * The increment time for jQuery Timer is in milliseconds. So an
-    * input time of 1000 would equal 1 time per second.  In this
-    * example we use an increment time of 70 which is roughly 14
-    * times per second.  You can adjust your timer if you wish.
-    *
-    * The update function converts the current time to minutes,
-    * seconds and hundredths of a second.  It then outputs that to
-    * the stopwatch element, $stopwatch, and then increments. Since
-    * the current time is stored in hundredths of a second so the
-    * increment time must be divided by ten.
-    */
-    var xServer         =   "http://10.8.0.232:8081/mercurio"   
-    var qMaxByScreen    =   6;    
-    //localStorage.setItem("isThereAlertOnScreen", "false");
-    var isThereAlertOnScreen = false;
-    
-    
-    var Example1 = new (function() {
-        var $stopwatch, // Stopwatch element on the page
-            incrementTime = 8000, // Timer speed in milliseconds
-            currentTime = 0, // Current time in hundredths of a second
-            updateTimer = function() {
-                $stopwatch.html(formatTime(currentTime));
-                currentTime += incrementTime / 10;
-           
-            //var carregamentoPedido	=	$(this).html();
-			var dataSetContent	=	"";			
-			                        
-            $.ajax({
-				type: 'GET',
-                url: xServer + "/api/carregamento/recuperaProgramacaoVendas?enterprise=PAN",
-                dataType: "json",
-                async: true,
-                beforeSend: function(){
-                        $('#ajax-loader').css("visibility", "visible");						  
-                            
-						dataSetContent += ' <tr style="background: rgb(48, 64, 80) none repeat scroll 0% 0%; color: yellow;">   '
-						dataSetContent += ' <th>Transportadora</th>'
-						dataSetContent += ' <th>Veículo / Motorista</th>'
-						dataSetContent += ' <th>Pedido</th>    '
-						dataSetContent += ' <th>Localização</th>'
-						dataSetContent += ' <th>Status</th>'
-						dataSetContent += ' <th>Instrução</th>'
-						dataSetContent += ' </tr>'				
-				},
-                success: function (resultResponseVendas) {
-                        
-                        console.log("Total de Registros = " + resultResponseVendas.length ) ;                           
-                        //console.log("Qtas Telas Necessario = " + Math.trunc ( (resultResponseVendas.length  / qMaxByScreen) + 0.9999 ) );
-                        
-                        
-                        var qTelas  =   Math.floor ( (resultResponseVendas.length  / qMaxByScreen) + 0.9999 )  ;                        
-                        var qPagina =   ( count % qTelas ) + 1 ;
-                        //MATH.Trunc não está implementado na TELEVISÃO
-                        //var qTelas = 2;
-                        //alert ( qTelas )
-                        //console.log ("Registros [] = " + count % qTelas );
-                        //console.log ("Min = " + ( ( count % qTelas) * qMaxByScreen ) );
-                        //console.log ("Max = " + ( (count % qTelas + 1) * qMaxByScreen ) );
-                        $("#infoBarTelas").html(qTelas);
-                        $("#infoBarPagina").html(qPagina);
-                        $("#infoBarRegistros").html(resultResponseVendas.length);
-                        
-						$.each(resultResponseVendas, function(i, resultResponseCarregamento ) {
-					
-							//console.log(resultResponseCarregamento.highlight)              
-																	
-                            if ( i >= ( ( count % qTelas) * qMaxByScreen ) && i < ( (count % qTelas + 1) * qMaxByScreen ) ) {                            
-                
-                            	var cssClasseStatus = "";
-                            	
-                            	
-    							
-    							if ( resultResponseCarregamento.highlightStatus === undefined ) {
-    								//alert ("Não Temos um inidividuo com highlightStatus" );
-    							} else {
-    								cssClasseStatus	= resultResponseCarregamento.highlightStatus ;    								
-    							}
-                            	
-                            	if (resultResponseCarregamento.highlight === undefined || resultResponseCarregamento.highlight === null) {
-                                    dataSetContent +=  ' <tr> '	;									
-                                } else { 
-                                    dataSetContent +=  ' <tr class="rwd-highlight-' + resultResponseCarregamento.highlight + '"> ';
-                                }
-                    
-                                dataSetContent +=  '<td><span><img style="width: 120px; height: 55px;" src="' + resultResponseCarregamento.icone + '"></span><br>';
-                                dataSetContent +=  '  <span class="rwd-span-transportadora">' + resultResponseCarregamento.transportadora + '</SPAN>';
-                                dataSetContent +=  '</td>';
-                                dataSetContent +=  '<td><a href="#" title="' + resultResponseCarregamento.cliente + '" class="tooltip">';
-                                dataSetContent +=  '<span id="PV-000015-01-PLACA">'+ resultResponseCarregamento.placa + '</span><br>';
-                                dataSetContent +=   '<span class="rwd-span-motorista">' + resultResponseCarregamento.motorista + '</SPAN>';
-                                dataSetContent +=  '</a>';
-                                dataSetContent +=  '</td>';
-                                dataSetContent +=  '<td><span>' + resultResponseCarregamento.pedido + '</span><br><span class="rwd-dados-produto">' + resultResponseCarregamento.produto + '</span></td>    ';
-                                dataSetContent +=  '<td><span>'+ resultResponseCarregamento.doca + '</SPAN></td>';
-                                dataSetContent +=  '<td><span class="rwd-span-orientacoes ' + cssClasseStatus+ '">' + resultResponseCarregamento.status + '</span><br><span class="rwd-dados">'+ resultResponseCarregamento.hora + '</span></td>';
-                                //dataSetContent +=  '<td><span class="rwd-span-orientacoes">' + resultResponseCarregamento.instrucao + '</span>' + '</td>';
-                                dataSetContent +=  '<td>' ;
-                                //if ( ! ( resultResponseCarregamento.produtoTes.equals(" ") ) ) {
-                                    dataSetContent +=   '<span class="rwd-span-orientacoes" style="font-size-adjust: 0.4;"> TES ' + resultResponseCarregamento.produtoTes + '</span><br>';
-                                //} 
-                                if ( ! ( resultResponseCarregamento.produtoOnu.trim() === ("") ) ) {
-                                    dataSetContent +=   '<span class="rwd-span-orientacoes" style="font-size-adjust: 0.4;"> ONU ' + resultResponseCarregamento.produtoOnu + '</span>';
-                                }                                 
-                                dataSetContent += '</td>';
-                                dataSetContent +=  '</tr>';
-                                $("#dataSetProgramacaoVenda").html(dataSetContent);		                                                        
-                            }
-						})
+/**
+ * jQuery Timer doesn't natively act like a stopwatch, it only
+ * aids in building one.  You need to keep track of the current
+ * time in a variable and increment it manually.  Then on each
+ * incrementation, update the page.
+ *
+ * The increment time for jQuery Timer is in milliseconds. So an
+ * input time of 1000 would equal 1 time per second.  In this
+ * example we use an increment time of 70 which is roughly 14
+ * times per second.  You can adjust your timer if you wish.
+ *
+ * The update function converts the current time to minutes,
+ * seconds and hundredths of a second.  It then outputs that to
+ * the stopwatch element, $stopwatch, and then increments. Since
+ * the current time is stored in hundredths of a second so the
+ * increment time must be divided by ten.
+ */
+
+var xServer         //=   "http://10.8.0.232:8081/mercurio"   
+var xMaxByScreen    //=6
+var qMaxByScreen   // =   6;        
+var isThereAlertOnScreen = false;
+
+try {
+
+	do {
+		xServer				=	localStorage.getItem("myServer");
+		xMaxByScreen		=	localStorage.getItem("maxByScreen");
+
+		if ( xServer == null ) {
+			localStorage.setItem("myServer", "http://10.8.0.232:8081/mercurio");
+		}
+		if ( xMaxByScreen == null ) {
+			localStorage.setItem("maxByScreen", "6");
+		}
+	} while ( xServer == null || xMaxByScreen == null );
 	
-                   },
-                    error: function (request,error) {
-                            console.log("JSON CARREGAMENTO = Deu errado");
-                    }
-			});
-                    
-			$.ajax({
-				type: 'GET',
-                url: xServer + "/api/carregamento/messagemanager/informa?enterprise=PAN&assunto=TESTE",
-                dataType: "json",
-                async: true,
-                beforeSend: function(){
-                        
-				},
-                success: function (resultResponseComunicado) {
-                        
-					if (resultResponseComunicado.mensagem === undefined || resultResponseComunicado.mensagem === null)	{
-                        $('#board-ajax-informativo').css("visibility", "hidden");	
-                        isThereAlertOnScreen = false;
-                        //localStorage.setItem("isThereAlertOnScreen", "false");    
-                    } else {                                            
-                        //var isThereAlertOnScreen = localStorage.getItem("isThereAlertOnScreen");
-                        if (isThereAlertOnScreen == false) {
-                            var myBuzzerNotification    =   document.getElementById('buzzer');
-                            myBuzzerNotification.load();  
-                            myBuzzerNotification.play();  
-                            
-                            
-                            //localStorage.setItem("isThereAlertOnScreen", "true");
-                            isThereAlertOnScreen = true;                            
-                        }
-                        
-                        messageContent = resultResponseComunicado.mensagem		                        					                          							
-						$("#board-ajax-informativo").html(messageContent);		
-                        $('#board-ajax-informativo').css("visibility", "visible");	
-                        
-                    }
-                        
-						
-                },
-                error: function (request,error) {
-                    $('#board-ajax-informativo').css("visibility", "hidden");
-                    console.log("JSON CARREGAMENTO = Deu errado");
-                }
-			});
-				
-				
-				
-                    
-            },
-            init = function() {
-                $stopwatch = $('#stopwatch');
-                Example1.Timer = $.timer(updateTimer, incrementTime, true);
-            };
-        this.resetStopwatch = function() {
-            currentTime = 0;
-            this.Timer.stop().once();
-        };
-        $(init);
-    });
+	qMaxByScreen = xMaxByScreen;
+
+} catch(error) {
+	alert("ruim");
+}
+
+var Example1 = new (function() {
+	var $stopwatch, // Stopwatch element on the page
+	incrementTime = 8000, // Timer speed in milliseconds
+	currentTime = 0, // Current time in hundredths of a second
+	updateTimer = function() {
+		$stopwatch.html(formatTime(currentTime));
+		currentTime += incrementTime / 10;
+
+		//var carregamentoPedido	=	$(this).html();
+		var dataSetContent	=	"";			
+
+		$.ajax({
+			type: 'GET',
+			url: xServer + "/api/carregamento/recuperaProgramacaoVendas?enterprise=KATRIUM",
+			dataType: "json",
+			async: true,
+			beforeSend: function(){
+				$('#ajax-loader').css("visibility", "visible");						  
+
+				dataSetContent += ' <tr style="background: rgb(48, 64, 80) none repeat scroll 0% 0%; color: yellow;">   '
+					dataSetContent += ' <th>Transportadora</th>'
+						dataSetContent += ' <th>Veículo / Motorista</th>'
+							dataSetContent += ' <th>Pedido</th>    '
+								dataSetContent += ' <th>Localização</th>'
+									dataSetContent += ' <th>Status</th>'
+										dataSetContent += ' <th>Instrução</th>'
+											dataSetContent += ' </tr>'				
+			},
+			success: function (resultResponseVendas) {
+
+				console.log("Total de Registros = " + resultResponseVendas.length ) ;                           
+				//console.log("Qtas Telas Necessario = " + Math.trunc ( (resultResponseVendas.length  / qMaxByScreen) + 0.9999 ) );
 
 
-    /**
-    * Example 2 is similar to example 1.  The biggest difference
-    * besides counting up is the ability to reset the timer to a
-    * specific time.  To do this, there is an input text field
-    * in a form.
-    */
-    /**
+				var qTelas  =   Math.floor ( (resultResponseVendas.length  / qMaxByScreen) + 0.9999 )  ;                        
+				var qPagina =   ( count % qTelas ) + 1 ;
+				//MATH.Trunc não está implementado na TELEVISÃO
+				//var qTelas = 2;
+				//alert ( qTelas )
+				//console.log ("Registros [] = " + count % qTelas );
+				//console.log ("Min = " + ( ( count % qTelas) * qMaxByScreen ) );
+				//console.log ("Max = " + ( (count % qTelas + 1) * qMaxByScreen ) );
+				$("#infoBarTelas").html(qTelas);
+				$("#infoBarPagina").html(qPagina);
+				$("#infoBarRegistros").html(resultResponseVendas.length);
+
+				$.each(resultResponseVendas, function(i, resultResponseCarregamento ) {
+
+					//console.log(resultResponseCarregamento.highlight)              
+
+					if ( i >= ( ( count % qTelas) * qMaxByScreen ) && i < ( (count % qTelas + 1) * qMaxByScreen ) ) {                            
+
+						var cssClasseStatus = "";
+
+
+
+						if ( resultResponseCarregamento.highlightStatus === undefined ) {
+							//alert ("Não Temos um inidividuo com highlightStatus" );
+						} else {
+							cssClasseStatus	= resultResponseCarregamento.highlightStatus ;    								
+						}
+
+						if (resultResponseCarregamento.highlight === undefined || resultResponseCarregamento.highlight === null) {
+							dataSetContent +=  ' <tr> '	;									
+						} else { 
+							dataSetContent +=  ' <tr class="rwd-highlight-' + resultResponseCarregamento.highlight + '"> ';
+						}
+
+						dataSetContent +=  '<td><span><img style="width: 120px; height: 55px;" src="' + resultResponseCarregamento.icone + '"></span><br>';
+						dataSetContent +=  '  <span class="rwd-span-transportadora">' + resultResponseCarregamento.transportadora + '</SPAN>';
+						dataSetContent +=  '</td>';
+						dataSetContent +=  '<td><a href="#" title="' + resultResponseCarregamento.cliente + '" class="tooltip">';
+						dataSetContent +=  '<span id="PV-000015-01-PLACA">'+ resultResponseCarregamento.placa + '</span><br>';
+						dataSetContent +=   '<span class="rwd-span-motorista">' + resultResponseCarregamento.motorista + '</SPAN>';
+						dataSetContent +=  '</a>';
+						dataSetContent +=  '</td>';
+						dataSetContent +=  '<td><span>' + resultResponseCarregamento.pedido + '</span><br><span class="rwd-dados-produto">' + resultResponseCarregamento.produto + '</span></td>    ';
+						dataSetContent +=  '<td><span>'+ resultResponseCarregamento.doca + '</SPAN></td>';
+						dataSetContent +=  '<td><span class="rwd-span-orientacoes ' + cssClasseStatus+ '">' + resultResponseCarregamento.status + '</span><br><span class="rwd-dados">'+ resultResponseCarregamento.hora + '</span></td>';
+						//dataSetContent +=  '<td><span class="rwd-span-orientacoes">' + resultResponseCarregamento.instrucao + '</span>' + '</td>';
+						dataSetContent +=  '<td>' ;
+						//if ( ! ( resultResponseCarregamento.produtoTes.equals(" ") ) ) {
+						dataSetContent +=   '<span class="rwd-span-orientacoes" style="font-size-adjust: 0.4;"> TES ' + resultResponseCarregamento.produtoTes + '</span><br>';
+						//} 
+						if ( ! ( resultResponseCarregamento.produtoOnu.trim() === ("") ) ) {
+							dataSetContent +=   '<span class="rwd-span-orientacoes" style="font-size-adjust: 0.4;"> ONU ' + resultResponseCarregamento.produtoOnu + '</span>';
+						}                                 
+						dataSetContent += '</td>';
+						dataSetContent +=  '</tr>';
+						$("#dataSetProgramacaoVenda").html(dataSetContent);		                                                        
+					}
+				})
+
+			},
+			error: function (request,error) {
+				console.log("JSON CARREGAMENTO = Deu errado");
+			}
+		});
+
+		$.ajax({
+			type: 'GET',
+			url: xServer + "/api/messagemanager/informa?enterprise=KATRIUM&assunto=TESTE",
+			dataType: "json",
+			async: true,
+			beforeSend: function(){
+
+			},
+			success: function (resultResponseComunicado) {
+
+				if (resultResponseComunicado.mensagem === undefined || resultResponseComunicado.mensagem === null)	{
+					$('#board-ajax-informativo').css("visibility", "hidden");	
+					isThereAlertOnScreen = false;
+					//localStorage.setItem("isThereAlertOnScreen", "false");    
+				} else {                                            
+					//var isThereAlertOnScreen = localStorage.getItem("isThereAlertOnScreen");
+					if (isThereAlertOnScreen == false) {
+						var myBuzzerNotification    =   document.getElementById('buzzer');
+						myBuzzerNotification.load();  
+						myBuzzerNotification.play();  
+
+
+						//localStorage.setItem("isThereAlertOnScreen", "true");
+						isThereAlertOnScreen = true;                            
+					}
+
+					messageContent = resultResponseComunicado.mensagem		                        					                          							
+					$("#board-ajax-informativo").html(messageContent);		
+					$('#board-ajax-informativo').css("visibility", "visible");	
+
+				}
+
+
+			},
+			error: function (request,error) {
+				$('#board-ajax-informativo').css("visibility", "hidden");
+				console.log("JSON CARREGAMENTO = Deu errado");
+			}
+		});
+
+
+
+
+	},
+	init = function() {
+		$stopwatch = $('#stopwatch');
+		Example1.Timer = $.timer(updateTimer, incrementTime, true);
+	};
+	this.resetStopwatch = function() {
+		currentTime = 0;
+		this.Timer.stop().once();
+	};
+	$(init);
+});
+
+
+/**
+ * Example 2 is similar to example 1.  The biggest difference
+ * besides counting up is the ability to reset the timer to a
+ * specific time.  To do this, there is an input text field
+ * in a form.
+ */
+/**
     var Example2 = new (function() {
         var $countdown,
             $form, // Form used to change the countdown time
@@ -218,21 +238,21 @@
         };
         $(init);
     });
-    **/
+ **/
 
-    /**
-    * The purpose of this example is to demonstrate the original
-    * reason I built jQuery timer, to preserve the time remaining
-    * when pausing a timer.
-    *
-    * Notice the increment time is set to 2500.  If you click
-    * 'Play / Pause' immediately after an image changes, you should
-    * see a value close to 2.5 seconds remaining.  Once you click
-    * play again, the timer continues where it ended instead of
-    * starting over again.
-    */
-    
-    /**
+/**
+ * The purpose of this example is to demonstrate the original
+ * reason I built jQuery timer, to preserve the time remaining
+ * when pausing a timer.
+ *
+ * Notice the increment time is set to 2500.  If you click
+ * 'Play / Pause' immediately after an image changes, you should
+ * see a value close to 2.5 seconds remaining.  Once you click
+ * play again, the timer continues where it ended instead of
+ * starting over again.
+ */
+
+/**
     var Example3 = new (function() {
         var $galleryImages, // An array of image elements
             $timeRemaining, // Usually hidden element to display time when paused
@@ -264,29 +284,29 @@
         };
         $(init);
     });
-    **/
+ **/
 
-    /**
-    * Example 4 is as simple as it gets.  Just a timer object and
-    * a counter that is displayed as it updates.
-    */
-    var count = 0,
-        timer = $.timer(function() {
-            count++;
-            $('#counter').html(count);
-        });
-    timer.set({ time : 8000, autostart : true });               //Acho que tem que ser o mesmo tempo do primeiro
+/**
+ * Example 4 is as simple as it gets.  Just a timer object and
+ * a counter that is displayed as it updates.
+ */
+var count = 0,
+timer = $.timer(function() {
+	count++;
+	$('#counter').html(count);
+});
+timer.set({ time : 8000, autostart : true });               //Acho que tem que ser o mesmo tempo do primeiro
 
 
-    // Common functions
-    function pad(number, length) {
-        var str = '' + number;
-        while (str.length < length) {str = '0' + str;}
-        return str;
-    }
-    function formatTime(time) {
-        var min = parseInt(time / 6000),
-            sec = parseInt(time / 100) - (min * 60),
-            hundredths = pad(time - (sec * 100) - (min * 6000), 2);
-        return (min > 0 ? pad(min, 2) : "00") + ":" + pad(sec, 2) + ":" + hundredths;
-    }
+// Common functions
+function pad(number, length) {
+	var str = '' + number;
+	while (str.length < length) {str = '0' + str;}
+	return str;
+}
+function formatTime(time) {
+	var min = parseInt(time / 6000),
+	sec = parseInt(time / 100) - (min * 60),
+	hundredths = pad(time - (sec * 100) - (min * 6000), 2);
+	return (min > 0 ? pad(min, 2) : "00") + ":" + pad(sec, 2) + ":" + hundredths;
+}

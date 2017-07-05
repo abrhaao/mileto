@@ -32,7 +32,7 @@ public class CarregamentoDelegate {
 				//return DemoDAO.getWMSProgramacaoVendas("20170305"); //.toString();
 				
 
-			} else if (pEnterpriseKey.equals("PAN"))  {
+			} else if (pEnterpriseKey.equals("PAN") || pEnterpriseKey.equals("KATRIUM"))  {
 
 
 				List<Object> arrayParameters = new ArrayList<Object>();

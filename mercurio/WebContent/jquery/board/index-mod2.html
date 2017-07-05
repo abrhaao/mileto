@@ -11,6 +11,11 @@
     <script type="text/javascript" src="js/mileto-wms.js"></script>
   
 
+  <!-- TESTE 04/07 para as Dialogs -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <!--  script src="https://code.jquery.com/jquery-1.12.4.js"></script--  ESTE FEZ PARAR DE FUNCIONAR -->
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> <!-- ESTE GARANTIU O UI DO DIALOG -->
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
   <link rel="stylesheet" href="css/style.css">
 
@@ -20,6 +25,7 @@
 <body>
   <h1>Programação de Carregamentos</h1>
   <table class="rwd-table" id="dataSetProgramacaoVenda">
+  <!-- 
   <tr style="background: rgb(48, 64, 80) none repeat scroll 0% 0%;">
     <th>Transportadora</th>
 	<th>Veículo</th>
@@ -29,10 +35,7 @@
 	<th>Status</th>
 	<th>Instrução</th>
   </tr>
-  
-  <!--tr>
-  </tr-->
-  
+  -->
 </table>
 
 <p></p>
@@ -49,9 +52,17 @@
         <input type='button' value='Play/Pause' onclick='Example1.Timer.toggle();' />
         <input type='button' value='Stop/Reset' onclick='Example1.resetStopwatch();' />        
     </span>   
+    <span id="infoBarConfig" style="position: absolute; right: 2%; top: 1px; padding: 0.5em;">
+    	<img id="botaoConfig" src="https://cdn2.iconfinder.com/data/icons/business-seo-vol-5/512/1-94-512.png" style="width: 40px"/>
+    </span>   
 </div>  
 <div id="board-ajax-informativo">... CARREGANDO</div>	
 <audio id="buzzer" src="scss/stopper.ogg" type="audio/ogg"></audio>    
+
+
+<div id="dialog-confirm" title="Empty the recycle bin?" style="display: none;">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
 
 	
 </body>
@@ -59,5 +70,24 @@
 <script>
  var myWidth    =   ( $( document ).width() );
  $("#myResolution").html(myWidth);
+ 
+ $( "#botaoConfig" ).click( function() {	    
+	 $( "#dialog-confirm" ).dialog({
+	      resizable: false,
+	      height: "auto",
+	      width: 400,
+	      modal: true,
+	      buttons: {
+	        "Delete all items": function() {
+	          $( this ).dialog( "close" );
+	        },
+	        Cancel: function() {
+	          $( this ).dialog( "close" );
+	        }
+	      }
+	    });
+	  } );
 </script>
+
+
 </html>
