@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,13 +75,16 @@ public class DemoDAO extends BaseDB {
 		JsonArrayBuilder jsonArray  = Json.createArrayBuilder();	
 
 		StringBuilder sqlBuilder = new StringBuilder();
-		sqlBuilder.append( " SELECT * FROM HR.BI_CARREGAMENTO ");
+		sqlBuilder.append( " SELECT * FROM HR.BI_CARREGAMENTO, HR.BI_CARREGAMENTO_DOCA ");// WHERE DESCRICAO LIKE '%CLORO%' ");
+		sqlBuilder.append( " WHERE BI_CARREGAMENTO.FILIAL = BI_CARREGAMENTO_DOCA.FILIAL (+) ");
+		sqlBuilder.append( " AND   BI_CARREGAMENTO.PEDIDO = BI_CARREGAMENTO_DOCA.PEDIDO (+) ");
 
 		try {
+			
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM - HH:mm");
 
 			PreparedStatement pstmt = db.prepareStatement(sqlBuilder.toString());		
 			java.sql.ResultSet rs = pstmt.executeQuery();			
-			//rs.beforeFirst();
 			while(rs.next()){
 
 				JsonObjectBuilder j = Json.createObjectBuilder()
@@ -106,8 +110,23 @@ public class DemoDAO extends BaseDB {
 				if (rs.getString("STATUS").equals("NF EMITIDA")) {
 					j.add("hora", StringAcol.nvl( rs.getString("HORA_NF"), "") );
 				} else if ( rs.getString("STATUS").equals("CARREGANDO")) {
+					if (rs.getDate("DTINICIO") == null ) {
+						j.add("status", "NAO INICIADO");
+					} else if ( rs.getDate("DTFIM") != null ) {
+						j.add("status", "CONCLUÍDO");
+					}
 					j.add("hora", StringAcol.nvl( rs.getString("HORA_TICKET"), "") );
 				}
+				if ( rs.getDate("DTINICIO") == null ) {
+					j.add("inicioCagto", "");
+				} else { 
+					j.add("inicioCagto", formatter.format(( rs.getTimestamp("DTINICIO")) )) ;
+				}
+				if ( rs.getDate("DTFIM") == null ) {
+					j.add("finalCagto", "");
+				} else { 
+					j.add("finalCagto", formatter.format((rs.getTimestamp("DTFIM")) ));
+				}				
 
 				BoardMessage evento = DataProviderSingleton.getInstance().getEvento(  rs.getString("PEDIDO") );
 				if ( evento instanceof BoardMessage ) {
@@ -195,6 +214,10 @@ public class DemoDAO extends BaseDB {
 			car.set("produtoOnu", StringAcol.nvl( rsCagto.getString("NUMONU"), " ") );
 			car.set("quantidade", rsCagto.getDouble("QUANT"));
 			car.set("filial", rsCagto.getString("FILIAL"));
+			car.set("inicioCagto", joCarregamento.getString("inicioCagto"));
+			car.set("finalCagto", joCarregamento.getString("finalCagto"));
+			
+
 		}
 		rsCagto.close();
 		pstmtCagto.close();
@@ -204,8 +227,8 @@ public class DemoDAO extends BaseDB {
 
 		StringBuilder sqlBuilderTicket = new StringBuilder();
 		sqlBuilderTicket.append( " SELECT * FROM HR.BI_CARREGAMENTO_SZP SZP, HR.BI_CARREGAMENTO_TICKET SZQ ");
-		sqlBuilderTicket.append( " WHERE SZP.FILIAL = SZQ.ZQ_FILIAL ");
-		sqlBuilderTicket.append( " AND   SZP.TICKET = SZQ.ZQ_CODIGO ");
+		sqlBuilderTicket.append( " WHERE SZP.FILIAL (+) = SZQ.ZQ_FILIAL ");
+		sqlBuilderTicket.append( " AND   SZP.TICKET (+) = SZQ.ZQ_CODIGO ");
 		sqlBuilderTicket.append( " AND   SZP.PEDIDO = ? AND SZP.FILIAL = ? ");
 
 		try {
@@ -217,12 +240,20 @@ public class DemoDAO extends BaseDB {
 
 			while (rs.next()){			
 				
+				/** Já fiz na etapa anterior 
+				if ( rs.getDate("INICIO_CAGTO") == null ) {
+					car.set("inicioCagto", "");
+				} else { 
+					car.set("inicioCagto", rs.getDate("INICIO_CAGTO").toLocaleString());
+				}
+				if ( rs.getDate("FINAL_CAGTO") == null ) {
+					car.set("finalCagto", "");
+				} else { 
+					car.set("finalCagto", rs.getDate("INICIO_CAGTO").toLocaleString());
+				}
+				**/
 				car.set("ticket", rs.getString("TICKET"));
-				car.set("notaFiscal", rs.getString("NOTAF"));
-				car.set("inicioCagto", "03/07 12:50");
-				car.set("finalCagto", "");
-				//.add("carregamento_dtinicio", rs.getString("DTINICIO").trim())
-				//.add("carregamento_dtfim", 	rs.getString("DTFIM").trim());							
+				car.set("notaFiscal", rs.getString("NOTAF"));						
 			}
 			rs.close();
 

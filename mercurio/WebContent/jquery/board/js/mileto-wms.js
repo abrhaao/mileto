@@ -26,6 +26,8 @@ try {
 	do {
 		xServer				=	localStorage.getItem("myServer");
 		xMaxByScreen		=	localStorage.getItem("maxByScreen");
+		xEnterprise			=	localStorage.getItem("myEnterprise");
+		xMaxHours			=	localStorage.getItem("maxHours");
 
 		if ( xServer == null ) {
 			localStorage.setItem("myServer", "http://10.8.0.232:8081/mercurio");
@@ -33,6 +35,12 @@ try {
 		if ( xMaxByScreen == null ) {
 			localStorage.setItem("maxByScreen", "6");
 		}
+		if ( xEnterprise == null ) {
+			localStorage.setItem("myEnterprise", "DEMO");
+		}	
+		if ( xMaxHours == null ) {
+			localStorage.setItem("maxHours", "4");
+		}			
 	} while ( xServer == null || xMaxByScreen == null );
 	
 	qMaxByScreen = xMaxByScreen;
@@ -40,6 +48,8 @@ try {
 } catch(error) {
 	alert("ruim");
 }
+
+//alert( localStorage.getItem("myServer") );
 
 var Example1 = new (function() {
 	var $stopwatch, // Stopwatch element on the page
@@ -50,99 +60,113 @@ var Example1 = new (function() {
 		currentTime += incrementTime / 10;
 
 		//var carregamentoPedido	=	$(this).html();
-		var dataSetContent	=	"";			
+					
+		
+		
+		
+		
+		
+		////////////////////////
+		
+		
+		
+		
+		////////////////////////////////////////////////////
+		if ( count % 5 == 1 ) {
+		
+			$.ajax({
+				type: 'GET',
+				url: xServer + "/api/carregamento/recuperaProgramacaoVendas?enterprise=" + localStorage.getItem("myEnterprise"),
+				dataType: "json",
+				async: true,
+				beforeSend: function(){
+					$('#ajax-loader').css("visibility", "visible");						  									
+				},
+				success: function (resultResponseVendas) {
+	
+					sessionStorage.setItem('myProgramacao', JSON.stringify(resultResponseVendas));
+					
+					console.log("Total de Registros = " + resultResponseVendas.length ) ;                           
+	
+					plotaCarregamentos ( resultResponseVendas );
+					
+					/**
+					var qTelas  =   Math.floor ( (resultResponseVendas.length  / qMaxByScreen) + 0.9999 )  ;                        
+					var qPagina =   ( count % qTelas ) + 1 ;
+					
 
+					$("#infoBarTelas").html(qTelas);
+					$("#infoBarPagina").html(qPagina);
+					$("#infoBarRegistros").html(resultResponseVendas.length);
+					
+					$.each(resultResponseVendas, function(i, resultResponseCarregamento ) {
+	
+						//console.log(resultResponseCarregamento.highlight)              
+	
+						if ( i >= ( ( count % qTelas) * qMaxByScreen ) && i < ( (count % qTelas + 1) * qMaxByScreen ) ) {                            
+	
+							var cssClasseStatus = "";
+	
+	
+	
+							if ( resultResponseCarregamento.highlightStatus === undefined ) {
+								//alert ("Não Temos um inidividuo com highlightStatus" );
+							} else {
+								cssClasseStatus	= resultResponseCarregamento.highlightStatus ;    								
+							}
+	
+							if (resultResponseCarregamento.highlight === undefined || resultResponseCarregamento.highlight === null) {
+								dataSetContent +=  ' <tr> '	;									
+							} else { 
+								dataSetContent +=  ' <tr class="rwd-highlight-' + resultResponseCarregamento.highlight + '"> ';
+							}
+	
+							dataSetContent +=  '<td><span><img style="width: 120px; height: 55px;" src="' + resultResponseCarregamento.icone + '"></span><br>';
+							dataSetContent +=  '  <span class="rwd-span-transportadora">' + resultResponseCarregamento.transportadora + '</SPAN>';
+							dataSetContent +=  '</td>';
+							dataSetContent +=  '<td><a href="#" title="' + resultResponseCarregamento.cliente + '" class="tooltip">';
+							dataSetContent +=  '<span id="PV-000015-01-PLACA">'+ resultResponseCarregamento.placa + '</span><br>';
+							dataSetContent +=   '<span class="rwd-span-motorista">' + resultResponseCarregamento.motorista + '</SPAN>';
+							dataSetContent +=  '</a>';
+							dataSetContent +=  '</td>';
+							dataSetContent +=  '<td><span>' + resultResponseCarregamento.pedido + '</span><br><span class="rwd-dados-produto">' + resultResponseCarregamento.produto + '</span></td>    ';
+							dataSetContent +=  '<td><span>'+ resultResponseCarregamento.doca + '</SPAN></td>';
+							dataSetContent +=  '<td><span class="rwd-span-orientacoes ' + cssClasseStatus+ '">' + resultResponseCarregamento.status + '</span><br><span class="rwd-dados">'+ resultResponseCarregamento.hora + '</span></td>';
+							//dataSetContent +=  '<td><span class="rwd-span-orientacoes">' + resultResponseCarregamento.instrucao + '</span>' + '</td>';
+							dataSetContent +=  '<td>' ;
+							//if ( ! ( resultResponseCarregamento.produtoTes.equals(" ") ) ) {
+							dataSetContent +=   '<span class="rwd-span-orientacoes" style="font-size-adjust: 0.4;"> TES ' + resultResponseCarregamento.produtoTes + '</span><br>';
+							//} 
+							if ( ! ( resultResponseCarregamento.produtoOnu.trim() === ("") ) ) {
+								dataSetContent +=   '<span class="rwd-span-orientacoes" style="font-size-adjust: 0.4;"> ONU ' + resultResponseCarregamento.produtoOnu + '</span>';
+							}                                 
+							dataSetContent += '</td>';
+							dataSetContent +=  '</tr>';
+							$("#dataSetProgramacaoVenda").html(dataSetContent);		                                                        
+						}
+					})
+					**/
+	
+				},
+				error: function (request,error) {
+					console.log("JSON CARREGAMENTO = Deu errado");
+					//alert("Servidor de informações não está não respondendo.");
+				}
+			});
+		
+		} else {
+			
+			//printStorage()
+			var retrievedObject = sessionStorage.getItem('myProgramacao');
+			var resultResponseVendas = JSON.parse(retrievedObject);
+			
+			plotaCarregamentos ( resultResponseVendas );				
+		}
+
+		///////////////////////
 		$.ajax({
 			type: 'GET',
-			url: xServer + "/api/carregamento/recuperaProgramacaoVendas?enterprise=KATRIUM",
-			dataType: "json",
-			async: true,
-			beforeSend: function(){
-				$('#ajax-loader').css("visibility", "visible");						  
-
-				dataSetContent += ' <tr style="background: rgb(48, 64, 80) none repeat scroll 0% 0%; color: yellow;">   '
-					dataSetContent += ' <th>Transportadora</th>'
-						dataSetContent += ' <th>Veículo / Motorista</th>'
-							dataSetContent += ' <th>Pedido</th>    '
-								dataSetContent += ' <th>Localização</th>'
-									dataSetContent += ' <th>Status</th>'
-										dataSetContent += ' <th>Instrução</th>'
-											dataSetContent += ' </tr>'				
-			},
-			success: function (resultResponseVendas) {
-
-				console.log("Total de Registros = " + resultResponseVendas.length ) ;                           
-				//console.log("Qtas Telas Necessario = " + Math.trunc ( (resultResponseVendas.length  / qMaxByScreen) + 0.9999 ) );
-
-
-				var qTelas  =   Math.floor ( (resultResponseVendas.length  / qMaxByScreen) + 0.9999 )  ;                        
-				var qPagina =   ( count % qTelas ) + 1 ;
-				//MATH.Trunc não está implementado na TELEVISÃO
-				//var qTelas = 2;
-				//alert ( qTelas )
-				//console.log ("Registros [] = " + count % qTelas );
-				//console.log ("Min = " + ( ( count % qTelas) * qMaxByScreen ) );
-				//console.log ("Max = " + ( (count % qTelas + 1) * qMaxByScreen ) );
-				$("#infoBarTelas").html(qTelas);
-				$("#infoBarPagina").html(qPagina);
-				$("#infoBarRegistros").html(resultResponseVendas.length);
-
-				$.each(resultResponseVendas, function(i, resultResponseCarregamento ) {
-
-					//console.log(resultResponseCarregamento.highlight)              
-
-					if ( i >= ( ( count % qTelas) * qMaxByScreen ) && i < ( (count % qTelas + 1) * qMaxByScreen ) ) {                            
-
-						var cssClasseStatus = "";
-
-
-
-						if ( resultResponseCarregamento.highlightStatus === undefined ) {
-							//alert ("Não Temos um inidividuo com highlightStatus" );
-						} else {
-							cssClasseStatus	= resultResponseCarregamento.highlightStatus ;    								
-						}
-
-						if (resultResponseCarregamento.highlight === undefined || resultResponseCarregamento.highlight === null) {
-							dataSetContent +=  ' <tr> '	;									
-						} else { 
-							dataSetContent +=  ' <tr class="rwd-highlight-' + resultResponseCarregamento.highlight + '"> ';
-						}
-
-						dataSetContent +=  '<td><span><img style="width: 120px; height: 55px;" src="' + resultResponseCarregamento.icone + '"></span><br>';
-						dataSetContent +=  '  <span class="rwd-span-transportadora">' + resultResponseCarregamento.transportadora + '</SPAN>';
-						dataSetContent +=  '</td>';
-						dataSetContent +=  '<td><a href="#" title="' + resultResponseCarregamento.cliente + '" class="tooltip">';
-						dataSetContent +=  '<span id="PV-000015-01-PLACA">'+ resultResponseCarregamento.placa + '</span><br>';
-						dataSetContent +=   '<span class="rwd-span-motorista">' + resultResponseCarregamento.motorista + '</SPAN>';
-						dataSetContent +=  '</a>';
-						dataSetContent +=  '</td>';
-						dataSetContent +=  '<td><span>' + resultResponseCarregamento.pedido + '</span><br><span class="rwd-dados-produto">' + resultResponseCarregamento.produto + '</span></td>    ';
-						dataSetContent +=  '<td><span>'+ resultResponseCarregamento.doca + '</SPAN></td>';
-						dataSetContent +=  '<td><span class="rwd-span-orientacoes ' + cssClasseStatus+ '">' + resultResponseCarregamento.status + '</span><br><span class="rwd-dados">'+ resultResponseCarregamento.hora + '</span></td>';
-						//dataSetContent +=  '<td><span class="rwd-span-orientacoes">' + resultResponseCarregamento.instrucao + '</span>' + '</td>';
-						dataSetContent +=  '<td>' ;
-						//if ( ! ( resultResponseCarregamento.produtoTes.equals(" ") ) ) {
-						dataSetContent +=   '<span class="rwd-span-orientacoes" style="font-size-adjust: 0.4;"> TES ' + resultResponseCarregamento.produtoTes + '</span><br>';
-						//} 
-						if ( ! ( resultResponseCarregamento.produtoOnu.trim() === ("") ) ) {
-							dataSetContent +=   '<span class="rwd-span-orientacoes" style="font-size-adjust: 0.4;"> ONU ' + resultResponseCarregamento.produtoOnu + '</span>';
-						}                                 
-						dataSetContent += '</td>';
-						dataSetContent +=  '</tr>';
-						$("#dataSetProgramacaoVenda").html(dataSetContent);		                                                        
-					}
-				})
-
-			},
-			error: function (request,error) {
-				console.log("JSON CARREGAMENTO = Deu errado");
-			}
-		});
-
-		$.ajax({
-			type: 'GET',
-			url: xServer + "/api/messagemanager/informa?enterprise=KATRIUM&assunto=TESTE",
+			url: xServer + "/api/messagemanager/informa?enterprise=" + localStorage.getItem("myEnterprise") + "&assunto=CARREGAMENTOS",
 			dataType: "json",
 			async: true,
 			beforeSend: function(){
@@ -151,31 +175,40 @@ var Example1 = new (function() {
 			success: function (resultResponseComunicado) {
 
 				if (resultResponseComunicado.mensagem === undefined || resultResponseComunicado.mensagem === null)	{
+					$('.rwd-table').css("opacity", "1.0");		
 					$('#board-ajax-informativo').css("visibility", "hidden");	
-					isThereAlertOnScreen = false;
-					//localStorage.setItem("isThereAlertOnScreen", "false");    
+					
+					isThereAlertOnScreen = false;  
 				} else {                                            
-					//var isThereAlertOnScreen = localStorage.getItem("isThereAlertOnScreen");
 					if (isThereAlertOnScreen == false) {
 						var myBuzzerNotification    =   document.getElementById('buzzer');
 						myBuzzerNotification.load();  
 						myBuzzerNotification.play();  
-
-
-						//localStorage.setItem("isThereAlertOnScreen", "true");
+								
+						/** Fala ... **/
+						setTimeout(
+									  function() 
+									  {
+										  if ( resultResponseComunicado.fala != null ) {
+												responsiveVoice.setDefaultVoice("Portuguese Female");						
+												responsiveVoice.speak( resultResponseComunicado.fala );
+										  }
+									  }, 2000);
+						
 						isThereAlertOnScreen = true;                            
 					}
 
 					messageContent = resultResponseComunicado.mensagem		                        					                          							
+					$('.rwd-table').css("opacity", "0.2");					
 					$("#board-ajax-informativo").html(messageContent);		
-					$('#board-ajax-informativo').css("visibility", "visible");	
-
+					$('#board-ajax-informativo').css("visibility", "visible");											
 				}
 
 
 			},
 			error: function (request,error) {
 				$('#board-ajax-informativo').css("visibility", "hidden");
+				$('.rwd-table').css("opacity", "1.0");	
 				console.log("JSON CARREGAMENTO = Deu errado");
 			}
 		});
@@ -294,6 +327,10 @@ var count = 0,
 timer = $.timer(function() {
 	count++;
 	$('#counter').html(count);
+
+var now = new Date(),
+     now = now.getHours()+':'+now.getMinutes();
+ 	 $('#time').html(now);
 });
 timer.set({ time : 8000, autostart : true });               //Acho que tem que ser o mesmo tempo do primeiro
 
@@ -309,4 +346,80 @@ function formatTime(time) {
 	sec = parseInt(time / 100) - (min * 60),
 	hundredths = pad(time - (sec * 100) - (min * 6000), 2);
 	return (min > 0 ? pad(min, 2) : "00") + ":" + pad(sec, 2) + ":" + hundredths;
+}
+
+function printStorage () {
+    var allStrings = '';
+    for(var key in window.localStorage){
+        if(window.localStorage.hasOwnProperty(key)){
+            allStrings += window.localStorage[key];
+        }	            
+    }
+    alert ( "Local Storage Space: " + allStrings ? 3 + ((allStrings.length*16)/(8*1024)) + ' KB' : 'Empty (0 KB)' );
+    return allStrings ? 3 + ((allStrings.length*16)/(8*1024)) + ' KB' : 'Empty (0 KB)';
+};
+
+function plotaCarregamentos( resultResponseVendas) {
+	
+	var dataSetContent	=	"";
+	
+	dataSetContent += ' <tr style="background: rgb(48, 64, 80) none repeat scroll 0% 0%; color: yellow;">   '
+		dataSetContent += ' <th>Transportadora</th>'
+		dataSetContent += ' <th>Veículo / Motorista</th>'
+		dataSetContent += ' <th>Pedido</th>    '
+		dataSetContent += ' <th>Localização</th>'
+		dataSetContent += ' <th>Status</th>'
+		dataSetContent += ' <th>Instrução</th>'
+		dataSetContent += ' </tr>'	
+			
+			var qTelas  =   Math.floor ( (resultResponseVendas.length  / qMaxByScreen) + 0.9999 )  ;                        
+	var qPagina =   ( count % qTelas ) + 1 ;
+	//MATH.Trunc não está implementado na TELEVISÃO
+
+	$("#infoBarTelas").html(qTelas);
+	$("#infoBarPagina").html(qPagina);
+	$("#infoBarRegistros").html(resultResponseVendas.length);
+	
+	$.each(resultResponseVendas, function(i, resultResponseCarregamento ) {
+
+		if ( i >= ( ( count % qTelas) * qMaxByScreen ) && i < ( (count % qTelas + 1) * qMaxByScreen ) ) {                            
+
+			var cssClasseStatus = "";
+
+			if ( resultResponseCarregamento.highlightStatus === undefined ) {
+				//alert ("Não Temos um inidividuo com highlightStatus" );
+			} else {
+				cssClasseStatus	= resultResponseCarregamento.highlightStatus ;    								
+			}
+
+			if (resultResponseCarregamento.highlight === undefined || resultResponseCarregamento.highlight === null) {
+				dataSetContent +=  ' <tr> '	;									
+			} else { 
+				dataSetContent +=  ' <tr class="rwd-highlight-' + resultResponseCarregamento.highlight + '"> ';
+			}
+
+			dataSetContent +=  '<td><span><img style="width: 120px; height: 55px;" src="' + resultResponseCarregamento.icone + '"></span><br>';
+			dataSetContent +=  '  <span class="rwd-span-transportadora">' + resultResponseCarregamento.transportadora + '</SPAN>';
+			dataSetContent +=  '</td>';
+			dataSetContent +=  '<td><a href="#" title="' + resultResponseCarregamento.cliente + '" class="tooltip">';
+			dataSetContent +=  '<span id="PV-000015-01-PLACA">'+ resultResponseCarregamento.placa + '</span><br>';
+			dataSetContent +=   '<span class="rwd-span-motorista">' + resultResponseCarregamento.motorista + '</SPAN>';
+			dataSetContent +=  '</a>';
+			dataSetContent +=  '</td>';
+			dataSetContent +=  '<td><span>' + resultResponseCarregamento.pedido + '</span><br><span class="rwd-dados-produto">' + resultResponseCarregamento.produto + '</span></td>    ';
+			dataSetContent +=  '<td><span>'+ resultResponseCarregamento.doca + '</SPAN></td>';
+			dataSetContent +=  '<td><span class="rwd-span-orientacoes ' + cssClasseStatus+ '">' + resultResponseCarregamento.status + '</span><br><span class="rwd-dados">'+ resultResponseCarregamento.hora + '</span></td>';
+			dataSetContent +=  '<td>' ;
+			dataSetContent +=   '<span class="rwd-span-orientacoes" style="font-size-adjust: 0.4;"> TES ' + resultResponseCarregamento.produtoTes + '</span><br>';
+			if ( ! ( resultResponseCarregamento.produtoOnu.trim() === ("") ) ) {
+				dataSetContent +=   '<span class="rwd-span-orientacoes" style="font-size-adjust: 0.4;"> ONU ' + resultResponseCarregamento.produtoOnu + '</span>';
+			}                                 
+			dataSetContent += '</td>';
+			dataSetContent +=  '</tr>';
+			$("#dataSetProgramacaoVenda").html(dataSetContent);		   
+	
+		}
+	});
+	
+	
 }

@@ -23,9 +23,9 @@ public class Carregamento {
 	@Path("/recuperaProgramacaoVendas")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response recuperaProgramacaoVendasRESTService(
-			@QueryParam("enterprise") String pEnterpriseKey) {
+			@QueryParam("enterprise") String pEnterpriseKey, @QueryParam("horas") String pHoras ) {
 
-		JsonArray result = new CarregamentoDelegate().recuperaProgramacaoVendasJSON( pEnterpriseKey );
+		JsonArray result = new CarregamentoDelegate().recuperaProgramacaoVendasJSON( pEnterpriseKey, pHoras );
 		return Response.status(200).entity(result.toString()).build();
 	}
 
@@ -35,7 +35,7 @@ public class Carregamento {
 	public Response recuperaCarregamentoRESTService(
 			@PathParam("enterpriseKey") String pEnterpriseKey, @PathParam("filial") String pFilial, @PathParam("pedido") String pPedido) {
 
-		JsonArray result = new CarregamentoDelegate().recuperaProgramacaoVendasJSON( pEnterpriseKey );
+		JsonArray result = new CarregamentoDelegate().recuperaProgramacaoVendasJSON( pEnterpriseKey, "9999" );
 		for (int i = 0 ; i < result.size(); i++) {
 	        JsonObject jo = result.getJsonObject(i);
 	        if ( jo.getString("pedido").equals(pPedido) ) {
@@ -50,15 +50,21 @@ public class Carregamento {
 	@Path("/atualizaCarregamento")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response atualizaCarregamento ( @FormParam("enterprise") String enterprise, @FormParam("filial") String filial,  
-								@FormParam("pedido") String pedido, @FormParam("evento") String evento ) {
+											@FormParam("pedido") String pedido, @FormParam("evento") String evento ) {
 		System.out.println("Estou dentro no method POST atualizaCarregamento!!!!!!! "  );
 		
 		StringBuilder msg = new StringBuilder();
 	    msg.append( "<strong></strong>");
 
+	    DataProviderSingleton provider = DataProviderSingleton.getInstance();
+	    
+	    /** Chama a mensagem de carregamento finalizado **/
 		//DataProviderSingleton provider = DataProviderSingleton.getInstance();
 		//provider.putEvento( key, new BoardMessage(msg.toString(), "HIGHLIGHT", enterprise, "HIGHLIGHT"));
 		
+	    /** Chama a mensagem de carregamento finalizado **/
+		//rovider.putMessage(new BoardMessage(msg.toString(), "Assunto", enterprise, "K1", speech));
+	    
 		String result = "OK. EVENTO REGISTRADO";
 		return Response.status(200).entity(result).build();
 	}

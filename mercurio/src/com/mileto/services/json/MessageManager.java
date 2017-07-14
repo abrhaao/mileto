@@ -39,7 +39,7 @@ public class MessageManager {
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response putMessage( @FormParam("titulo") String titulo,	@FormParam("subTitulo") String subTitulo,
 							@FormParam("tituloHonorario") String tituloHonorario, @FormParam("destinatario") String destinatario,
-							@FormParam("enterprise") String enterprise, @FormParam("aviso") String aviso) {
+							@FormParam("enterprise") String enterprise, @FormParam("aviso") String aviso, @FormParam("fala") String speech) {
 		System.out.println("Estou dentro no method POST!!!!!!! " + enterprise );
 		
 		StringBuilder msg = new StringBuilder();
@@ -48,7 +48,7 @@ public class MessageManager {
 	    msg.append(aviso);
 
 		DataProviderSingleton provider = DataProviderSingleton.getInstance();
-		provider.putMessage(new BoardMessage(msg.toString(), "Assunto", enterprise, "K1"));
+		provider.putMessage(new BoardMessage(msg.toString(), "Assunto", enterprise, "K1", speech));
 		
 		String result = "OK";
 		return Response.status(200).entity(result).build();
@@ -65,7 +65,7 @@ public class MessageManager {
 	    msg.append( "<strong></strong>");
 
 		DataProviderSingleton provider = DataProviderSingleton.getInstance();
-		provider.putEvento( key, new BoardMessage(msg.toString(), "HIGHLIGHT", enterprise, "HIGHLIGHT"));
+		provider.putEvento( key, new BoardMessage(msg.toString(), "HIGHLIGHT", enterprise, "HIGHLIGHT", ""));
 		
 		String result = "OK. EVENTO REGISTRADO";
 		return Response.status(200).entity(result).build();

@@ -20,7 +20,7 @@ public class CarregamentoDelegate {
 	 * @param pEnterpriseKey
 	 * @return
 	 */
-	public JsonArray recuperaProgramacaoVendasJSON( String pEnterpriseKey ) { 
+	public JsonArray recuperaProgramacaoVendasJSON( String pEnterpriseKey, String pHoras ) { 
 
 		JsonArrayBuilder jsonArray  = Json.createArrayBuilder();		 
 
@@ -38,7 +38,7 @@ public class CarregamentoDelegate {
 				List<Object> arrayParameters = new ArrayList<Object>();
 				arrayParameters.add(LocalDate.now());			//HOJE
 				arrayParameters.add((byte) 0);					//DIAS ATRÁS
-				arrayParameters.add((double) 40);				//CONSIDERAR APENAS NFS FATURADAS NAS ÚLTIMAS X HORAS
+				arrayParameters.add((double) Double.parseDouble(pHoras) );				//CONSIDERAR APENAS NFS FATURADAS NAS ÚLTIMAS X HORAS
 
 				Conexao cx = new Conexao( "PAN" );			// Lembre-se que esta classe BusinessDelegate é quem deve ser responsável por TODAS AS FONTES DE DADOS!!!
 				jsonArray = PrcSigaWmsDAO.getProgramacaoVendas(cx, arrayParameters);

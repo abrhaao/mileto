@@ -2,80 +2,135 @@
 <html >
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Responsive Table</title>
 
   
 	<script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery.timer.js"></script>
-    <script type="text/javascript" src="js/demo.js"></script>
-  
+    <script type="text/javascript" src="js/mileto-wms.js"></script>
   
 
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-
+  <!-- Dialogs -->
+  <link rel="stylesheet" href="../../styles/jquery/ui/jquery-ui.css">
+  <script src="../../styles/jquery/ui/jquery-ui.js"></script> <!-- ESTE GARANTIU O UI DO DIALOG -->
+  <!--  script src="https://code.jquery.com/jquery-1.12.4.js"></script--  ESTE FEZ PARAR DE FUNCIONAR -->
   
-      <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="../../styles/jquery/normalize.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  
+  <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
 
   
 </head>
 
-<body style="background: #2A333f">
-  <h1>RWD List to Table</h1>
-<table class="rwd-table">
+<body>
+  <h1>Programação de Carregamentos</h1>
+  <span id="infoTopLogo" style="position: absolute; right: 2%; top: 1px; padding: 0.5em;">
+		<img id="logoEmpresa" src="scss/logo-empresa.png" style="width: 150px"/>
+	</span>   	
+	
+  <table class="rwd-table" id="dataSetProgramacaoVenda">
+  <!-- 
   <tr style="background: rgb(48, 64, 80) none repeat scroll 0% 0%;">
-    <th>Veículo</th>
-    <th>Motorista</th>
-    <th>Pedido</th>
     <th>Transportadora</th>
+	<th>Veículo</th>
+    <th>Motorista</th>
+    <th>Pedido</th>    
 	<th>Localização</th>
 	<th>Status</th>
 	<th>Instrução</th>
   </tr>
-  <tr style="border-color: rgb(48, 64, 80)">
-    <td><a href="#" title="PLACA XYZ ARACAJU-SE" class="tooltip">
-        <span id="PV-000015-01-PLACA">@</span><br><span id="PV-000015-01-VEICULO" class="rwd-dados">.</span>
-        </a>
-    </td>
-    <td><span id="PV-000015-01-PILOTO">@</SPAN></td>
-    <td><span class="quadroPedidoVenda">000015-01</span><br><span id="PV-000015-01-PRODUTO" class="rwd-dados"></span></td>
-    <td><span id="PV-000015-01-TRANSPORTE">@</SPAN></td>
-	<td><span id="PV-000015-01-LOCALIZA">@</SPAN></td>
-	<td><span id="PV-000015-01-STATUS"></span></td>
-	<td>Retirar Veículo da Doca</td>
-  </tr>
-  <tr>
-    <td><span id="PV-000016-01-PLACA">@</span><br><span id="PV-000016-01-VEICULO" class="rwd-dados">.</span></td>
-    <td><span id="PV-000016-01-PILOTO">@</SPAN></td>
-    <td><span class="quadroPedidoVenda">000016-01</span><br><span id="PV-000016-01-PRODUTO" class="rwd-dados"></span></td>
-    <td><span id="PV-000016-01-TRANSPORTE">@</SPAN></td>
-	<td><span id="PV-000016-01-LOCALIZA">@</SPAN></td>
-	<td><span id="PV-000016-01-STATUS"></span></td>
-	<td>Aguardar</td>
-  </tr>
-  <tr>
-    <td><span id="PV-000014-01-PLACA">@</span><br><span id="PV-000014-01-VEICULO" class="rwd-dados">.</span></td>
-    <td><span id="PV-000014-01-PILOTO">@</SPAN></td>
-    <td><span class="quadroPedidoVenda">000014-01</span><br><span id="PV-000014-01-PRODUTO" class="rwd-dados"></span></td>
-    <td><span id="PV-000014-01-TRANSPORTE">@</SPAN></td>
-	<td><span id="PV-000014-01-LOCALIZA">@</SPAN></td>
-	<td><span id="PV-000014-01-STATUS"></span></td>
-	<td>Dirigir-se à Expedição</td>
-  </tr>
+  -->
 </table>
 
 <p></p>
   
-  
-  
-    <hr/><h3 style='margin-top:20px;'>Example 1 - Stopwatch (counts ups)</h3>
+<div id="footer">
+    <hr/>
     <span id="stopwatch">00:00:00</span>
-    <p>
+    <span id="counter">0</span>
+    <span class="mileto-unit">RESOLUÇÃO</span>
+    <span>Largura: </span><span id="myResolution"></span>
+     <span>Página: </span><span id="infoBarPagina"></span>/<span id="infoBarTelas"></span>
+     <span>Registros: </span><span id="infoBarRegistros"></span>     
+    <span>
         <input type='button' value='Play/Pause' onclick='Example1.Timer.toggle();' />
-        <input type='button' value='Stop/Reset' onclick='Example1.resetStopwatch();' />
-    </p>
-    <br/>
-    <br/>
+        <input type='button' value='Stop/Reset' onclick='Example1.resetStopwatch();' />        
+    </span>   
+	<span id="time" style="position: absolute; right: 6%; top: 1px; padding: 0.5em; font-size: 22px">00:00</span>
+    <span id="infoBarConfig" style="position: absolute; right: 2%; top: 1px; padding: 0.5em;">
+    	<img id="botaoConfig" src="https://cdn2.iconfinder.com/data/icons/business-seo-vol-5/512/1-94-512.png" style="width: 40px"/>
+    </span>   
+</div>  
+<div id="board-ajax-informativo">... CARREGANDO</div>	
+<audio id="buzzer" src="scss/stopper.ogg" type="audio/ogg"></audio>    
 
+
+<div id="dialog-confirm" title="Configurações do Painel" style="display: none;">
+  <div role="main" class="ui-content">        
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Especifique as propriedades de conexão do painel de carregamentos:</p>
+		<table>
+		<tr>
+		<td><label for="inputWebServer">Web Server:</label></td>
+		<td><input type="text" name="inputWebServer" id="inputWebServer" value=""></td>
+		<tr>
+        <td><label for="inputEnterprise">Empresa:</label></td>
+		<td><input type="text" name="inputEnterprise" id="inputEnterprise" value="PAN" minlength="4" maxlength="7"></td>
+		</tr>
+		<tr>
+		<td><label for="inputQtdRegs">Registros por Tela:</label></td>
+		<td><input type="text" name="inputQtdRegs" id="inputQtdRegs" value="demo" minlength="1" maxlength="2"></td>
+		</tr>
+		<tr>
+		<td><label for="inputHoras">Considerar Faturamento (horas):</label></td>
+		<td><input type="text" name="inputQtdRegs" id="inputQtdRegs" value="demo" minlength="1" maxlength="2"></td>
+		</tr>
+        <!--a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Cancelar</a-->
+        <!--a href="#" id="botaoConfigConfirma" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-transition="flow">Confirmar</a-->
+    </div>
+</div>
+
+	
 </body>
+
+<script>
+ var myWidth    =   ( $( document ).width() );
+ $("#myResolution").html(myWidth);
+ 
+ $( "#botaoConfig" ).click( function() {	    
+	 
+	 $("#inputWebServer").val ( localStorage.getItem("myServer") );
+	 $("#inputEnterprise").val ( localStorage.getItem("myEnterprise") );
+	 $("#inputQtdRegs").val ( localStorage.getItem("maxByScreen") );
+	 $("#inputHoras").val ( localStorage.getItem("maxHours") );
+	 
+	 $( "#dialog-confirm" ).dialog({
+	      resizable: false,
+	      height: "auto",
+	      width: 500,
+	      modal: true,
+	      buttons: {
+	        "Confirmar": function() {
+				localStorage.setItem("myServer", 		$("#inputWebServer").val() 	);
+				localStorage.setItem("maxByScreen", 	$("#inputQtdRegs").val()  	);
+				localStorage.setItem("myEnterprise", 	$("#inputEnterprise").val() 	);
+				localStorage.setItem("maxHours", 		$("#inputHoras").val()		);	
+	          $( this ).dialog( "close" );
+	        },
+	        "Cancelar": function() {
+	          $( this ).dialog( "close" );
+	        }
+	      }
+	    });
+	  } );
+	  
+	//Botão de Confirmação das COnfigurações
+	$( "#botaoConfigConfirma" ).click(function() {
+		var ws = $("#inputWebServer").val();		
+		localStorage.setItem("myServer", ws );
+	});	  
+</script>
+
+
 </html>

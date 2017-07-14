@@ -94,7 +94,8 @@ public class DataProviderSingleton {
 				if ( b.getMomento().getTime() > cal.getTime().getTime() ) {
 					j = Json.createObjectBuilder()
 							.add("assunto", b.getAssunto())
-							.add("mensagem", b.getMensagem());
+							.add("mensagem", b.getMensagem())
+							.add("fala", b.getSpeech());
 					return j.build();
 				} else {
 					filaMensagens.remove(b);

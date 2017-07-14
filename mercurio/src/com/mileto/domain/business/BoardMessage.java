@@ -16,19 +16,21 @@ public class BoardMessage implements Comparable {
 	private String assunto;	
 	private String enterprise;
 	private String appKey;
+	private String speech;
 	
 	
-	public BoardMessage(String mensagem, String assunto, String enterprise, String appKey) {
+	public BoardMessage(String mensagem, String assunto, String enterprise, String appKey, String speech) {
 		super();
 		this.mensagem = mensagem;
 		this.assunto = assunto;
 		this.enterprise = enterprise;
 		this.appKey = appKey;
+		this.speech = speech;
 	}
 	
-	public static void informa( String pEnterpriseKey, String pAssunto, String pAppKey ) {
+	public static void informa( String pEnterpriseKey, String pAssunto, String pAppKey, String pSpeech ) {
 		DataProviderSingleton provider = DataProviderSingleton.getInstance();
-		provider.putMessage(new BoardMessage( "Aviso direto da classe Message Manager", "PRONTUÁRIO", pEnterpriseKey, pAppKey));
+		provider.putMessage(new BoardMessage( "Aviso direto da classe Message Manager", "PRONTUÁRIO", pEnterpriseKey, pAppKey, pSpeech));
 	}
 
 	
@@ -97,6 +99,15 @@ public class BoardMessage implements Comparable {
 	public void setAppKey(String appKey) {
 		this.appKey = appKey;
 	}
+
+	public String getSpeech() {
+		return speech;
+	}
+
+	public void setSpeech(String speech) {
+		this.speech = speech;
+	}
+	
 	
 	
 	
