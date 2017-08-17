@@ -13,7 +13,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.mileto.delegate.CarregamentoDelegate;
-import com.mileto.domain.business.BoardMessage;
 import com.mileto.persistence.DataProviderSingleton;
 
 @Path("/carregamento")
@@ -50,13 +49,14 @@ public class Carregamento {
 	@Path("/atualizaCarregamento")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response atualizaCarregamento ( @FormParam("enterprise") String enterprise, @FormParam("filial") String filial,  
-											@FormParam("pedido") String pedido, @FormParam("evento") String evento ) {
+										   @FormParam("pedido") String pedido, @FormParam("evento") String evento, 
+										   @FormParam("doca") String doca, @FormParam("lote") String lote, @FormParam("lacre") String lacre) {
 		System.out.println("Estou dentro no method POST atualizaCarregamento!!!!!!! "  );
 		
-		StringBuilder msg = new StringBuilder();
-	    msg.append( "<strong></strong>");
+		//StringBuilder msg = new StringBuilder();
+	    //msg.append( "<strong></strong>");
 
-	    DataProviderSingleton provider = DataProviderSingleton.getInstance();
+	    //DataProviderSingleton provider = DataProviderSingleton.getInstance();
 	    
 	    /** Chama a mensagem de carregamento finalizado **/
 		//DataProviderSingleton provider = DataProviderSingleton.getInstance();
@@ -65,8 +65,12 @@ public class Carregamento {
 	    /** Chama a mensagem de carregamento finalizado **/
 		//rovider.putMessage(new BoardMessage(msg.toString(), "Assunto", enterprise, "K1", speech));
 	    
-		String result = "OK. EVENTO REGISTRADO";
-		return Response.status(200).entity(result).build();
+	    
+	    JsonObject result = new CarregamentoDelegate().atualizaCarregamentoJSON ( enterprise, filial, pedido, evento, doca, lote, lacre );
+	    
+	    
+		//String result = "OK. EVENTO REGISTRADO";
+		return Response.status(200).entity(result.toString()).build();
 	}
 
 }

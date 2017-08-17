@@ -30,10 +30,11 @@ try {
 		xMaxHours			=	localStorage.getItem("maxHours");
 
 		if ( xServer == null ) {
-			localStorage.setItem("myServer", "http://10.8.0.232:8081/mercurio");
+			//localStorage.setItem("myServer", "http://10.8.0.232:8081/mercurio");
+			localStorage.setItem("myServer", "http://localhost:8080/mercurio");
 		}
 		if ( xMaxByScreen == null ) {
-			localStorage.setItem("maxByScreen", "6");
+			localStorage.setItem("maxByScreen", "7");
 		}
 		if ( xEnterprise == null ) {
 			localStorage.setItem("myEnterprise", "DEMO");

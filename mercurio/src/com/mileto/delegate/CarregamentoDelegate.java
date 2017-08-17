@@ -1,5 +1,6 @@
 package com.mileto.delegate;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,12 @@ public class CarregamentoDelegate {
 		return null;
 	}
 
+	/**
+	 * Obtém informações detalhadas de um carregamento
+	 * @param pEnterpriseKey
+	 * @param joCarregamento
+	 * @return
+	 */
 	public JsonObject recuperaCarregamentoJSON( String pEnterpriseKey , JsonObject joCarregamento ) { 
 
 		//JsonArrayBuilder jsonArray  = Json.createArrayBuilder();		 
@@ -79,6 +86,43 @@ public class CarregamentoDelegate {
 
 				return null;
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	public JsonObject atualizaCarregamentoJSON( String pEnterpriseKey, String pFilial, String pPedido, String pEvento, String pDoca, String pLote, String pLacre ) { 		 
+
+		
+		JsonObject joCarregamento = Json.createObjectBuilder().build();
+		
+
+		try { 
+
+			if (pEnterpriseKey.equals("DEMO"))  {				
+				
+				Conexao cx = new Conexao( "BYYOU" );			// Lembre-se que esta classe BusinessDelegate é quem deve ser responsável por TODAS AS FONTES DE DADOS!!!
+				
+				
+				joCarregamento = DemoDAO.atualizaCarregamento( cx, pFilial, pPedido, pEvento, pDoca, pLote, pLacre ) ;
+				
+				
+				
+				return joCarregamento; //.toString();
+
+				/**} else if (pEnterpriseKey.equals("PAN") || pEnterpriseKey.equals("KATRIUM"))  {
+
+				Conexao cx = new Conexao( "PAN" );			// Lembre-se que esta classe BusinessDelegate é quem deve ser responsável por TODAS AS FONTES DE DADOS!!! 
+				PrcSigaWmsDAO.getCarregamento( cx, joCarregamento ) ;			
+				return joCarregamento; //.toString();
+
+			**/ 
+			} else {
+				return null;
+			}
+	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

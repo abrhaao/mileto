@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.json.Json;
@@ -23,7 +26,6 @@ import org.apache.commons.beanutils.BasicDynaBean;
 import org.apache.commons.beanutils.DynaBean;
 import org.mileto.util.MyBean;
 import org.mileto.util.StringAcol;
-import org.richfaces.json.JSONObject;
 
 import com.mileto.domain.business.BoardMessage;
 import com.mileto.pattern.Conexao;
@@ -75,13 +77,14 @@ public class DemoDAO extends BaseDB {
 		JsonArrayBuilder jsonArray  = Json.createArrayBuilder();	
 
 		StringBuilder sqlBuilder = new StringBuilder();
-		sqlBuilder.append( " SELECT * FROM HR.BI_CARREGAMENTO, HR.BI_CARREGAMENTO_DOCA ");// WHERE DESCRICAO LIKE '%CLORO%' ");
-		sqlBuilder.append( " WHERE BI_CARREGAMENTO.FILIAL = BI_CARREGAMENTO_DOCA.FILIAL (+) ");
-		sqlBuilder.append( " AND   BI_CARREGAMENTO.PEDIDO = BI_CARREGAMENTO_DOCA.PEDIDO (+) ");
+		sqlBuilder.append( " SELECT * FROM HR.BI_CARREGAMENTO, HR.BI_CARREGAMENTO_SZP SZP ");// WHERE DESCRICAO LIKE '%CLORO%' ");
+		sqlBuilder.append( " WHERE BI_CARREGAMENTO.FILIAL = SZP.ZP_FILIAL ");
+		sqlBuilder.append( " AND   BI_CARREGAMENTO.PEDIDO = ZP_PEDIDO || '-' || ZP_ITEM ");
 
 		try {
-			
-			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM - HH:mm");
+
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM - HH:mm");
+			SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd hh:mm:ss");
 
 			PreparedStatement pstmt = db.prepareStatement(sqlBuilder.toString());		
 			java.sql.ResultSet rs = pstmt.executeQuery();			
@@ -107,26 +110,49 @@ public class DemoDAO extends BaseDB {
 						.add("quantidade", rs.getDouble("QUANT") )
 						.add("icone", PrcSigaWmsDAO.getLogo( rs.getString("TRANSP")) );
 
+				/** status TEM QUE VIR PERFEITO **/
 				if (rs.getString("STATUS").equals("NF EMITIDA")) {
 					j.add("hora", StringAcol.nvl( rs.getString("HORA_NF"), "") );
 				} else if ( rs.getString("STATUS").equals("CARREGANDO")) {
-					if (rs.getDate("DTINICIO") == null ) {
-						j.add("status", "NAO INICIADO");
-					} else if ( rs.getDate("DTFIM") != null ) {
-						j.add("status", "CONCLUÍDO");
-					}
+					//if (rs.getDate("DTINICIO") == null ) {yyyyMMddHHmmss");
+					//j.add("status", "NAO INICIADO");
+					//} else if ( rs.getDate("DTFIM") != null ) {
+					//j.add("status", "CONCLUÍDO");
+					//}
 					j.add("hora", StringAcol.nvl( rs.getString("HORA_TICKET"), "") );
 				}
-				if ( rs.getDate("DTINICIO") == null ) {
+
+
+				if ( rs.getString("STATUS").trim().equals("NAO INICIADO") ) {				
 					j.add("inicioCagto", "");
-				} else { 
-					j.add("inicioCagto", formatter.format(( rs.getTimestamp("DTINICIO")) )) ;
-				}
-				if ( rs.getDate("DTFIM") == null ) {
 					j.add("finalCagto", "");
+				}
+
+
+				String hInicio 	=	rs.getString("ZP_DTCG") + " " + rs.getString("ZP_HRCG");
+				String hFinal 	=	rs.getString("ZP_DTCGS") + " " + rs.getString("ZP_HRCGS");
+
+				//System.out.println("PEDIDO " + rs.getString("PEDIDO") + " STATUS = " + rs.getString("STATUS")) ;
+				if ( rs.getString("STATUS").trim().equals("CARREGANDO") ) {
+					try { 
+						Instant tInicio = sf.parse(hInicio).toInstant();
+						j.add("inicioCagto", formatter.format( ZonedDateTime.ofInstant(tInicio, ZoneId.systemDefault())) );
+					} catch (ParseException pe) {
+						j.add("inicioCagto", "");
+					}
+					j.add("finalCagto", "");
+				} else if ( rs.getString("STATUS").trim().equals("CONCLUIDO") ) {
+					
+					Instant tInicio = sf.parse(hInicio).toInstant();
+					Instant tFinal = sf.parse(hFinal).toInstant();
+
+					j.add("inicioCagto", formatter.format( ZonedDateTime.ofInstant(tInicio, ZoneId.systemDefault())) );
+					j.add("finalCagto", formatter.format( ZonedDateTime.ofInstant(tFinal, ZoneId.systemDefault())) );
 				} else { 
-					j.add("finalCagto", formatter.format((rs.getTimestamp("DTFIM")) ));
-				}				
+					j.add("inicioCagto", "") ;
+					j.add("finalCagto", "") ;
+				}
+
 
 				BoardMessage evento = DataProviderSingleton.getInstance().getEvento(  rs.getString("PEDIDO") );
 				if ( evento instanceof BoardMessage ) {
@@ -216,8 +242,6 @@ public class DemoDAO extends BaseDB {
 			car.set("filial", rsCagto.getString("FILIAL"));
 			car.set("inicioCagto", joCarregamento.getString("inicioCagto"));
 			car.set("finalCagto", joCarregamento.getString("finalCagto"));
-			
-
 		}
 		rsCagto.close();
 		pstmtCagto.close();
@@ -227,9 +251,9 @@ public class DemoDAO extends BaseDB {
 
 		StringBuilder sqlBuilderTicket = new StringBuilder();
 		sqlBuilderTicket.append( " SELECT * FROM HR.BI_CARREGAMENTO_SZP SZP, HR.BI_CARREGAMENTO_TICKET SZQ ");
-		sqlBuilderTicket.append( " WHERE SZP.FILIAL (+) = SZQ.ZQ_FILIAL ");
-		sqlBuilderTicket.append( " AND   SZP.TICKET (+) = SZQ.ZQ_CODIGO ");
-		sqlBuilderTicket.append( " AND   SZP.PEDIDO = ? AND SZP.FILIAL = ? ");
+		sqlBuilderTicket.append( " WHERE SZP.ZP_FILIAL (+) = SZQ.ZQ_FILIAL ");
+		sqlBuilderTicket.append( " AND   SZP.ZP_TICKET (+) = SZQ.ZQ_CODIGO ");
+		sqlBuilderTicket.append( " AND   SZP.ZP_PEDIDO = ? AND SZP.ZP_FILIAL = ? ");
 
 		try {
 
@@ -239,7 +263,7 @@ public class DemoDAO extends BaseDB {
 			java.sql.ResultSet rs = pstmt.executeQuery();			
 
 			while (rs.next()){			
-				
+
 				/** Já fiz na etapa anterior 
 				if ( rs.getDate("INICIO_CAGTO") == null ) {
 					car.set("inicioCagto", "");
@@ -251,7 +275,7 @@ public class DemoDAO extends BaseDB {
 				} else { 
 					car.set("finalCagto", rs.getDate("INICIO_CAGTO").toLocaleString());
 				}
-				**/
+				 **/
 				car.set("ticket", rs.getString("TICKET"));
 				car.set("notaFiscal", rs.getString("NOTAF"));						
 			}
@@ -264,14 +288,14 @@ public class DemoDAO extends BaseDB {
 			JsonObject jTicket = Json.createObjectBuilder().add("ticketCod", "T3546467").build();
 
 			//while(rs.next()){
-				//joCarregamento.put("ticket", jTicket);
-				//joCarregamento = jsonObjectToBuilder(joCarregamento)
-				//	.add("ticket", rs.getString("TICKET")).build();
+			//joCarregamento.put("ticket", jTicket);
+			//joCarregamento = jsonObjectToBuilder(joCarregamento)
+			//	.add("ticket", rs.getString("TICKET")).build();
 
 
-				//joCarregamento.put("doca", rs.getString("DOCA").trim())
-				//.add("carregamento_dtinicio", rs.getString("DTINICIO").trim())
-				//.add("carregamento_dtfim", 	rs.getString("DTFIM").trim());							
+			//joCarregamento.put("doca", rs.getString("DOCA").trim())
+			//.add("carregamento_dtinicio", rs.getString("DTINICIO").trim())
+			//.add("carregamento_dtfim", 	rs.getString("DTFIM").trim());							
 			//}
 			//rs.close();
 			pstmt.close();					
@@ -310,81 +334,55 @@ public class DemoDAO extends BaseDB {
 
 
 
-	public static JsonObject atualizaWMSCarregamento (String pPedido, String pDoca, String pStatus) {
+	public static JsonObject atualizaCarregamento ( Conexao cx, String pFilial, String pPedido, String pEvento, String pDoca, String pLote, String pLacre) {
 
-		DataProviderSingleton provider = DataProviderSingleton.getInstance();
-
-
-		JsonArrayBuilder jsonArray  = Json.createArrayBuilder();	
 		JsonObjectBuilder j = Json.createObjectBuilder();
 
+		try {
 
-		if (provider.get("listaDemoProgramacaoVendas") != null) { 
+			String fieldData	=	"";
+			String fieldHora	=	"";
+			String novoStatus	=	"";
 
-
-			Map<String,String> statusCarregamento = new HashMap<String, String>();
-			statusCarregamento.put("SA", "Aguardando tramits");
-			statusCarregamento.put("SB", "Aguardando Pesagem Inicial");
-			statusCarregamento.put("SC", "Encaminhando para as Docas");
-			statusCarregamento.put("SD", "Carregando");
-			statusCarregamento.put("SE", "Trocando de Docas");
-			statusCarregamento.put("SF", "Retirando Veículo");
-			statusCarregamento.put("SG", "Aguardando Pesagem Final");
-			statusCarregamento.put("SH", "Aguardando Emissão da Nota Fiscal");
-			statusCarregamento.put("SK", "Finalizado");
-
-
-
-
-			try { 
-				for (JsonValue jo: (JsonArray)provider.get("listaDemoProgramacaoVendas")) {
-					//Json.createObjectBuilder().add("uno", jo);
-
-					//JsonObject jobo = Json.createObjectBuilder().
-					JSONObject jobject = new JSONObject(jo.toString());
-					if ( jobject.getString("pedido").equals(pPedido) ) {
-						jobject.put( "doca", pDoca );
-						jobject.put( "status", statusCarregamento.get(pStatus));
-					}					
-
-
-
-					//JsonBuilderFactory factory = Json.createBuilderFactory(config);
-					//JsonArrayBuilder value = Json.createArrayBuilder()
-					//  .add(Json.createObjectBuilder().
-					//    .add("type", "home")
-					//  .add("number", "212 555-1234");
-
-
-					j = Json.createObjectBuilder()
-							.add("placa", jobject.getString("placa"))
-							.add("veiculo", jobject.getString("veiculo"))
-							.add("veiculoCidade", jobject.getString("veiculo"))
-							.add("transportadora", jobject.getString("transportadora"))
-							.add("cliente", jobject.getString("cliente"))
-							.add("clienteCidade", jobject.getString("clienteCidade"))
-							.add("motorista", jobject.getString("motorista"))
-							.add("pedido", jobject.getString("pedido"))
-							.add("produto", jobject.getString("produto"))
-							.add("status", jobject.getString("status"))
-							.add("instrucao", jobject.getString("instrucao"))
-							.add("doca", jobject.getString("doca"));							
-
-
-					//jsonArray.add(j.build());
-
-
-
-
-				}
-				//provider.save("listaDemoProgramacaoVendas", jsonArray.build());
-
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (pEvento.equals("inicio")) {
+				fieldData =	"zp_dtcg";
+				fieldHora =	"zp_hrcg";
+				novoStatus	=	"CARREGANDO";			
+			} else if ( pEvento.equals("fim")) {				
+				fieldData =	"zp_dtcgs";
+				fieldHora =	"zp_hrcgs";
+				novoStatus	=	"CONCLUIDO";												
 			}
 
+			StringBuilder builder = new StringBuilder();
+			builder.append( " UPDATE hr.bi_carregamento_szp SET " + fieldData + " = to_char ( sysdate, 'yyyymmdd' ), " + fieldHora + " = to_char ( sysdate, 'hh24:mi:ss' ), "); //, doca = '" + pDoca + "' ");
+			builder.append( " zp_lote = '" + pLote + "', zp_lacres = '" + pLacre + "' ");
+			builder.append( " WHERE zp_filial = '" + pFilial + "' AND zp_pedido = '" + pPedido.substring(0,6) + "' and zp_item = '" + pPedido.substring(7,9) + "' ");
 
+			cx.prepareCall( builder.toString() );
+			cx.executeProc();					
+			cx.commit();
+
+			builder = new StringBuilder();
+			builder.append( " UPDATE hr.bi_carregamento SET status = '" + novoStatus+ "' "); 
+			builder.append( " WHERE filial = '" + pFilial + "' AND pedido = '" + pPedido + "' ");
+
+			cx.prepareCall( builder.toString() );
+			cx.executeProc();					
+			cx.commit();
+			cx.closeConnection();
+
+			j = Json.createObjectBuilder()
+					.add("ficouLegal", "OK");													
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			j = Json.createObjectBuilder()
+					.add("ficouLegal", "NO");			
 		}
+
+
 		return j.build();
 
 	}
