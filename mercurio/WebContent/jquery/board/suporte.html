@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Table</title>
+
+  
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.timer.js"></script>
+    <script type="text/javascript" src="js/mileto-requisitos.js"></script>
+  
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  
+</head>
+
+<body>
+  <h1>Verificação de Requisitos Técnicos</h1>
+  
+  <div class="rwd-table" style="padding: 2em; font-size: 22px">
+  <ul>
+  <li id="verify-support-ajax" 				style="list-style-image: url('scss/icon-error.png');">Ajax</li>
+  <li id="verify-support-jquery" 			style="list-style-image: url('scss/icon-error.png');">JQuery</li>
+  <li id="verify-support-math1" 			style="list-style-image: url('scss/icon-error.png');">Funções Matemáticas (floor)</li>
+  <li id="verify-support-math2" 			style="list-style-image: url('scss/icon-error.png');">Funções Matemáticas (trunc)</li>
+  <li id="verify-support-localstorage" 		style="list-style-image: url('scss/icon-error.png');">Local Storage</li>  
+  <li id="verify-support-sessionstorage" 	style="list-style-image: url('scss/icon-error.png');">Session Storage</li>
+  <li id="verify-support-websql" 			style="list-style-image: url('scss/icon-error.png');">WebSQL</li>
+  </ul>
+  </div>
+    
+</body>
+
+<script>
+	if ( verificaAjax() ) {
+		document.getElementById("verify-support-ajax").style["list-style-image"] = "url('scss/icon-enabled.png')";
+	}
+	if ( verificaJquery() ) {
+		document.getElementById("verify-support-jquery").style["list-style-image"] = "url('scss/icon-enabled.png')";
+	}
+	if ( verificaMath1() ) {
+		document.getElementById("verify-support-math1").style["list-style-image"] = "url('scss/icon-enabled.png')";
+	}
+	if ( verificaMath2() ) {
+		document.getElementById("verify-support-math2").style["list-style-image"] = "url('scss/icon-enabled.png')";
+	}
+	if ( verificaLocalStorage() ) {
+		document.getElementById("verify-support-localstorage").style["list-style-image"] = "url('scss/icon-enabled.png')";
+	}
+	if ( verificaSessionStorage() ) {
+		document.getElementById("verify-support-sessionstorage").style["list-style-image"] = "url('scss/icon-enabled.png')";
+	}
+	if ( verifyWebSqlDatabase() ) {
+		document.getElementById("verify-support-websql").style["list-style-image"] = "url('scss/icon-enabled.png')";
+	}
+</script>
+
+</html>
